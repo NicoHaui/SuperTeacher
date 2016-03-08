@@ -11,5 +11,4 @@
 - Objet d'école (Table, Chaise, Examens, Café(accélération))
 - Fond sans fin
 - Éleves qui posent des questions
-- 
 
