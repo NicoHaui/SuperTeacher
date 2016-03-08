@@ -1,0 +1,6 @@
+= SuperTeacher
+:Author: Lars Aeschliman, Nicolas Houert, Etienne Houriet, Samuel Dolt
+
+== Concept
+
+Test
