@@ -3,7 +3,7 @@
 | Task                                                   |   Date     |
 |--------------------------------------------------------|------------|
 |  Choix du jeux "SuperTeacher", Realisation du Gameplay |08.03.2016  |
-|                                                        |            |
+|                                                       |            |
 |                                                        |            |
 |                                                        |            |
 |                                                        |            |
