@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/BFH-E1D-2015-2016/SuperTeacher.svg?branch=master)](https://travis-ci.org/BFH-E1D-2015-2016/SuperTeacher)
+
 # SuperTeacher
 
 | Task                                                   |   Date     |
