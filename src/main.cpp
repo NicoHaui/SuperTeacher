@@ -9,6 +9,7 @@ int main(int, char**){
 		std::cout << "SDL init Error: " << SDL_GetError() << std::endl;
 		return 1;
 	}
+	printf("TEST");
 	SDL_Quit();
 	return 0;
 }
