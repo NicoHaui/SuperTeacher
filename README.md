@@ -2,7 +2,7 @@
 
 | Task                                                   |   Date     |
 |--------------------------------------------------------|------------|
-|                                                        |            |
+|  Choix du jeux "SuperTeacher", Realisation du Gameplay |            |
 |                                                        |            |
 |                                                        |            |
 |                                                        |            |
