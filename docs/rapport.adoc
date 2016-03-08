@@ -1,5 +1,5 @@
 = SuperTeacher
-:Author: Lars Aeschliman, Nicolas Houert, Etienne Houriet, Samuel Dolt
+:Author: Lars Aeschlimann, Nicolas Hauert, Etienne Houriet, Samuel Dolt
 
 == Concept
 
