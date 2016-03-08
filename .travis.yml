@@ -9,6 +9,10 @@ addons:
     packages:
       - cmake
       - libsdl2-dev
-script:
-    - mkdir build && cd build && cmake ../
+      - asciidoc
+      - dblatex
+      - texlive-lang-cyrillic
 
+script:
+    - mkdir build && cd build && cmake ../ && cd ..
+    -.cd docs && ./build.sh && cd ..
