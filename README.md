@@ -3,6 +3,20 @@
 | Task                                                   |   Date     |
 |--------------------------------------------------------|------------|
 |Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+|Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 ||Choix du jeux "SuperTeacher"; Discussion du Gameplay    | 08.03.2016 |
+
+
+
+
+
+
+
+
 
 
 ## Gameplay
