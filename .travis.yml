@@ -11,12 +11,5 @@ addons:
     - libsdl2-dev
     - asciidoc
 script:
-- "mkdir build && cd build && cmake ../ && cd .."
-- "cd docs && ./build-travis.sh && cd .."
-deploy:
-  provider: releases
-  api_key:
-    secure: XzkQ4bPuOV3ZCshVEHT09aUzF2xgsg0MuI1wMp32so3APW2SuWRQ991UxPkmaOD9gqzrndKmXXChdC++EXSUpLKZB+dvDqskOqL12AB63PcXBN3YL+teF5AQJOBuvIV2HtQ2LXWFZ08LFZzs+BV60RStOg7mYcK1MKJorCMjQmLrnfKjmmcFsYQYXf8lSvNeGoZShzUhslVzwD2PRShsMAR+Xhz4SnnqgTh3apvU244olOov8Qbs849qGxHoNsy70/92zKMJcgjYSw/9NVl+QpF+FV7p1uVMoJ0sIEiHIM0XEBLOkfOmlICNmcuxPA5Vo5X7ecWFOm/CeQgU5njUUsEQDn6HkcW46QqfiH1Hk2d7a4Aua9E+IX+aX97YnWm5W1WfsbDJPvz9G5DuKDWa0lxZnTZ3AAuz2c7yXRwZttVDXPEN2NRglRbCqbHgujZdXsabBDgOz7+/DIO1mRE0+jlFum9pZDt0WBQpPg8BAkf6T5NRQGF++MlHTzPMDA3xdmmxkvcq5lDL/xtGaIFogdVoZj4LsmCSs3Jyct99MIDu/I99laNLvh02ZdPIfOu8Cz+VmRj2UNNzkI9wNjYJG/yvAUrgmvquk5VOMrEWIFcDlHfGBhUKWfI5bbb0nsPG3eWHjmpd0e5ANwBsH73Q9e9sSXDU1U6Z+oBhBoznRzs=
-  file: build/SuperTeacher-*-Linux.sh
-  on:
-    repo: BFH-E1D-2015-2016/SuperTeacher
+    - "mkdir build && cd build && cmake ../ && cd .."
+    - "cd docs && ./build-travis.sh && cd .."
