@@ -11,5 +11,5 @@ addons:
     - libsdl2-dev
     - asciidoc
 script:
-    - "mkdir build && cd build && cmake ../ && cd .."
+    - "mkdir build && cd build && cmake ../ && make && make install && cd .."
     - "cd docs && ./build-travis.sh && cd .."

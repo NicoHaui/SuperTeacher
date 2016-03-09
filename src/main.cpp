@@ -1,15 +1,13 @@
-#include <iostream>
+#include <stdio.h>
 #include <SDL.h>
 
-/*
- * Lesson 0: Test to make sure SDL is setup properly
- */
-int main(int, char**){
-	if (SDL_Init(SDL_INIT_VIDEO) != 0){
-		std::cout << "SDL init Error: " << SDL_GetError() << std::endl;
-		return 1;
-	}
-	printf("TEST");
-	SDL_Quit();
-	return 0;
+int main(int argc, char *argv[]) {
+    fprintf(stdout, "SuperTeaching is starting..\n");
+
+    if(SDL_Init(SDL_INIT_VIDEO)) {
+        fprintf(stderr, "SDL init Error: %s \n", SDL_GetError);
+        return -1;
+    }
+    SDL_Quit();
+    return 0;
 }
