@@ -17,13 +17,9 @@ addons:
     - asciidoc
     - libgtest-dev
 before_install:
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl2; fi
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gtest; fi
-
+        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
 before_script:
-        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib && cd $TRAVIS_BUILD_DIR; fi
+        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash scipts/travis-linux-setup.sh; fi
 script:
-    - "cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib && cd $TRAVIS_BUILD_DIR"
     - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."
