@@ -43,4 +43,5 @@ build_script:
       cd build;
       cmake --version;
       cmake .. -G 'MSYS Makefiles';
-      make"
+      make;
+      ctest -VV;"
