@@ -21,6 +21,18 @@ install:
   - xcopy /S/Y SDL2_mixer-2.0.1 SDL2-2.0.4
   - set SDL2DIR=%CD%\SDL2-2.0.4\i686-w64-mingw32
 
+  # Set up GTest
+  - appveyor DownloadFile https://github.com/google/googletest/archive/release-1.7.0.tar.gz
+  - 7z x release-1.7.0.tar.gz
+  - 7z x release-1.7.0.tar
+  - C:\MinGW\msys\1.0\bin\sh --login -c "
+      cd /c/projects/SuperTeacher;
+      cd googletest-release-1.7.0;
+      mkdir build;
+      cmake .. -G 'MSYS Makefiles';
+      make;
+      ls;"
+
 build_script:
   - C:\MinGW\msys\1.0\bin\sh --login -c "
       cd /c/projects/SuperTeacher;
