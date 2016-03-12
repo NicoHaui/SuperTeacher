@@ -14,6 +14,6 @@ addons:
     - asciidoc
     - libgtest-dev
 script:
-    - "cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib"
+    - "cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib && cd $TRAVIS_BUILD_DIR"
     - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."
