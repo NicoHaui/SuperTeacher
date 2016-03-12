@@ -12,6 +12,7 @@ addons:
     - cmake
     - libsdl2-dev
     - asciidoc
+    - libgtest-dev
 script:
     - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."
