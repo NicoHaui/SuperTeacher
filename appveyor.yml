@@ -32,7 +32,9 @@ install:
       cd build;
       cmake .. -G 'MSYS Makefiles';
       make;
-      ls;"
+      cp -r ../include/gtest /c/MinGW/include/;
+      cp lib*.a /c/MinGW/lib/;"
+  - cd C:\
 
 build_script:
   - C:\MinGW\msys\1.0\bin\sh --login -c "
