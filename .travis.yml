@@ -19,7 +19,7 @@ addons:
 before_install:
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
 before_script:
-        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash scipts/travis-linux-setup.sh; fi
+        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash scripts/travis-linux-setup.sh; fi
 script:
     - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."
