@@ -9,17 +9,21 @@ compiler:
 - clang
 addons:
   apt:
+    sources:
+    - george-edison55/cmake-3.x
     packages:
     - cmake
     - libsdl2-dev
     - asciidoc
+    - libgtest-dev
 before_install:
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl2; fi
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gtest; fi
 
 before_script:
-        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build && cd build && cmake ../ && make && make install && cd ..; fi
+        - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib && cd $TRAVIS_BUILD_DIR; fi
 script:
-    - "mkdir build && cd build && cmake ../ && make && make install && cd .."
+    - "cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp *.a /usr/lib && cd $TRAVIS_BUILD_DIR"
+    - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."

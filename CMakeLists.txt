@@ -1,7 +1,8 @@
 project(SuperTeacher)
 
-# CMake >2.6 must be used
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+# CMake >3.0 must be used
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+include( CTest )
 
 # Custom cmake module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
@@ -26,6 +27,7 @@ endif()
 
 # Build program binary
 add_subdirectory(src)
+add_subdirectory(tests)
 
 # Installer config
 include (InstallRequiredSystemLibraries)
