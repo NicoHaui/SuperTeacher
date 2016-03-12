@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/BFH-E1D-2015-2016/SuperTeacher.svg?branch=master)](https://travis-ci.org/BFH-E1D-2015-2016/SuperTeacher)
+[![Build Status](https://img.shields.io/travis/BFH-E1D-2015-2016/SuperTeacher/master.svg?label=Linux%20%2F%20OS%20X%20build)](https://travis-ci.org/BFH-E1D-2015-2016/SuperTeacher)
+[![App Veyor Status](https://img.shields.io/appveyor/ci/samdolt/superteacher/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/samdolt/superteacher)
 
 # SuperTeacher
 
