@@ -1,6 +1,7 @@
 enable_testing()
 
-find_package(GTest REQUIRED)
+#find_package(GTest REQUIRED)
+include( ExternalGoogleTest )
 include_directories(${GTEST_INCLUDE_DIRS})
 
 find_package( Threads REQUIRED)

@@ -2,10 +2,13 @@ project(SuperTeacher)
 
 # CMake >3.0 must be used
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+
 include( CTest )
+include ( ExternalProject )
 
 # Custom cmake module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
+
 
 # Binary in ./bin
 set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
