@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 struct MainWindow {
    SDL_Window * window;
