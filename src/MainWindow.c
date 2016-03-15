@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <assert.h>
 #include <SDL.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct MainWindow {
    SDL_Window * window;
