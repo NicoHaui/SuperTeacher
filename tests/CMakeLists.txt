@@ -9,7 +9,7 @@ find_package( Threads REQUIRED)
 add_executable(runUnitTests main.cpp test_hello.cpp)
 
 target_link_libraries(
-  runUnitTests ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
+  runUnitTests ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
 )
 
 install(TARGETS runUnitTests RUNTIME DESTINATION ${BIN_DIR})
