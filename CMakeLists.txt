@@ -34,7 +34,7 @@ endif()
 
 # Build program binary
 add_subdirectory(src)
-#add_subdirectory(tests)
+add_subdirectory(tests)
 
 # Installer config
 include (InstallRequiredSystemLibraries)
