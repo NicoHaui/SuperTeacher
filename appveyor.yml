@@ -1,0 +1,32 @@
+# Copied from https://github.com/mmatyas/supermariowar/blob/master/.appveyor.yml
+
+platform:
+  - x86
+
+install:
+  - choco install -y 7zip
+  - set PATH="C:\Program Files\7-Zip";C:\MinGW\bin;%PATH%
+
+  # Set up SDL2 libs
+  - appveyor DownloadFile https://www.libsdl.org/release/SDL2-devel-2.0.4-mingw.tar.gz
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.1-mingw.tar.gz
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.1-mingw.tar.gz
+  - 7z x SDL2-devel-2.0.4-mingw.tar.gz
+  - 7z x -xr!._\* -xr!man -xr!docs SDL2-devel-2.0.4-mingw.tar
+  - 7z x SDL2_image-devel-2.0.1-mingw.tar.gz
+  - 7z x -xr!._\* -xr!man -xr!docs SDL2_image-devel-2.0.1-mingw.tar
+  - 7z x SDL2_mixer-devel-2.0.1-mingw.tar.gz
+  - 7z x -xr!._\* -xr!man -xr!docs SDL2_mixer-devel-2.0.1-mingw.tar
+  - xcopy /S/Y SDL2_image-2.0.1 SDL2-2.0.4
+  - xcopy /S/Y SDL2_mixer-2.0.1 SDL2-2.0.4
+  - set SDL2DIR=%CD%\SDL2-2.0.4\i686-w64-mingw32
+
+build_script:
+  - C:\MinGW\msys\1.0\bin\sh --login -c "
+      cd /c/projects/SuperTeacher;
+      mkdir build;
+      cd build;
+      cmake --version;
+      cmake .. -G 'MSYS Makefiles';
+      make;
+      ctest -VV;"

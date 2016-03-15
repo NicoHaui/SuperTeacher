@@ -1,10 +1,18 @@
 project(SuperTeacher)
 
-# CMake >2.6 must be used
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+# CMake >3.0 must be used
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+
+include( CTest )
+include ( ExternalProject )
 
 # Custom cmake module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
+
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+endif()
 
 # Binary in ./bin
 set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
@@ -13,7 +21,7 @@ set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
 # Also set debug/optimization flags depending on the build type. IDE users choose this when
 # selecting the build mode in their IDE
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=gnu++11")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -g")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -O2")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
@@ -26,6 +34,7 @@ endif()
 
 # Build program binary
 add_subdirectory(src)
+add_subdirectory(tests)
 
 # Installer config
 include (InstallRequiredSystemLibraries)

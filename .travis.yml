@@ -1,4 +1,7 @@
 sudo: required
+os:
+- linux
+- osx
 dist: trusty
 language: cpp
 compiler:
@@ -6,10 +9,14 @@ compiler:
 - clang
 addons:
   apt:
+    sources:
+    - george-edison55/cmake-3.x
     packages:
     - cmake
     - libsdl2-dev
     - asciidoc
+before_install:
+        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
 script:
-    - "mkdir build && cd build && cmake ../ && make && make install && cd .."
+    - "mkdir build && cd build && cmake ../ && make && ctest -VV && cd .."
     - "cd docs && ./build-travis.sh && cd .."
