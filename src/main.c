@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "MainWindow.h"
 
 int main(int argc, char *argv[]) {

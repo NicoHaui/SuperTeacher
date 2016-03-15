@@ -6,8 +6,6 @@
  * \brief MainWindow management function
  */
 
-#include <SDL2/SDL.h>
-
 
 /**
  * Create a main window. Must be called only once
