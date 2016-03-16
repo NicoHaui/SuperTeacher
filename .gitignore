@@ -2,7 +2,7 @@ docs/build/
 bin/
 build/
 
-
+.DS_Store
 
 # Ignore file for CLion
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
