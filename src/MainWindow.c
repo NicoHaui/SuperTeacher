@@ -1,9 +1,8 @@
 #include "MainWindow.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include <SDL.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
 
 struct MainWindow {
    SDL_Window * window;
@@ -17,7 +16,6 @@ void MainWindow_Open(void) {
 
     // Only one main window must be open
     assert(mw.window == NULL);
-
 
     mw.window = SDL_CreateWindow(
         "SuperTeacher",
