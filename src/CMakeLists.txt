@@ -1,6 +1,6 @@
 project(superteacher)
 
-find_package(SFML 2.4 COMPONENTS graphics window system audio)
+find_package(SFML 2.3 COMPONENTS graphics window system audio)
 include_directories(${SFML_INCLUDE_DIR})
 
 add_executable(superteacher

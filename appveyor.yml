@@ -10,7 +10,7 @@ install:
   # Set up SFML libs
   - appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
   - 7z x SFML-2.3.2-windows-vc14-32-bit.zip
-  - set SFMLDIR=%CD%\SFML-2.3.2
+  - set SFML_ROOT=%CD%\SFML-2.3.2
 
 build_script:
   - cd C:\projects\SuperTeacher
