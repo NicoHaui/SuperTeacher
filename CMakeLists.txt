@@ -1,3 +1,9 @@
+# CMake Main Configuration file
+# =============================
+#
+# This file is the main file used for generating project file that
+# build with IDE or makefile.
+
 project(SuperTeacher)
 
 # CMake >3.0 must be used
@@ -26,6 +32,12 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
 endif()
+
+# On Windows, we use static linking to libc++
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+end()
 
 add_definitions(-D_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 add_definitions(-D_SRC_DIR="${CMAKE_SOURCE_DIR}")
