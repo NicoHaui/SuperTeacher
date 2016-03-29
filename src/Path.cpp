@@ -1,6 +1,7 @@
 #include "Path.h"
 #include <fstream>
 #include <iostream>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 
@@ -26,15 +27,12 @@ Path& Path::operator+=(const char* path){
 
 std::string get_file(std::string file) {
 
-    for(auto i = SEARCH_PATHS_PREFIX.begin(); i != SEARCH_PATHS_PREFIX.end(); ++i) {
-        string prefix = *i;
+    for(auto & prefix: SEARCH_PATHS_PREFIX){
 
-        for(auto y = SEARCH_PATHS_SUFFIX.begin(); y != SEARCH_PATHS_SUFFIX.end(); ++y) {
-            string path = prefix + SEP + *y + SEP + file;
+        for(auto & suffix: SEARCH_PATHS_SUFFIX){
+            string path = prefix + SEP + suffix + SEP + file;
 
-            ifstream f(path.c_str());
-            if(f.is_open()){
-                f.close();
+            if(boost::filesystem::exists(path)){
                 return path;
             }
         }
