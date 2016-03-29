@@ -2,4 +2,4 @@
 
 brew update &&
 brew install asciidoc &&
-brew install sdl2
+brew install sfml
