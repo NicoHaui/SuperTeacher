@@ -37,7 +37,7 @@ endif()
 if(MSVC)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-end()
+endif()
 
 add_definitions(-D_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 add_definitions(-D_SRC_DIR="${CMAKE_SOURCE_DIR}")
