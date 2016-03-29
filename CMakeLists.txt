@@ -9,11 +9,6 @@ include ( ExternalProject )
 # Custom cmake module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
 
-if(MSVC)
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
-endif()
-
 # Binary in ./bin
 set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
 

@@ -14,11 +14,6 @@ install:
   - 7z x SFML-2.3.2-windows-vc14-32-bit.zip
   - set SFML_ROOT=%CD%\SFML-2.3.2
 
-  # Debug
-  - cd  C:\Libraries\boost_1_59_0
-  - dir
-
-
 # Generate visual project
 before_build:
   - cmd: cd C:\projects\SuperTeacher
