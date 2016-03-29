@@ -9,6 +9,7 @@ set(BOOST_ALL_DYN_LINK           ON)   # force dynamic linking for all libraries
 find_package(Boost 1.54 REQUIRED COMPONENTS system filesystem)
 
 include_directories(${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIRS})
 
 add_executable(superteacher
         main.cpp
