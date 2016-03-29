@@ -1,12 +1,14 @@
 project(superteacher)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
+find_package(SFML 2.4 COMPONENTS graphics window system audio)
+include_directories(${SFML_INCLUDE_DIR})
 
 add_executable(superteacher
-        main.c
-        MainWindow.c
+        main.cpp
+        MainWindow.cpp
+        Path.cpp
 )
 
-target_link_libraries(superteacher ${SDL2_LIBRARY})
+target_link_libraries(superteacher ${SFML_LIBRARIES})
 install(TARGETS superteacher RUNTIME DESTINATION bin)
+set_property(TARGET superteacher PROPERTY CXX_STANDARD 14)
