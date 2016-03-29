@@ -10,7 +10,7 @@ install:
   # Set up boost
   - appveyor DownloadFile http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.zip/download -FileName boost_1_60_0.zip
   - 7z x boost_1_60_0.zip
-  - set BOOST_ROOT=%CD&\boost_1_60_0
+  - set BOOST_ROOT="%CD&\boost_1_60_0"
 
 build_script:
   - cd C:\projects\SuperTeacher
