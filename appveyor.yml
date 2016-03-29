@@ -1,30 +1,53 @@
-os: Visual Studio 2015
+# AppVeyor Configuration
+# ======================
+#
+# AppVeyor is a Continuous Delivery service for Windows, we use
+# it to automatically build superteacher when a pull-request is
+# made on Github.
 
+# On Windows, we support Visual Studio 2015, in x86 mode
+# (Using x64 on Windows is for now not supported by the core team)
+os: Visual Studio 2015
 platform:
   - Win32
 
+# AppVeyor come with several Boost Libraries version pre-installed. We use the 
+# latest available (boost 1.59.0)
 environment:
   BOOST_ROOT: C:\Libraries\boost_1_59_0
   BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
   CMAKE_GENERATOR_NAME: Visual Studio 14 2015
 
+# SuperTeacher depends on SFML, which is not available on AppVeyor. So we
+# download a pre-built version from sfml-dev. For speed reason, we use
+# Appveylor cache to only download them once and keep them while not change is
+# made on this file.
+# 
+# see https://www.appveyor.com/docs/build-cache for more info about the cache
+cache:
+  - SFML-2.3.2 -> appveyor.yml
 install:
   # Set up SFML libs
-  - appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
-  - 7z x SFML-2.3.2-windows-vc14-32-bit.zip
+  - IF NOT EXIST SFML-2.3.2 (
+      appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip &&
+      7z x SFML-2.3.2-windows-vc14-32-bit.zip
+    )
   - set SFML_ROOT=%CD%\SFML-2.3.2
 
-  - cd C:\Libraries\boost_1_59_0\lib32-msvc-14.0\
-  - dir
-
-# Generate visual project
+# We use CMake to generate project file for Visual Studio
 before_build:
   - cmd: cd C:\projects\SuperTeacher
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
 
+# Start a build with MSBuild (Visual Studio from the commande line)
 build:
   project: C:\projects\SuperTeacher\build\SuperTeacher.sln
   parallel: true
   verbosity: normal
+
+# We use CTest from CMake to launch our unit test
+test_script:
+ - cmd: cd C:\projects\SuperTeacher\build
+ - cmd: ctest -VV
