@@ -36,11 +36,7 @@ endif()
 
 # Build program binary
 add_subdirectory(src)
-
-if(WIN32)
-else()
-  add_subdirectory(tests)
-endif()
+add_subdirectory(tests)
 
 add_subdirectory(assets)
 
