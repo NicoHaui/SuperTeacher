@@ -3,11 +3,6 @@ os: Visual Studio 2015
 platform:
   - Win32
 
-# Script called at the very beginning
-init:
-   - cmd: cmake --version
-   - cmd: msbuild /version
-
 environment:
   BOOST_ROOT: C:\Libraries\boost_1_59_0
   BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
@@ -34,4 +29,4 @@ before_build:
 build:
   project: C:\projects\SuperTeacher\build\SuperTeacher.sln
   parallel: true
-  verbosity: detailed
+  verbosity: normal

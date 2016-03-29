@@ -2,14 +2,9 @@ project(superteacher)
 
 find_package(SFML 2.1 REQUIRED COMPONENTS graphics window system audio)
 
-if(MVSC)
-  set(Boost_USE_STATIC_LIBS        ON) # only find static libs
-endif()
-
+set(Boost_USE_STATIC_LIBS       OFF)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
-
-
 find_package(Boost 1.54 REQUIRED COMPONENTS system filesystem)
 
 include_directories(${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIR})

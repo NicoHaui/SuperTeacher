@@ -10,8 +10,8 @@ include ( ExternalProject )
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
 
 if(MSVC)
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
 endif()
 
 # Binary in ./bin
@@ -41,7 +41,12 @@ endif()
 
 # Build program binary
 add_subdirectory(src)
-add_subdirectory(tests)
+
+if(WIN32)
+else()
+  add_subdirectory(tests)
+endif()
+
 add_subdirectory(assets)
 
 # Installer config
