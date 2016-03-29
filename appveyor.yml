@@ -12,6 +12,6 @@ build_script:
   - mkdir build
   - cd build
   - cmake -G"Visual Studio 14 2015" ..
-  - msbuild superteacher.sln ..
+  - msbuild SuperTeacher.sln
   - ctest -VV
   - cd ..
