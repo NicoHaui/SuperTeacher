@@ -56,6 +56,15 @@ int main(int argc, char *argv[]) {
                         case sf::Keyboard::Left:
                             shape.move(-10,0);
                             break;
+						case sf::Keyboard::Up:
+							shape.move(0, -10);
+							break;
+						case sf::Keyboard::Down:
+							shape.move(0, 10);
+							break;
+						case sf::Keyboard::Escape:
+							window.close();
+							break;
                         default:
                             break;
                     }
