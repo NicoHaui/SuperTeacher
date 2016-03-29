@@ -9,10 +9,14 @@ compiler:
 - clang
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r/test
     packages:
     - cmake
     - libsfml-dev
     - asciidoc
+    - gcc-5
+    - g++-5
 before_install:
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
 script:
