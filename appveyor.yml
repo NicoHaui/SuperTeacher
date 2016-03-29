@@ -1,7 +1,6 @@
-install:
-  - choco install -y 7zip
-  - set PATH="C:\Program Files\7-Zip";C:\MinGW\bin;%PATH%
+os: Visual Studio 2015
 
+install:
   # Set up SFML libs
   - appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
   - 7z x SFML-2.3.2-windows-vc14-32-bit.zip
