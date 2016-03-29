@@ -50,4 +50,4 @@ build:
 # We use CTest from CMake to launch our unit test
 test_script:
  - cmd: cd C:\projects\SuperTeacher\build
- - cmd: ctest -VV
+ - cmd: ctest -C Debug -VV
