@@ -1,20 +1,37 @@
 os: Visual Studio 2015
 
+platform:
+  - Win32
+
+# Script called at the very beginning
+init:
+   - cmd: cmake --version
+   - cmd: msbuild /version
+
+environment:
+  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+  CMAKE_GENERATOR_NAME: Visual Studio 14 2015
+
 install:
   # Set up SFML libs
   - appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
   - 7z x SFML-2.3.2-windows-vc14-32-bit.zip
   - set SFML_ROOT=%CD%\SFML-2.3.2
 
-  # Set up boost
-  - set BOOST_ROOT="C:\Libraries\boost_1_59_0"
-  - set BOOST_LIBRARYDIR="C:\Libraries\boost_1_59_0\lib32-msvc-14.0"
-  # https://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download
+  # Debug
+  - cd  C:\Libraries\boost_1_59_0
+  - dir
 
-build_script:
-  - cd C:\projects\SuperTeacher
-  - mkdir build
-  - cd build
-  - cmake -G"Visual Studio 14 2015" ..
-  - msbuild SuperTeacher.sln
-  - cd ..
+
+# Generate visual project
+before_build:
+  - cmd: cd C:\projects\SuperTeacher
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake -G "%CMAKE_GENERATOR_NAME" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
+
+build:
+  project: C:\projects\SuperTeacher\build\SuperTeacher.sln
+  parallel: true
+  verbosity: detailed
