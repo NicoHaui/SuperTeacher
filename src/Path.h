@@ -4,7 +4,7 @@ class Path{
 public:
     Path(const char * path);
     Path operator=(const char* path);
-    Path operator+=(const char* path);
+    Path& operator+=(const char* path);
 private:
     std::string buff;
 };

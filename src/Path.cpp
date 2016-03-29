@@ -13,8 +13,9 @@ Path Path::operator=(const char* path){
 }
 
 
-Path Path::operator+=(const char* path){
+Path& Path::operator+=(const char* path){
     buff += PATH_SEP;
     buff += path;
+    return *this;
 }
 
