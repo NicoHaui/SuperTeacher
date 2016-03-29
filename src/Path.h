@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <array>
 class Path{
 public:
     Path(const char * path);
@@ -11,9 +12,26 @@ private:
 
 const Path PATH_INSTALL_DIR = _INSTALL_PREFIX;
 
+const std::array<std::string, 2> SEARCH_PATHS_PREFIX= {
+        _INSTALL_PREFIX, // /usr/local in OSX and Mac and C:\Program Files (x86) in Windows
+        _SRC_DIR, // Source directory
+};
+
+const std::array<std::string, 3> SEARCH_PATHS_SUFFIX = {
+#ifdef WIN32
+        "share",
+        "assets",
+        "share\\superteacher"
+#else
+        "share/superteacher",
+        "share",
+        "assets",
+#endif
+};
 
 
-const std::string FONT_INDIE_FLOWER = "/usr/local/share/superteacher/fonts/ThirdParty/IndieFlower/IndieFlower.ttf";
-const std::string SONG_1 = "/usr/local/share/superteacher/audio/ThirdParty/hold-the-line-orchestral-remix/hold the line_0.flac";
+std::string get_file(std::string file);
 
+const std::string FONT_INDIE_FLOWER = "fonts/ThirdParty/IndieFlower/IndieFlower.ttf";
+const std::string SONG_1 = "audio/ThirdParty/hold-the-line-orchestral-remix/hold the line_0.flac";
 
