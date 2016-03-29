@@ -1,7 +1,7 @@
 project(superteacher)
 
-find_package(SFML 2.3 REQUIRED COMPONENTS graphics window system audio)
-find_package(Boost 1.60 REQUIRED COMPONENTS filesystem)
+find_package(SFML 2.1 REQUIRED COMPONENTS graphics window system audio)
+find_package(Boost 1.54 REQUIRED COMPONENTS filesystem)
 
 include_directories(${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 

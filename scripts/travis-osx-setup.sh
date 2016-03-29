@@ -2,5 +2,4 @@
 
 brew update &&
 brew install asciidoc &&
-brew install sfml &&
-brew install boost
+brew install sfml
