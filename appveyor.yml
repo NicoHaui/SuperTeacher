@@ -1,8 +1,3 @@
-# Copied from https://github.com/mmatyas/supermariowar/blob/master/.appveyor.yml
-
-platform:
-  - x86
-
 install:
   - choco install -y 7zip
   - set PATH="C:\Program Files\7-Zip";C:\MinGW\bin;%PATH%
@@ -17,6 +12,6 @@ build_script:
   - mkdir build
   - cd build
   - cmake -G"Visual Studio 14 2015" ..
-  - msbuild superteacher.sln /p:Configuration=Debug /p:Plateform="Any CPU"
+  - msbuild superteacher.sln ..
   - ctest -VV
   - cd ..
