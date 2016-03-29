@@ -10,7 +10,7 @@ compiler:
 addons: &gcc5
   apt:
     sources:
-    - ubuntu-toolchain-r/test
+    - ubuntu-toolchain-r-test
     packages:
     - cmake
     - libsfml-dev

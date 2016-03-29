@@ -17,6 +17,6 @@ build_script:
   - mkdir build
   - cd build
   - cmake -G"Visual Studio 14 2015" ..
-  - msbuild superteacher.sln
+  - msbuild superteacher.sln /p:Configuration=Debug /p:Plateform="x86"
   - ctest -VV
   - cd ..
