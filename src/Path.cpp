@@ -1,6 +1,7 @@
 #include "Path.h"
 #include <fstream>
 #include <iostream>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 
@@ -32,9 +33,7 @@ std::string get_file(std::string file) {
         for(auto y = SEARCH_PATHS_SUFFIX.begin(); y != SEARCH_PATHS_SUFFIX.end(); ++y) {
             string path = prefix + SEP + *y + SEP + file;
 
-            ifstream f(path.c_str());
-            if(f.is_open()){
-                f.close();
+            if(boost::filesystem::exists(path)){
                 return path;
             }
         }
