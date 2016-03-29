@@ -17,6 +17,7 @@ addons: &gcc5
     - asciidoc
     - gcc-5
     - g++-5
+    - libboost-all-dev
 before_install:
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
 script:
