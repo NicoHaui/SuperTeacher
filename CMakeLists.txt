@@ -33,6 +33,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 endif()
 
 add_definitions(-D_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
+add_definitions(-D_SRC_DIR="${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
     add_definitions(-DWIN32)

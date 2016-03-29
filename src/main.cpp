@@ -13,13 +13,17 @@ int main(int argc, char *argv[]) {
             sf::VideoMode(800, 600), "SuperTeacher"
     );
 
+    cout << "SRC:" << _SRC_DIR << endl;
+
     sf::Font font;
-    if(!font.loadFromFile(FONT_INDIE_FLOWER)){
+    std::string test = get_file(FONT_INDIE_FLOWER);
+    if(!font.loadFromFile(get_file(FONT_INDIE_FLOWER))){
+        cout << "FONT NOT FOUND" << endl;
         return -1;
     }
 
     sf::Music song;
-    if(!song.openFromFile(SONG_1)){
+    if(!song.openFromFile(get_file(SONG_1))){
         return -1;
     }
 
