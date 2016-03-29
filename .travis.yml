@@ -11,7 +11,7 @@ addons:
   apt:
     packages:
     - cmake
-    - libsflm-dev
+    - libsfml-dev
     - asciidoc
 before_install:
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/travis-osx-setup.sh; fi
