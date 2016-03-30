@@ -1,12 +1,22 @@
-project(SuperTeacher)
+project(superteacher)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
+find_package(SFML 2.1 REQUIRED COMPONENTS graphics window system audio)
 
-add_executable(SuperTeacher
-        main.c
-        MainWindow.c
+set(Boost_USE_STATIC_LIBS       OFF)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
+set(BOOST_ALL_DYN_LINK           ON)   # force dynamic linking for all libraries
+find_package(Boost 1.54 REQUIRED COMPONENTS system filesystem)
+
+include_directories(${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIRS})
+
+add_executable(superteacher
+        main.cpp
+        MainWindow.cpp
+        Path.cpp
 )
 
-target_link_libraries(SuperTeacher ${SDL2_LIBRARY})
-install(TARGETS SuperTeacher RUNTIME DESTINATION ${BIN_DIR})
+target_link_libraries(superteacher ${SFML_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS superteacher RUNTIME DESTINATION bin)
+set_property(TARGET superteacher PROPERTY CXX_STANDARD 14)

@@ -16,6 +16,8 @@ target_link_libraries(
 
 install(TARGETS runUnitTests RUNTIME DESTINATION ${BIN_DIR})
 
+set_property(TARGET runUnitTests PROPERTY CXX_STANDARD 14)
+
 add_test(
     NAME runUnitTests
     COMMAND runUnitTests

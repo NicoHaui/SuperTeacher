@@ -1,32 +1,53 @@
-# Copied from https://github.com/mmatyas/supermariowar/blob/master/.appveyor.yml
+# AppVeyor Configuration
+# ======================
+#
+# AppVeyor is a Continuous Delivery service for Windows, we use
+# it to automatically build superteacher when a pull-request is
+# made on Github.
 
+# On Windows, we support Visual Studio 2015, in x86 mode
+# (Using x64 on Windows is for now not supported by the core team)
+os: Visual Studio 2015
 platform:
-  - x86
+  - Win32
 
+# AppVeyor come with several Boost Libraries version pre-installed. We use the 
+# latest available (boost 1.59.0)
+environment:
+  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+  CMAKE_GENERATOR_NAME: Visual Studio 14 2015
+
+# SuperTeacher depends on SFML, which is not available on AppVeyor. So we
+# download a pre-built version from sfml-dev. For speed reason, we use
+# Appveylor cache to only download them once and keep them while not change is
+# made on this file.
+# 
+# see https://www.appveyor.com/docs/build-cache for more info about the cache
+cache:
+  - SFML-2.3.2 -> appveyor.yml
 install:
-  - choco install -y 7zip
-  - set PATH="C:\Program Files\7-Zip";C:\MinGW\bin;%PATH%
+  # Set up SFML libs
+  - IF NOT EXIST SFML-2.3.2 (
+      appveyor DownloadFile http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip &&
+      7z x SFML-2.3.2-windows-vc14-32-bit.zip
+    )
+  - set SFML_ROOT=%CD%\SFML-2.3.2
 
-  # Set up SDL2 libs
-  - appveyor DownloadFile https://www.libsdl.org/release/SDL2-devel-2.0.4-mingw.tar.gz
-  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.1-mingw.tar.gz
-  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.1-mingw.tar.gz
-  - 7z x SDL2-devel-2.0.4-mingw.tar.gz
-  - 7z x -xr!._\* -xr!man -xr!docs SDL2-devel-2.0.4-mingw.tar
-  - 7z x SDL2_image-devel-2.0.1-mingw.tar.gz
-  - 7z x -xr!._\* -xr!man -xr!docs SDL2_image-devel-2.0.1-mingw.tar
-  - 7z x SDL2_mixer-devel-2.0.1-mingw.tar.gz
-  - 7z x -xr!._\* -xr!man -xr!docs SDL2_mixer-devel-2.0.1-mingw.tar
-  - xcopy /S/Y SDL2_image-2.0.1 SDL2-2.0.4
-  - xcopy /S/Y SDL2_mixer-2.0.1 SDL2-2.0.4
-  - set SDL2DIR=%CD%\SDL2-2.0.4\i686-w64-mingw32
+# We use CMake to generate project file for Visual Studio
+before_build:
+  - cmd: cd C:\projects\SuperTeacher
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake -G "%CMAKE_GENERATOR_NAME%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ..
 
-build_script:
-  - C:\MinGW\msys\1.0\bin\sh --login -c "
-      cd /c/projects/SuperTeacher;
-      mkdir build;
-      cd build;
-      cmake --version;
-      cmake .. -G 'MSYS Makefiles';
-      make;
-      ctest -VV;"
+# Start a build with MSBuild (Visual Studio from the commande line)
+build:
+  project: C:\projects\SuperTeacher\build\SuperTeacher.sln
+  parallel: true
+  verbosity: normal
+
+# We use CTest from CMake to launch our unit test
+test_script:
+ - cmd: cd C:\projects\SuperTeacher\build
+ - cmd: ctest -C Debug -VV

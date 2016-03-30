@@ -1,3 +1,9 @@
+# CMake Main Configuration file
+# =============================
+#
+# This file is the main file used for generating project file that
+# build with IDE or makefile.
+
 project(SuperTeacher)
 
 # CMake >3.0 must be used
@@ -9,11 +15,6 @@ include ( ExternalProject )
 # Custom cmake module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
 
-if(MSVC)
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-endif()
-
 # Binary in ./bin
 set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
 
@@ -21,7 +22,7 @@ set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
 # Also set debug/optimization flags depending on the build type. IDE users choose this when
 # selecting the build mode in their IDE
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=gnu++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -g")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -O2")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
@@ -32,9 +33,24 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
     endif()
 endif()
 
+# On Windows, we use static linking to libc++
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+endif()
+
+add_definitions(-D_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
+add_definitions(-D_SRC_DIR="${CMAKE_SOURCE_DIR}")
+
+if(WIN32)
+    add_definitions(-DWIN32)
+endif()
+
 # Build program binary
 add_subdirectory(src)
 add_subdirectory(tests)
+
+add_subdirectory(assets)
 
 # Installer config
 include (InstallRequiredSystemLibraries)
