@@ -13,7 +13,6 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 add_executable(superteacher
         main.cpp
-        MainWindow.cpp
         Path.cpp
 )
 
