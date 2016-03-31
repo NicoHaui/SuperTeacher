@@ -18,7 +18,7 @@ enum class HIEvent {
 class HIManager {
 public:
     HIManager(sf::Window *window): window(window){};
-    int8_t process();
+    void process(void);
 
     boost::signals2::signal<void (HIEvent)> HIEvent_sig;
 

@@ -4,7 +4,7 @@
 
 #include "HIManager.h"
 
-int8_t HIManager::process() {
+void HIManager::process(void) {
 
         while(window->pollEvent(event)){
 
