@@ -4,6 +4,9 @@
 #include <SFML/Audio.hpp>
 
 #include "Path.h"
+#include "AbstractView.h"
+#include "RessourceManager.h"
+#include "HIManager.h"
 
 using namespace std;
 
@@ -13,74 +16,89 @@ int main(int argc, char *argv[]) {
             sf::VideoMode(800, 600), "SuperTeacher"
     );
 
+    window.setFramerateLimit(50);
+    HIManager user_input = {&window};
+    ResourceManager resource = {};
+
+    user_input.HIEvent_sig.connect([&window](HIEvent event)->void{
+        switch(event) {
+            case HIEvent::CLOSE:
+                window.close();
+                break;
+            default:
+                break;
+        }
+    });
+
     cout << "SRC:" << _SRC_DIR << endl;
 
-    sf::Font font;
-    std::string test = get_file(FONT_INDIE_FLOWER);
-    if(!font.loadFromFile(get_file(FONT_INDIE_FLOWER))){
-        cout << "FONT NOT FOUND" << endl;
-        return -1;
-    }
+    auto font = resource.get_font(FONT_INDIE_FLOWER);
+    auto song = resource.get_music(SONG_1);
 
-    sf::Music song;
-    if(!song.openFromFile(get_file(SONG_1))){
-        return -1;
-    }
-
-    sf::Text text("Hello SuperTeacher", font, 50);
+    sf::Text text("Hello SuperTeacher", *font, 50);
     text.move(25,25);
 
-    sf::CircleShape shape(50);
-    shape.setFillColor(sf::Color::Green);
-    shape.move(25,200);
+    auto bg_texture = resource.get_texture("graphics/tests/bg.png");
+    bg_texture->setRepeated(true);
+
+    sf::Sprite bg_sprite;
+    bg_sprite.setTexture(*bg_texture);
+    bg_sprite.setTextureRect(sf::IntRect(0,0,800,600));
+
+    auto cloud_texture = resource.get_texture("graphics/tests/Items/cloud3.png");
+    sf::Sprite cloud_sprite;
+    cloud_sprite.setTexture(*cloud_texture);
+    cloud_sprite.move(200,200);
+
+    sf::Sprite cloud2_sprite;
+    cloud2_sprite.setTexture(*cloud_texture);
+    cloud2_sprite.move(400,175);
+
+    sf::Texture ground_texture;
+    ground_texture.loadFromFile(get_file("graphics/tests/Tiles/grassMid.png"));
+    ground_texture.setRepeated(true);
+
+    sf::Sprite ground_sprite;
+    ground_sprite.setTexture(ground_texture);
+    ground_sprite.setTextureRect(sf::IntRect(0, 0, 800, 70));
+    ground_sprite.move(0,530);
+
+    auto superteacher_texture = resource.get_texture("graphics/characters/superteacher.png");
+
+    sf::Sprite superteacher;
+    superteacher.setTexture(*superteacher_texture);
+    superteacher.move(0,168);
+
+    user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
+        switch(event) {
+            case HIEvent::GO_LEFT:
+                superteacher.move(-10,0);
+                break;
+            case HIEvent::GO_RIGHT:
+                superteacher.move(10,0);
+            default:
+                break;
+            }
+    });
 
     cout << "SuperTeaching is starting..." << endl;
 
-    song.play();
+    song->play();
     while(window.isOpen()){
-        sf::Event event;
 
-        while(window.pollEvent(event)){
+        user_input.process();
 
-            switch(event.type){
-
-                // Window manager request a close
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                case sf::Event::KeyPressed:
-                    switch(event.key.code){
-                        case sf::Keyboard::Right:
-                            shape.move(10,0);
-                            break;
-                        case sf::Keyboard::Left:
-                            shape.move(-10,0);
-                            break;
-						case sf::Keyboard::Up:
-							shape.move(0, -10);
-							break;
-						case sf::Keyboard::Down:
-							shape.move(0, 10);
-							break;
-						case sf::Keyboard::Escape:
-							window.close();
-							break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color::White);
 
         // Dessin
 
 
-        window.draw(shape);
+        window.draw(bg_sprite);
+        window.draw(ground_sprite);
+        window.draw(cloud_sprite);
+        window.draw(cloud2_sprite);
         window.draw(text);
+        window.draw(superteacher);
 
 
 

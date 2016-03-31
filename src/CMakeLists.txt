@@ -14,6 +14,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 add_executable(superteacher
         main.cpp
         Path.cpp
+        RessourceManager.cpp
+        HIManager.cpp
 )
 
 target_link_libraries(superteacher ${SFML_LIBRARIES} ${Boost_LIBRARIES})
