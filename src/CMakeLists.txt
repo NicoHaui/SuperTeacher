@@ -11,10 +11,6 @@ find_package(Boost 1.54 REQUIRED COMPONENTS system filesystem)
 include_directories(${SFML_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
-
-set_property(TARGET superteacher PROPERTY CXX_STANDARD 14)
-set_property(TARGET superteacher PROPERTY CXX_STANDARD_REQUIRED ON)
-
 add_executable(superteacher
         main.cpp
         Path.cpp
@@ -24,3 +20,6 @@ add_executable(superteacher
 
 target_link_libraries(superteacher ${SFML_LIBRARIES} ${Boost_LIBRARIES})
 install(TARGETS superteacher RUNTIME DESTINATION bin)
+
+set_property(TARGET superteacher PROPERTY CXX_STANDARD 14)
+set_property(TARGET superteacher PROPERTY CXX_STANDARD_REQUIRED ON)
