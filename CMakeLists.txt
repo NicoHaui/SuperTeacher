@@ -6,8 +6,8 @@
 
 project(SuperTeacher)
 
-# CMake >3.0 must be used
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+# CMake >3.1 must be used, (for c++14)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 # We use optional Cmake functionality:
 #   - CTest: Automatically call all unit test binary with a single ctest
