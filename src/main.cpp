@@ -10,10 +10,12 @@
 
 using namespace std;
 
+static uint32_t SCREEN_SIZE[2] = {1920, 1080};
+
 int main(int argc, char *argv[]) {
 
     sf::RenderWindow window(
-            sf::VideoMode(800, 600), "SuperTeacher"
+            sf::VideoMode(SCREEN_SIZE[0], SCREEN_SIZE[1]), "SuperTeacher"
     );
 
     window.setFramerateLimit(50);
@@ -43,7 +45,7 @@ int main(int argc, char *argv[]) {
 
     sf::Sprite bg_sprite;
     bg_sprite.setTexture(*bg_texture);
-    bg_sprite.setTextureRect(sf::IntRect(0,0,800,600));
+    bg_sprite.setTextureRect(sf::IntRect(0,0,1920,1080));
 
     auto cloud_texture = resource.get_texture("graphics/tests/Items/cloud3.png");
     sf::Sprite cloud_sprite;
@@ -60,14 +62,14 @@ int main(int argc, char *argv[]) {
 
     sf::Sprite ground_sprite;
     ground_sprite.setTexture(ground_texture);
-    ground_sprite.setTextureRect(sf::IntRect(0, 0, 800, 70));
-    ground_sprite.move(0,530);
+    ground_sprite.setTextureRect(sf::IntRect(0, 0, 1920, 70));
+    ground_sprite.move(0,1010);
 
     auto superteacher_texture = resource.get_texture("graphics/characters/superteacher.png");
 
     sf::Sprite superteacher;
     superteacher.setTexture(*superteacher_texture);
-    superteacher.move(0,168);
+    superteacher.move(0,650);
 
     user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
         switch(event) {
