@@ -6,15 +6,22 @@
 
 project(SuperTeacher)
 
-# CMake >3.0 must be used
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+# CMake >3.1 must be used, (for c++14)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
+# We use optional Cmake functionality:
+#   - CTest: Automatically call all unit test binary with a single ctest
+#            command
+#   - ExternalProject: Automatically download some small dependancie,
+#                      like Google Test Framework
 include( CTest )
 include ( ExternalProject )
 
-# Custom cmake module in ./cmake/
+
+# We put custom CMake Module in ./cmake/
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SuperTeacher_SOURCE_DIR}/cmake")
 
+# Todo: Remove set BIN_DIR
 # Binary in ./bin
 set(BIN_DIR ${SuperTeacher_SOURCE_DIR}/bin)
 
@@ -39,6 +46,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 endif()
 
+# Pass some info to our source code, by defining them
 add_definitions(-D_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 add_definitions(-D_SRC_DIR="${CMAKE_SOURCE_DIR}")
 
@@ -50,6 +58,7 @@ endif()
 add_subdirectory(src)
 add_subdirectory(tests)
 
+# Add static file
 add_subdirectory(assets)
 
 # Installer config

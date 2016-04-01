@@ -13,10 +13,13 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 add_executable(superteacher
         main.cpp
-        MainWindow.cpp
         Path.cpp
+        RessourceManager.cpp
+        HIManager.cpp
 )
 
 target_link_libraries(superteacher ${SFML_LIBRARIES} ${Boost_LIBRARIES})
 install(TARGETS superteacher RUNTIME DESTINATION bin)
+
 set_property(TARGET superteacher PROPERTY CXX_STANDARD 14)
+set_property(TARGET superteacher PROPERTY CXX_STANDARD_REQUIRED ON)
