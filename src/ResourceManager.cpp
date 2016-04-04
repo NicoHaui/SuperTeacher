@@ -2,9 +2,11 @@
 // Created by samuel on 31.03.16.
 //
 
-#include "RessourceManager.h"
+#include "ResourceManager.h"
 
+#include <fstream>
 #include "Path.h"
+
 
 using namespace std;
 
@@ -33,4 +35,12 @@ std::shared_ptr<sf::Font> ResourceManager::get_font(std::string id) {
     }
 
     return font;
+}
+
+std::shared_ptr<const json> ResourceManager::get_json(std::string id){
+    auto object = make_shared<json>();
+    std::ifstream ifs(get_file(id));
+    ifs >> *object;
+
+    return object;
 }

@@ -3,6 +3,7 @@
 #include <memory>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "JSON.h"
 
 /**
  * # Ressource Manager
@@ -24,4 +25,5 @@ public:
      */
     std::shared_ptr<sf::Texture> get_texture(std::string id);
     std::shared_ptr<sf::Font> get_font(std::string id);
+    std::shared_ptr<const json> get_json(std::string id);
 };

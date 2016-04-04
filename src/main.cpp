@@ -3,24 +3,44 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Constants.h"
 #include "Path.h"
 #include "AbstractView.h"
-#include "RessourceManager.h"
+#include "ResourceManager.h"
 #include "HIManager.h"
+#include "Logs.h"
 
 using namespace std;
 
-static uint32_t SCREEN_SIZE[2] = {1920, 1080};
 
 int main(int argc, char *argv[]) {
 
+    log_init();
+
+    LOG(info)  << "Superteacher is starting";
+    LOG(debug) << "SRC Directory: " << _SRC_DIR;
+    LOG(debug) << "Install Prefix: " << _INSTALL_PREFIX;
+
+    LOG(info) << "Opening window";
+    LOG(debug) << "Window size: " << SCREEN_X_PXSIZE << "x" << SCREEN_Y_PXSIZE;
+
+    ResourceManager resource = {};
+    auto config = resource.get_json("conf.json");
+    auto style = sf::Style::Default;
+
+    if((bool)(*config)["video"]["fullscreen"]){
+        style = sf::Style::Fullscreen;
+    }
+
     sf::RenderWindow window(
-            sf::VideoMode(SCREEN_SIZE[0], SCREEN_SIZE[1]), "SuperTeacher"
+            sf::VideoMode(SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE),
+            "SuperTeacher",
+            style
     );
 
     window.setFramerateLimit(50);
     HIManager user_input = {&window};
-    ResourceManager resource = {};
+
 
     user_input.HIEvent_sig.connect([&window](HIEvent event)->void{
         switch(event) {
@@ -32,15 +52,15 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    cout << "SRC:" << _SRC_DIR << endl;
 
+    auto level = resource.get_json("levels/level.json");
     auto font = resource.get_font(FONT_INDIE_FLOWER);
     auto song = resource.get_music(SONG_1);
 
     sf::Text text("Hello SuperTeacher", *font, 50);
     text.move(25,25);
-
-    auto bg_texture = resource.get_texture("graphics/tests/bg.png");
+    const std::string bg = (*level)["background"];
+    auto bg_texture = resource.get_texture("graphics/backgrounds/" + bg + ".png");
     bg_texture->setRepeated(true);
 
     sf::Sprite bg_sprite;
@@ -56,20 +76,27 @@ int main(int argc, char *argv[]) {
     cloud2_sprite.setTexture(*cloud_texture);
     cloud2_sprite.move(400,175);
 
-    sf::Texture ground_texture;
-    ground_texture.loadFromFile(get_file("graphics/tests/Tiles/grassMid.png"));
-    ground_texture.setRepeated(true);
-
+    std::string gr_name = (*level)["ground"]["name"];
+    auto ground_texture = resource.get_texture("graphics/grounds/" + gr_name + "/top.png");
+    ground_texture->setRepeated(true);
     sf::Sprite ground_sprite;
-    ground_sprite.setTexture(ground_texture);
-    ground_sprite.setTextureRect(sf::IntRect(0, 0, 1920, 70));
-    ground_sprite.move(0,1010);
+    ground_sprite.setTexture(*ground_texture);
+    ground_sprite.setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE));
+    ground_sprite.move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] )));
+
+    auto ground_fill_texture = resource.get_texture("graphics/grounds/" + gr_name + "/fill.png");
+    ground_fill_texture->setRepeated(true);
+    sf::Sprite ground_fill_sprite;
+    ground_fill_sprite.setTexture(*ground_fill_texture);
+    ground_fill_sprite.setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE*(SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] ) - 1));
+    ground_fill_sprite.move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] - 1 )));
+
 
     auto superteacher_texture = resource.get_texture("graphics/characters/superteacher.png");
 
     sf::Sprite superteacher;
     superteacher.setTexture(*superteacher_texture);
-    superteacher.move(0,650);
+    superteacher.move(0,720 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] )));
 
     user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
         switch(event) {
@@ -83,8 +110,6 @@ int main(int argc, char *argv[]) {
             }
     });
 
-    cout << "SuperTeaching is starting..." << endl;
-
     song->play();
     while(window.isOpen()){
 
@@ -97,6 +122,7 @@ int main(int argc, char *argv[]) {
 
         window.draw(bg_sprite);
         window.draw(ground_sprite);
+        window.draw(ground_fill_sprite);
         window.draw(cloud_sprite);
         window.draw(cloud2_sprite);
         window.draw(text);
@@ -108,6 +134,6 @@ int main(int argc, char *argv[]) {
     }
 
 
-    fprintf(stdout, "Window is closing\n");
+    LOG(info) << "Good bye, end of main process";
     return 0;
 }

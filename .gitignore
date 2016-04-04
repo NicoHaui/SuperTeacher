@@ -1,5 +1,6 @@
 docs/build/
 bin/
 build/
+Deps/
 .idea/
 .DS_Store
