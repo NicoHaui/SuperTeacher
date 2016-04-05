@@ -19,9 +19,6 @@ void HIManager::process(void) {
                         case sf::Keyboard::Right:
                             HIEvent_sig(HIEvent::GO_RIGHT);
                             break;
-                        case sf::Keyboard::Left:
-                            HIEvent_sig(HIEvent::GO_LEFT);
-                            break;
 						case sf::Keyboard::Escape:
                             HIEvent_sig(HIEvent::CLOSE);
 							break;
@@ -33,5 +30,24 @@ void HIManager::process(void) {
                     break;
             }
         }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			HIEvent_sig(HIEvent::GO_LEFT);
+		};
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			HIEvent_sig(HIEvent::GO_RIGHT);
+		};
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			HIEvent_sig(HIEvent::GO_UP);
+		};
+	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			HIEvent_sig(HIEvent::GO_DOWN);
+		};
 }
+
