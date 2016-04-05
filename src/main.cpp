@@ -105,6 +105,13 @@ int main(int argc, char *argv[]) {
                 break;
             case HIEvent::GO_RIGHT:
                 superteacher.move(10,0);
+				break;
+			case HIEvent::GO_UP:
+				superteacher.move(0, -10);
+				break;
+			case HIEvent::GO_DOWN:
+				superteacher.move(0, 10);
+				break;
             default:
                 break;
             }
