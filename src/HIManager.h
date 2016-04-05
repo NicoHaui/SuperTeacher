@@ -16,8 +16,10 @@
  * This enum represent all human interface event suported by SuperTeacher.
  */
 enum class HIEvent {
-    GO_LEFT,
+	GO_LEFT,
     GO_RIGHT,
+	GO_UP,
+	GO_DOWN,
     CLOSE,
 };
 
