@@ -1,9 +1,12 @@
 #pragma once
 
+#include <string>
 #include <memory>
+#include <unordered_map>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "JSON.h"
+
 
 /**
  * # Ressource Manager
@@ -23,7 +26,11 @@ public:
     /**
      * Get a sf::Texture from an image file
      */
-    std::shared_ptr<sf::Texture> get_texture(std::string id);
-    std::shared_ptr<sf::Font> get_font(std::string id);
+    std::shared_ptr<sf::Texture> get_texture(std::string key);
+    std::shared_ptr<const sf::Font> get_font(std::string id);
     std::shared_ptr<const json> get_json(std::string id);
+private:
+    std::unordered_map<std::string, std::shared_ptr<const json>> m_json_cache;
+    std::unordered_map<std::string, std::shared_ptr<sf::Texture>> m_texture_cache;
+    std::unordered_map<std::string, std::shared_ptr<const sf::Font>> m_font_cache;
 };
