@@ -101,16 +101,16 @@ int main(int argc, char *argv[]) {
     user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
         switch(event) {
             case HIEvent::GO_LEFT:
-                superteacher.move(-10,0);
+                superteacher.move(-5,0);
                 break;
             case HIEvent::GO_RIGHT:
-                superteacher.move(10,0);
+                superteacher.move(5,0);
 				break;
 			case HIEvent::GO_UP:
-				superteacher.move(0, -10);
+				superteacher.move(0, -5);
 				break;
 			case HIEvent::GO_DOWN:
-				superteacher.move(0, 10);
+				superteacher.move(0, 5);
 				break;
             default:
                 break;
