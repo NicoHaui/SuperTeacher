@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
     }
-
+    
     std::array<std::array<int, 18>,32> ColisionDetect = {};
     const int SOLID = 1;
     sf::RenderWindow window(
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
     auto level = resource.get_json("levels/level.json");
     auto font = resource.get_font(FONT_INDIE_FLOWER);
     auto song = resource.get_music(SONG_1);
+    int ground_level = (*level)["ground"]["level"];
 
     sf::Text text("Hello SuperTeacher", *font, 50);
     text.move(25,25);
@@ -73,12 +74,20 @@ int main(int argc, char *argv[]) {
     sf::Sprite cloud_sprite;
     cloud_sprite.setTexture(*cloud_texture);
     cloud_sprite.move(200,200);
+    
+    auto cactus_texture = resource.get_texture("graphics/tests/Items/cactus.png");
+    sf::Sprite cactus_sprite;
+    cactus_sprite.setTexture(*cactus_texture);
+    cactus_sprite.setScale(4,2);
+    cactus_sprite.setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 3,BLOCK_PXSIZE * 3));
+
+    cactus_sprite.move(500, (ground_level - 6) * BLOCK_PXSIZE);
+    
 
     sf::Sprite cloud2_sprite;
     cloud2_sprite.setTexture(*cloud_texture);
     cloud2_sprite.move(400,175);
 
-    int ground_level = (*level)["ground"]["level"];
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
             ColisionDetect[x][y] = SOLID;
@@ -126,6 +135,11 @@ int main(int argc, char *argv[]) {
                     superteacher.move(0, 5);
                 }
 				break;
+            case HIEvent::JUMP:
+                
+                superteacher.move(10, -5);
+            
+                break;
             default:
                 break;
         }
@@ -149,6 +163,8 @@ int main(int argc, char *argv[]) {
         window.draw(cloud2_sprite);
         window.draw(text);
         window.draw(superteacher);
+        window.draw(cactus_sprite);
+
 
 
 
