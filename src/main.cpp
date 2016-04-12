@@ -32,6 +32,8 @@ int main(int argc, char *argv[]) {
         style = sf::Style::Fullscreen;
     }
 
+    std::array<std::array<int, 18>,32> ColisionDetect = {};
+    const int SOLID = 1;
     sf::RenderWindow window(
             sf::VideoMode(SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE),
             "SuperTeacher",
@@ -76,6 +78,13 @@ int main(int argc, char *argv[]) {
     cloud2_sprite.setTexture(*cloud_texture);
     cloud2_sprite.move(400,175);
 
+    int ground_level = (*level)["ground"]["level"];
+    for (int y = 17;  y >= ground_level; y--) {
+        for (int x = 0; x < 32; x++) {
+            ColisionDetect[x][y] = SOLID;
+        }
+    }
+    
     std::string gr_name = (*level)["ground"]["name"];
     auto ground_texture = resource.get_texture("graphics/grounds/" + gr_name + "/top.png");
     ground_texture->setRepeated(true);
@@ -96,9 +105,11 @@ int main(int argc, char *argv[]) {
 
     sf::Sprite superteacher;
     superteacher.setTexture(*superteacher_texture);
-    superteacher.move(0,720 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] )));
+    const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
+    superteacher.move(0,MINLEVEL );
 
-    user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL](HIEvent event)->void{
+        float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
                 superteacher.move(-5,0);
@@ -110,11 +121,15 @@ int main(int argc, char *argv[]) {
 				superteacher.move(0, -5);
 				break;
 			case HIEvent::GO_DOWN:
-				superteacher.move(0, 5);
+                y = superteacher.getPosition().y;
+                if(y < MINLEVEL ){
+                    superteacher.move(0, 5);
+                }
 				break;
             default:
                 break;
-            }
+        }
+        
     });
 
     song->play();
