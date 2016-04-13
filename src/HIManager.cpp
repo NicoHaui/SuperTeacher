@@ -49,5 +49,9 @@ void HIManager::process(void) {
 		{
 			HIEvent_sig(HIEvent::GO_DOWN);
 		};
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+        {
+            HIEvent_sig(HIEvent::JUMP);
+        };
 }
 
