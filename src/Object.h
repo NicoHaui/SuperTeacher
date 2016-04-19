@@ -1,21 +1,16 @@
+#pragma once
 #include <utility>
 #include <memory>
+#include <vector>
 #include <SFML/Graphics.hpp>
+#include "ResourceManager.h"
 
 
 class Object {
-    virtual bool is_visible(void);
-    virtual bool is_physical(void);
-    virtual bool is_interactive(void);
-
-    virtual bool can_move(void);
-
-    virtual std::tuple<int, int, int, int> get_position(void);
-    virtual std::tuple<int, int> get_speed(void);
-    virtual std::tuple<int, int> get_acceleration(void);
-    virtual int get_weight(void);
-
-    virtual int get_plan(void);
-
-    virtual std::shared_ptr<sf::Drawable> get_screen_object(void);
+public:
+    void add_drawable(std::shared_ptr<sf::Drawable> drawable);
+    std::vector<std::shared_ptr<sf::Drawable>> get_drawables(void);
+private:
+	std::vector<std::shared_ptr<sf::Drawable>> m_drawable;
+	
 };
