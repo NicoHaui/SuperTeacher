@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 	Object ground = {};
 	Object back_ground = {};
 	Object people = {};
-	Object text_fp = {};
+	Object front_print = {};
 
     auto level = resource.get_json("levels/level.json");
     auto font = resource.get_font(FONT_INDIE_FLOWER);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     const std::string bg = (*level)["background"];
     auto bg_texture = resource.get_texture("graphics/backgrounds/" + bg + ".png");
     bg_texture->setRepeated(true);
-	text_fp.add_drawable(text);
+	front_print.add_drawable(text);
     auto bg_sprite = make_shared<sf::Sprite>();
     bg_sprite->setTexture(*bg_texture);
     bg_sprite->setTextureRect(sf::IntRect(0,0,1920,1080));
@@ -82,13 +82,13 @@ int main(int argc, char *argv[]) {
     cloud_sprite->move(200,200);
     
     auto cactus_texture = resource.get_texture("graphics/tests/Items/cactus.png");
-    sf::Sprite cactus_sprite;
-    cactus_sprite.setTexture(*cactus_texture);
-    cactus_sprite.setScale(4,2);
-    cactus_sprite.setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 3,BLOCK_PXSIZE * 3));
+    auto cactus_sprite = make_shared<sf::Sprite>();
+    cactus_sprite->setTexture(*cactus_texture);
+    cactus_sprite->setScale(4,2);
+    cactus_sprite->setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 3,BLOCK_PXSIZE * 3));
 
-    cactus_sprite.move(500, (ground_level - 6) * BLOCK_PXSIZE);
-    
+    cactus_sprite->move(500, (ground_level - 6) * BLOCK_PXSIZE);
+	front_print.add_drawable(cactus_sprite);
 
     auto cloud2_sprite = make_shared<sf::Sprite>();
     cloud2_sprite->setTexture(*cloud_texture);
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
     auto superteacher = make_shared<sf::Sprite>();
     superteacher->setTexture(*superteacher_texture);
     const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
-    superteacher.move(0,MINLEVEL );
+    superteacher->move(0,MINLEVEL );
 
     people.add_drawable(superteacher);
 
@@ -146,14 +146,14 @@ int main(int argc, char *argv[]) {
 				superteacher->move(0, -5);
 				break;
 			case HIEvent::GO_DOWN:
-                y = superteacher.getPosition().y;
+                y = superteacher->getPosition().y;
                 if(y < MINLEVEL ){
-                    superteacher.move(0, 5);
+                    superteacher->move(0, 5);
                 }
 				break;
             case HIEvent::JUMP:
                 
-                superteacher.move(10, -5);
+                superteacher->move(10, -5);
             
                 break;
             default:
@@ -172,7 +172,6 @@ int main(int argc, char *argv[]) {
         // Dessin
 
 
-        //window.draw(bg_sprite);
 		for (auto n : back_ground.get_drawables())
 		{
 			window.draw(*n);
@@ -185,16 +184,10 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
-		for (auto n : text_fp.get_drawables())
+		for (auto n : front_print.get_drawables())
 		{
 			window.draw(*n);
 		}
-        //window.draw(ground_fill_sprite);
-        //window.draw(cloud_sprite);
-        //window.draw(cloud2_sprite);
-        //window.draw(text);
-        //window.draw(superteacher);
-        window.draw(cactus_sprite);
 
         window.display();
     }

@@ -5,9 +5,9 @@
 #include "Object.h"
 
 
-void Object::add_drawable(std::shared_ptr<sf::Drawable> sprite)
+void Object::add_drawable(std::shared_ptr<sf::Drawable> drawable)
 {
-	m_drawable.push_back(sprite);
+	m_drawable.push_back(drawable);
 }
 
 std::vector<std::shared_ptr<sf::Drawable>> Object::get_drawables(void)
