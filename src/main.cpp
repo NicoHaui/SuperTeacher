@@ -33,7 +33,9 @@ int main(int argc, char *argv[]) {
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
     }
-
+    
+    std::array<std::array<int, 18>,32> ColisionDetect = {};
+    const int SOLID = 1;
     sf::RenderWindow window(
             sf::VideoMode(SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE),
             "SuperTeacher",
@@ -62,6 +64,7 @@ int main(int argc, char *argv[]) {
     auto level = resource.get_json("levels/level.json");
     auto font = resource.get_font(FONT_INDIE_FLOWER);
     auto song = resource.get_music(SONG_1);
+    int ground_level = (*level)["ground"]["level"];
 
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
@@ -77,6 +80,15 @@ int main(int argc, char *argv[]) {
     auto cloud_sprite = make_shared<sf::Sprite>();
     cloud_sprite->setTexture(*cloud_texture);
     cloud_sprite->move(200,200);
+    
+    auto cactus_texture = resource.get_texture("graphics/tests/Items/cactus.png");
+    sf::Sprite cactus_sprite;
+    cactus_sprite.setTexture(*cactus_texture);
+    cactus_sprite.setScale(4,2);
+    cactus_sprite.setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 3,BLOCK_PXSIZE * 3));
+
+    cactus_sprite.move(500, (ground_level - 6) * BLOCK_PXSIZE);
+    
 
     auto cloud2_sprite = make_shared<sf::Sprite>();
     cloud2_sprite->setTexture(*cloud_texture);
@@ -86,6 +98,12 @@ int main(int argc, char *argv[]) {
 	back_ground.add_drawable(cloud_sprite);
 	back_ground.add_drawable(cloud2_sprite);
 
+    for (int y = 17;  y >= ground_level; y--) {
+        for (int x = 0; x < 32; x++) {
+            ColisionDetect[x][y] = SOLID;
+        }
+    }
+    
     std::string gr_name = (*level)["ground"]["name"];
     auto ground_texture = resource.get_texture("graphics/grounds/" + gr_name + "/top.png");
     ground_texture->setRepeated(true);
@@ -110,11 +128,13 @@ int main(int argc, char *argv[]) {
 
     auto superteacher = make_shared<sf::Sprite>();
     superteacher->setTexture(*superteacher_texture);
-    superteacher->move(0,720 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] )));
+    const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
+    superteacher.move(0,MINLEVEL );
 
-	people.add_drawable(superteacher);
+    people.add_drawable(superteacher);
 
-    user_input.HIEvent_sig.connect([&superteacher](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL](HIEvent event)->void{
+        float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
                 superteacher->move(-5,0);
@@ -126,11 +146,20 @@ int main(int argc, char *argv[]) {
 				superteacher->move(0, -5);
 				break;
 			case HIEvent::GO_DOWN:
-				superteacher->move(0, 5);
+                y = superteacher.getPosition().y;
+                if(y < MINLEVEL ){
+                    superteacher.move(0, 5);
+                }
 				break;
+            case HIEvent::JUMP:
+                
+                superteacher.move(10, -5);
+            
+                break;
             default:
                 break;
-            }
+        }
+        
     });
 
     song->play();
@@ -165,8 +194,7 @@ int main(int argc, char *argv[]) {
         //window.draw(cloud2_sprite);
         //window.draw(text);
         //window.draw(superteacher);
-
-
+        window.draw(cactus_sprite);
 
         window.display();
     }

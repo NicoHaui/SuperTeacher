@@ -1,7 +1,7 @@
 {
   "background" : "blueskye",
   "ground" : {
-    "level" : 10,
+    "level" : 15,
     "name" : "grass"
   }
 }
