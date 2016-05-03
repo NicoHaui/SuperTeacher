@@ -12,6 +12,8 @@
 #include "HIManager.h"
 #include "Logs.h"
 #include "Object.h"
+#include "Background.h"
+#include "Physics.h"
 
 using namespace std;
 
@@ -27,8 +29,8 @@ int main(int argc, char *argv[]) {
     LOG(info) << "Opening window";
     LOG(debug) << "Window size: " << SCREEN_X_PXSIZE << "x" << SCREEN_Y_PXSIZE;
 
-    ResourceManager resource = {};
-    auto config = resource.get_json("conf.json");
+    auto resource = make_shared<ResourceManager>();
+    auto config = resource->get_json("conf.json");
     auto style = sf::Style::Default;
 
     if((bool)(*config)["video"]["fullscreen"]){
@@ -57,36 +59,34 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    
-    
-   
-    
 	Object ground = {};
-	Object back_ground = {};
 	Object people = {};
 	Object front_print = {};
+    Background background(resource, "level");
+	int levelJump = 0;
 
-    auto level = resource.get_json("levels/level.json");
-    auto font = resource.get_font(FONT_INDIE_FLOWER);
-    auto song = resource.get_music(SONG_1);
+    auto level = resource->get_json("levels/level.json");
+    auto font = resource->get_font(FONT_INDIE_FLOWER);
+    auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
 
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
-    const std::string bg = (*level)["background"];
-    auto bg_texture = resource.get_texture("graphics/backgrounds/" + bg + ".png");
-    bg_texture->setRepeated(true);
-	front_print.add_drawable(text);
-    auto bg_sprite = make_shared<sf::Sprite>();
-    bg_sprite->setTexture(*bg_texture);
-    bg_sprite->setTextureRect(sf::IntRect(0,0,1920,1080));
 
-    auto cloud_texture = resource.get_texture("graphics/tests/Items/cloud3.png");
+    const json bg_map = (*level)["background"];
+
+
+	std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
+	high_jump->move(900, 25);
+	front_print.add_drawable(text);
+	front_print.add_drawable(high_jump);
+
+    auto cloud_texture = resource->get_texture("graphics/tests/Items/cloud3.png");
     auto cloud_sprite = make_shared<sf::Sprite>();
     cloud_sprite->setTexture(*cloud_texture);
     cloud_sprite->move(200,200);
-    
-    auto cactus_texture = resource.get_texture("graphics/tests/Items/cactus.png");
+
+    auto cactus_texture = resource->get_texture("graphics/tests/Items/cactus.png");
     auto cactus_sprite = make_shared<sf::Sprite>();
     cactus_sprite->setTexture(*cactus_texture);
     cactus_sprite->setScale(4,2);
@@ -99,10 +99,6 @@ int main(int argc, char *argv[]) {
     cloud2_sprite->setTexture(*cloud_texture);
     cloud2_sprite->move(400,175);
 
-	back_ground.add_drawable(bg_sprite);
-	back_ground.add_drawable(cloud_sprite);
-	back_ground.add_drawable(cloud2_sprite);
-
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
             ColisionDetect[x][y] = SOLID;
@@ -110,7 +106,7 @@ int main(int argc, char *argv[]) {
     }
     
     std::string gr_name = (*level)["ground"]["name"];
-    auto ground_texture = resource.get_texture("graphics/grounds/" + gr_name + "/top.png");
+    auto ground_texture = resource->get_texture("graphics/grounds/" + gr_name + "/top.png");
     ground_texture->setRepeated(true);
     auto ground_sprite = make_shared<sf::Sprite>();
     ground_sprite->setTexture(*ground_texture);
@@ -119,7 +115,7 @@ int main(int argc, char *argv[]) {
 
 	ground.add_drawable(ground_sprite);
 
-    auto ground_fill_texture = resource.get_texture("graphics/grounds/" + gr_name + "/fill.png");
+    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + "/fill.png");
     ground_fill_texture->setRepeated(true);
     auto ground_fill_sprite = make_shared<sf::Sprite>();
     ground_fill_sprite->setTexture(*ground_fill_texture);
@@ -129,7 +125,7 @@ int main(int argc, char *argv[]) {
 	ground.add_drawable(ground_fill_sprite);
 	
 
-    auto superteacher_texture = resource.get_texture("graphics/characters/superteacher.png");
+    auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
 
     auto superteacher = make_shared<sf::Sprite>();
     superteacher->setTexture(*superteacher_texture);
@@ -138,29 +134,27 @@ int main(int argc, char *argv[]) {
 
     people.add_drawable(superteacher);
 
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump](HIEvent event)->void{
         float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
-                superteacher->move(-5,0);
+					superteacher->move(-5, 0);
                 break;
             case HIEvent::GO_RIGHT:
-                superteacher->move(5,0);
+					superteacher->move(5,0);
 				break;
 			case HIEvent::GO_UP:
-				superteacher->move(0, -5);
+				levelJump++;
 				break;
 			case HIEvent::GO_DOWN:
-                y = superteacher->getPosition().y;
-                if(y < MINLEVEL ){
-                    superteacher->move(0, 5);
-                }
+				levelJump--;
 				break;
             case HIEvent::JUMP:
-                
-                superteacher->move(10, -5);
+				jump_manager(superteacher, MINLEVEL, -levelJump);
             
                 break;
+			case HIEvent::DEFAULT:
+				break;
             default:
                 break;
         }
@@ -172,13 +166,14 @@ int main(int argc, char *argv[]) {
     while(window.isOpen()){
 
         user_input.process();
-
         window.clear(sf::Color::White);
+		jump_manager(superteacher, MINLEVEL,0);
 
+		high_jump->setString("Jump level " + to_string(levelJump));
         // Dessin
 
 
-		for (auto n : back_ground.get_drawables())
+		for (auto n : background.get_drawables())
 		{
 			window.draw(*n);
 		}
