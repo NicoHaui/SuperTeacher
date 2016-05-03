@@ -2,9 +2,16 @@
 
 #include <array>
 #include <bitset>
+#include <time.h>
+#include <SFML/Graphics.hpp>
 
 #include "Constants.h"
+#include "HIManager.h"
+#include "Logs.h"
 
+
+
+void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit);
 class Physics {
 public:
     // add_
