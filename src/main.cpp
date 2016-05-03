@@ -12,6 +12,7 @@
 #include "HIManager.h"
 #include "Logs.h"
 #include "Object.h"
+#include "Physics.h"
 
 using namespace std;
 
@@ -65,6 +66,7 @@ int main(int argc, char *argv[]) {
 	Object back_ground = {};
 	Object people = {};
 	Object front_print = {};
+	int levelJump = 0;
 
     auto level = resource.get_json("levels/level.json");
     auto font = resource.get_font(FONT_INDIE_FLOWER);
@@ -73,10 +75,13 @@ int main(int argc, char *argv[]) {
 
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
+	std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
+	high_jump->move(900, 25);
     const std::string bg = (*level)["background"];
     auto bg_texture = resource.get_texture("graphics/backgrounds/" + bg + ".png");
     bg_texture->setRepeated(true);
 	front_print.add_drawable(text);
+	front_print.add_drawable(high_jump);
     auto bg_sprite = make_shared<sf::Sprite>();
     bg_sprite->setTexture(*bg_texture);
     bg_sprite->setTextureRect(sf::IntRect(0,0,1920,1080));
@@ -138,29 +143,27 @@ int main(int argc, char *argv[]) {
 
     people.add_drawable(superteacher);
 
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump](HIEvent event)->void{
         float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
-                superteacher->move(-5,0);
+					superteacher->move(-5, 0);
                 break;
             case HIEvent::GO_RIGHT:
-                superteacher->move(5,0);
+					superteacher->move(5,0);
 				break;
 			case HIEvent::GO_UP:
-				superteacher->move(0, -5);
+				levelJump++;
 				break;
 			case HIEvent::GO_DOWN:
-                y = superteacher->getPosition().y;
-                if(y < MINLEVEL ){
-                    superteacher->move(0, 5);
-                }
+				levelJump--;
 				break;
             case HIEvent::JUMP:
-                
-                superteacher->move(10, -5);
+				jump_manager(superteacher, MINLEVEL, -levelJump);
             
                 break;
+			case HIEvent::DEFAULT:
+				break;
             default:
                 break;
         }
@@ -172,9 +175,10 @@ int main(int argc, char *argv[]) {
     while(window.isOpen()){
 
         user_input.process();
-
         window.clear(sf::Color::White);
+		jump_manager(superteacher, MINLEVEL,0);
 
+		high_jump->setString("Jump level " + to_string(levelJump));
         // Dessin
 
 

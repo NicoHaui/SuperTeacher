@@ -18,11 +18,12 @@
  */
 enum class HIEvent {
 	GO_LEFT,
-    GO_RIGHT,
+	GO_RIGHT,
 	GO_UP,
 	GO_DOWN,
-    JUMP,
-    CLOSE,
+	JUMP,
+	CLOSE,
+	DEFAULT
 };
 
 /**
