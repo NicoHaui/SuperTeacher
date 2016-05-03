@@ -68,7 +68,8 @@ int main(int argc, char *argv[]) {
 
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
-    const std::string bg = (*level)["background"];
+    const json bg_map = (*level)["background"];
+    const std::string bg = (*level)["background"]["fill"];
     auto bg_texture = resource.get_texture("graphics/backgrounds/" + bg + ".png");
     bg_texture->setRepeated(true);
 	front_print.add_drawable(text);

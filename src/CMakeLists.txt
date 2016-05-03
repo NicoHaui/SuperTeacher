@@ -35,6 +35,7 @@ add_executable(superteacher
         HIManager.cpp HIManager.h
         Physics.cpp Physics.h
         Object.cpp Object.h
+        Background.cpp Background.h
         Logs.cpp Logs.h
         JSON.h)
 

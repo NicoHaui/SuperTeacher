@@ -1,7 +1,13 @@
 {
-  "background" : "blueskye",
-  "ground" : {
-    "level" : 15,
-    "name" : "grass"
-  }
+    "background" : {
+        "fill": "blueskye",
+        "objects": [
+            {"x": 100, "y": 20, "width":2, "height":2, "image": "fenster"},
+            {"x": 200, "y": 20, "width":2, "height":2, "image": "fenster"}
+        ]
+    },
+    "ground" : {
+        "level" : 15,
+        "name" : "grass"
+    }
 }
