@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <time.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -56,6 +57,10 @@ int main(int argc, char *argv[]) {
         }
     });
 
+    
+    
+   
+    
 	Object ground = {};
 	Object back_ground = {};
 	Object people = {};
@@ -162,6 +167,7 @@ int main(int argc, char *argv[]) {
         }
         
     });
+    
 
     song->play();
     while(window.isOpen()){
@@ -192,7 +198,6 @@ int main(int argc, char *argv[]) {
 
         window.display();
     }
-
 
     LOG(info) << "Good bye, end of main process";
     return 0;

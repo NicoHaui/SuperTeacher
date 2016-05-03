@@ -12,6 +12,7 @@
 #include <boost/signals2.hpp>
 #include <SFML/Window.hpp>
 
+
 /**
  * This enum represent all human interface event suported by SuperTeacher.
  */
