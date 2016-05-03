@@ -1,7 +1,13 @@
 {
-  "background" : "Font",
-  "ground" : {
-    "level" : 15,
-    "name" : "grass"
-  }
+    "background" : {
+        "fill": "background",
+        "objects": [
+            {"x": 1, "y": 20, "image": "backgrounds/window"},
+            {"x": 20, "y": 20, "height":2, "image": "backgrounds/window"}
+        ]
+    },
+    "ground" : {
+        "level" : 15,
+        "name" : "grass"
+    }
 }

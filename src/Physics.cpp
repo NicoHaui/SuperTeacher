@@ -4,6 +4,7 @@
 
 #include "Physics.h"
 
+#include <cmath>
 
 void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit)
 {
@@ -20,7 +21,7 @@ void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vit
 	}
 
 	time_jump[1] = clock();
-	posy = ((float)(time_jump[1] - time_jump[0]+1)/CLOCKS_PER_SEC)*vitesse0*METER + (pow((float)(time_jump[1] - time_jump[0])/CLOCKS_PER_SEC, 2)*GRAVITY)*METER / 2;
+    posy = ((float)(time_jump[1] - time_jump[0]+1)/CLOCKS_PER_SEC)*vitesse0*METER + (std::pow((float)(time_jump[1] - time_jump[0])/CLOCKS_PER_SEC, 2)*GRAVITY)*METER / 2;
 	if ((posy- posy_m_un)+ sprite->getPosition().y >= GroundLevel)
 		posy = GroundLevel-(sprite->getPosition().y-posy_m_un);
 	sprite->move(0, (posy - posy_m_un));
