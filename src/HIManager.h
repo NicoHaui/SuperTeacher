@@ -12,6 +12,7 @@
 #include <boost/signals2.hpp>
 #include <SFML/Window.hpp>
 
+
 /**
  * This enum represent all human interface event suported by SuperTeacher.
  */
@@ -20,6 +21,7 @@ enum class HIEvent {
     GO_RIGHT,
 	GO_UP,
 	GO_DOWN,
+    JUMP,
     CLOSE,
 };
 
