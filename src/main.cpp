@@ -127,15 +127,14 @@ int main(int argc, char *argv[]) {
 	
 
     auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
-
     auto superteacher = make_shared<sf::Sprite>();
     superteacher->setTexture(*superteacher_texture);
     const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     superteacher->move(0,MINLEVEL );
-
+    
     people.add_drawable(superteacher);
 
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource](HIEvent event)->void{
         float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
@@ -152,7 +151,8 @@ int main(int argc, char *argv[]) {
 				break;
             case HIEvent::JUMP:
 				jump_manager(superteacher, MINLEVEL, -levelJump);
-            
+                superteacher_texture = resource->get_texture("graphics/characters/superteachersaut.png");
+                superteacher->setTexture(*superteacher_texture);
                 break;
 			case HIEvent::DEFAULT:
 				break;
@@ -170,6 +170,11 @@ int main(int argc, char *argv[]) {
         window.clear(sf::Color::White);
 		jump_manager(superteacher, MINLEVEL,0);
 
+        if (superteacher->getPosition().y >= MINLEVEL)
+        {
+            superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
+            superteacher->setTexture(*superteacher_texture);
+        }
 		high_jump->setString("Jump level " + to_string(levelJump));
         // Dessin
 
