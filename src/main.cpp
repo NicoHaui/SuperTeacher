@@ -153,6 +153,10 @@ int main(int argc, char *argv[]) {
 				jump_manager(superteacher, MINLEVEL, -levelJump);
                 superteacher_texture = resource->get_texture("graphics/characters/superteachersaut.png");
                 superteacher->setTexture(*superteacher_texture);
+                superteacher->setScale(1.2,1.2);
+                break;
+            case HIEvent::THROW:
+            
                 break;
 			case HIEvent::DEFAULT:
 				break;
@@ -174,6 +178,7 @@ int main(int argc, char *argv[]) {
         {
             superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
             superteacher->setTexture(*superteacher_texture);
+            superteacher->setScale(1,1);
         }
 		high_jump->setString("Jump level " + to_string(levelJump));
         // Dessin
