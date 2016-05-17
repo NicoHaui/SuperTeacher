@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
     Background background(resource, "level");
     int levelJump = 0;
     int counter1 = 0;
-    int n = 0;
     char flag = 0;
     sf::Vector2i source(0,0);
     
@@ -68,7 +67,7 @@ int main(int argc, char *argv[]) {
             style
     );
 
-    window.setFramerateLimit(50);
+    //window.setFramerateLimit(50);
     HIManager user_input = {&window};
 
 
@@ -108,16 +107,9 @@ int main(int argc, char *argv[]) {
     }
     
     std::string gr_name = (*level)["ground"]["name"];
-    auto ground_texture = resource->get_texture("graphics/grounds/" + gr_name + "/fill.png");
-    ground_texture->setRepeated(true);
-    auto ground_sprite = make_shared<sf::Sprite>();
-    ground_sprite->setTexture(*ground_texture);
-    ground_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE));
-    ground_sprite->move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] )));
 
-	ground.add_drawable(ground_sprite);
 
-    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + "/fill.png");
+    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + ".png");
     ground_fill_texture->setRepeated(true);
     auto ground_fill_sprite = make_shared<sf::Sprite>();
     ground_fill_sprite->setTexture(*ground_fill_texture);
@@ -145,9 +137,9 @@ int main(int argc, char *argv[]) {
     animation->move(10,MINLEVEL);
     animation->setScale(0.4, 0.4);
     
+    animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
 
     user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource,&source,&animation,&counter1,&people,&window_sprite,&flag,&animation_texture](HIEvent event)->void{
-        float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
 				animation->move(-5,0);
