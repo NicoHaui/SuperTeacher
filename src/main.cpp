@@ -86,14 +86,15 @@ int main(int argc, char *argv[]) {
     cloud_sprite->setTexture(*cloud_texture);
     cloud_sprite->move(200,200);
 
-    auto cactus_texture = resource->get_texture("graphics/tests/Items/cactus.png");
-    auto cactus_sprite = make_shared<sf::Sprite>();
-    cactus_sprite->setTexture(*cactus_texture);
-    cactus_sprite->setScale(4,2);
-    cactus_sprite->setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 3,BLOCK_PXSIZE * 3));
+    auto window_texture = resource->get_texture("graphics/backgrounds/window.png");
+    auto window_sprite = make_shared<sf::Sprite>();
+    window_sprite->setTexture(*window_texture);
+    window_sprite->setScale(0.6,0.6);
+    window_sprite->setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 9,BLOCK_PXSIZE * 14));
 
-    cactus_sprite->move(500, (ground_level - 6) * BLOCK_PXSIZE);
-	front_print.add_drawable(cactus_sprite);
+    window_sprite->move(500, (ground_level - 12) * BLOCK_PXSIZE);
+	background.add_drawable(window_sprite);
+    
 
     auto cloud2_sprite = make_shared<sf::Sprite>();
     cloud2_sprite->setTexture(*cloud_texture);
@@ -119,15 +120,14 @@ int main(int argc, char *argv[]) {
 	
 
     auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
-
     auto superteacher = make_shared<sf::Sprite>();
     superteacher->setTexture(*superteacher_texture);
     const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     superteacher->move(0,MINLEVEL );
-
+    
     people.add_drawable(superteacher);
 
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource](HIEvent event)->void{
         float y = 0;
         switch(event) {
             case HIEvent::GO_LEFT:
@@ -144,7 +144,8 @@ int main(int argc, char *argv[]) {
 				break;
             case HIEvent::JUMP:
 				jump_manager(superteacher, MINLEVEL, -levelJump);
-            
+                superteacher_texture = resource->get_texture("graphics/characters/superteachersaut.png");
+                superteacher->setTexture(*superteacher_texture);
                 break;
 			case HIEvent::DEFAULT:
 				break;
@@ -162,6 +163,11 @@ int main(int argc, char *argv[]) {
         window.clear(sf::Color::White);
 		jump_manager(superteacher, MINLEVEL,0);
 
+        if (superteacher->getPosition().y >= MINLEVEL)
+        {
+            superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
+            superteacher->setTexture(*superteacher_texture);
+        }
 		high_jump->setString("Jump level " + to_string(levelJump));
         // Dessin
 
