@@ -2,7 +2,6 @@
 
 #include <array>
 #include <bitset>
-#include <time.h>
 #include <SFML/Graphics.hpp>
 
 #include "Constants.h"
