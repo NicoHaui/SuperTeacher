@@ -4,6 +4,10 @@
 
 #include "Object.h"
 
+/*void Object::process_event(HIEvent event)
+{
+    
+}*/
 
 void Object::add_drawable(std::shared_ptr<sf::Drawable> drawable)
 {
