@@ -16,7 +16,7 @@
 #include "Object.h"
 #include "Background.h"
 #include "Physics.h"
-
+#include "Character.h"
 using namespace std;
 
 
@@ -41,9 +41,8 @@ int main(int argc, char *argv[]) {
     Object front_print = {};
     Background background(resource, "level");
     int levelJump = 0;
-    int counter1 = 0;
     char flag = 0;
-    sf::Vector2i source(0,0);
+    
     
     auto level = resource->get_json("levels/level.json");
     auto font = resource->get_font(FONT_INDIE_FLOWER);
@@ -118,72 +117,11 @@ int main(int argc, char *argv[]) {
 
 	ground.add_drawable(ground_fill_sprite);
 	
-
-    auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
-    auto superteacher = make_shared<sf::Sprite>();
-    superteacher->setTexture(*superteacher_texture);
-    const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
-    superteacher->move(0,MINLEVEL );
-   
-    auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
-    auto animation = make_shared<sf::Sprite>();
-    animation->setTexture(*animation_texture);
-    animation_texture->setSmooth(true);
-    animation->move(10,MINLEVEL);
-    animation->setScale(0.4, 0.4);
+    auto character = Character(resource, "level");
     
-    animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
-
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource,&source,&animation,&counter1,&people,&window_sprite,&flag,&animation_texture](HIEvent event)->void{
-        switch(event) {
-            case HIEvent::GO_LEFT:
-				animation->move(-5,0);
-                window_sprite->move(3, 0);
-                superteacher->move(-5, 0);
-                break;
-            case HIEvent::GO_RIGHT:
-                    animation->move(5,0);
-                    window_sprite->move(-3, 0);
-                    animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
-					superteacher->move(5,0);
-                    counter1++;
-                    if(counter1 >= 5)
-                    {
-                        source.x++;
-                        counter1 = 0;
-                    }
-                    if(source.x >= 8)
-                    {
-                        source.x = 0;
-                    }
-				break;
-			case HIEvent::GO_UP:
-				levelJump++;
-            source.x=2;
-				break;
-			case HIEvent::GO_DOWN:
-				levelJump--;
-				break;
-            case HIEvent::JUMP:
-				jump_manager(superteacher, MINLEVEL, -levelJump);
-                superteacher_texture = resource->get_texture("graphics/characters/superteachersaut.png");
-                superteacher->setTexture(*superteacher_texture);
-                superteacher->setScale(1.2,1.2);
-                people.add_drawable(superteacher);
-                break;
-            case HIEvent::THROW:
-                
-                break;
-			case HIEvent::DEFAULT:
-				break;
-            default:
-                break;
-            
-            
-        }
+    user_input.HIEvent_sig.connect([&character](HIEvent event)->void {
+        character.process_event(event);
     });
-    
-    people.add_drawable(animation);
     
     
     if((bool)(*config)["audio"]){
@@ -195,14 +133,7 @@ int main(int argc, char *argv[]) {
        
         user_input.process();
         window.clear(sf::Color::White);
-		jump_manager(superteacher, MINLEVEL,0);
 
-        if (superteacher->getPosition().y >= MINLEVEL)
-        {
-            superteacher_texture = resource->get_texture("graphics/characters/transparent.png");
-            superteacher->setTexture(*superteacher_texture);
-            superteacher->setScale(1,1);
-        }
 		high_jump->setString("Jump level " + to_string(levelJump));
       
         // Dessin
@@ -216,7 +147,7 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
-		for (auto n : people.get_drawables())
+		for (auto n : character.get_drawables())
 		{
             //window.clear();
 			window.draw(*n);
