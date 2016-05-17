@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     text->move(25,25);
 
     std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
-    text->move(100,50);
+    timetext->move(1500,25);
     front_print.add_drawable(timetext);
     
     if((bool)(*config)["video"]["fullscreen"]){
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 		high_jump->setString("Jump level " + to_string(levelJump));
         
         auto tmp_time = Timer::get_time_ms();
-        timetext->setString("Clock: " + to_string(tmp_time));
+        timetext->setString("Time: " + to_string(tmp_time) + " ms");
         
       
         // Dessin
