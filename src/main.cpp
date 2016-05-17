@@ -109,9 +109,12 @@ int main(int argc, char *argv[]) {
 
        
         user_input.process();
+
+        character.update();
+
         window.clear(sf::Color::White);
 
-		high_jump->setString("Jump level " + to_string(levelJump));
+		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
       
         // Dessin
         

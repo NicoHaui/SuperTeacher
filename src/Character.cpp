@@ -36,24 +36,25 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
     
     add_drawable(m_animation);
-    
+    jumpLevel = 0;
 }
 
 void Character::process_event(HIEvent event){
 
     static sf::Vector2i source(0,0);
     static int counter1 = 0;
+    
     auto superteacher_texture = m_resource->get_texture("graphics/characters/superteachersaut.png");
 
     switch(event) {
         case HIEvent::GO_LEFT:
             m_animation->move(-5,0);
-            m_superteacher->move(-5, 0);
+            //m_superteacher->move(-5, 0);
             break;
         case HIEvent::GO_RIGHT:
             m_animation->move(5,0);
             m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
-            m_superteacher->move(5,0);
+            //m_superteacher->move(5,0);
             counter1++;
             if(counter1 >= 5)
             {
@@ -68,10 +69,17 @@ void Character::process_event(HIEvent event){
 
         case HIEvent::JUMP:
             //jump_manager(m_superteacher, MINLEVEL, -levelJump);
-            jump_manager(m_superteacher, 16, -3);
-            m_superteacher->setTexture(*superteacher_texture);
-            m_superteacher->setScale(1.2,1.2);
-            add_drawable(m_superteacher);
+            jump_manager(m_animation, 16, jumpLevel);
+            //m_superteacher->setTexture(*superteacher_texture);
+            //m_superteacher->setScale(1.2,1.2);
+            //m_animation
+            //add_drawable(m_superteacher);
+            break;
+        case HIEvent::GO_UP:
+            jumpLevel--;
+            break;
+        case HIEvent::GO_DOWN:
+            jumpLevel++;
             break;
         default:
             break;
@@ -82,3 +90,26 @@ void Character::process_event(HIEvent event){
 }
 
 
+void Character::update(void)
+{
+    auto level = m_resource->get_json("levels/level.json");
+    jump_manager(m_animation, 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-(int)(*level)["ground"]["level"])), 0);
+    
+}
+
+int Character::getJumpLevel(void)
+{
+    return -jumpLevel;
+}
+/*
+std::vector<std::shared_ptr<sf::Drawable>> Object::get_drawables(void)
+{
+    std::vector<std::shared_ptr<sf::Drawable>> all;
+    all.reserve(m_drawable.size() + 1);
+    //all.push_back((();
+    for (auto n : m_drawable)
+    {
+        all.push_back(n);
+    }
+    return m_drawable;
+}*/
