@@ -22,6 +22,7 @@ enum class HIEvent {
 	GO_UP,
 	GO_DOWN,
 	JUMP,
+    THROW,
 	CLOSE,
 	DEFAULT
 };
