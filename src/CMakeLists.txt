@@ -41,6 +41,7 @@ add_executable(superteacher
         Ground.cpp Ground.h
         Character.cpp Character.h)
 
+
 add_dependencies(superteacher JSON)
 
 target_link_libraries(superteacher
