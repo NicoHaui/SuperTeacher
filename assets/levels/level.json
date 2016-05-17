@@ -7,7 +7,7 @@
         ]
     },
     "ground" : {
-        "level" : 15,
-        "name" : "grass"
+        "level" : 11,
+        "name" : "ground"
     }
 }

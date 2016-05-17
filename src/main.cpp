@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
             style
     );
 
-    window.setFramerateLimit(50);
+    //window.setFramerateLimit(50);
     HIManager user_input = {&window};
 
 
@@ -106,16 +106,9 @@ int main(int argc, char *argv[]) {
     }
     
     std::string gr_name = (*level)["ground"]["name"];
-    auto ground_texture = resource->get_texture("graphics/grounds/" + gr_name + "/top.png");
-    ground_texture->setRepeated(true);
-    auto ground_sprite = make_shared<sf::Sprite>();
-    ground_sprite->setTexture(*ground_texture);
-    ground_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE));
-    ground_sprite->move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] )));
 
-	ground.add_drawable(ground_sprite);
 
-    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + "/fill.png");
+    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + ".png");
     ground_fill_texture->setRepeated(true);
     auto ground_fill_sprite = make_shared<sf::Sprite>();
     ground_fill_sprite->setTexture(*ground_fill_texture);
