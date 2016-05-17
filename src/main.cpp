@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
             style
     );
 
-    //window.setFramerateLimit(50);
+    window.setFramerateLimit(50);
     HIManager user_input = {&window};
 
 
@@ -124,10 +124,11 @@ int main(int argc, char *argv[]) {
     superteacher->setTexture(*superteacher_texture);
     const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     superteacher->move(0,MINLEVEL );
-    
+   
     auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
     auto animation = make_shared<sf::Sprite>();
     animation->setTexture(*animation_texture);
+    animation_texture->setSmooth(true);
     animation->move(10,MINLEVEL);
     animation->setScale(0.4, 0.4);
     
@@ -171,7 +172,7 @@ int main(int argc, char *argv[]) {
                 people.add_drawable(superteacher);
                 break;
             case HIEvent::THROW:
-            
+                
                 break;
 			case HIEvent::DEFAULT:
 				break;
@@ -185,7 +186,10 @@ int main(int argc, char *argv[]) {
     people.add_drawable(animation);
     
     
-    //  song->play();
+    if((bool)(*config)["audio"]){
+        song->play();
+    }
+    
     while(window.isOpen()){
 
        
