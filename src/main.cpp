@@ -15,6 +15,7 @@
 #include "Logs.h"
 #include "Object.h"
 #include "Background.h"
+#include "Ground.h"
 #include "Physics.h"
 #include "Character.h"
 using namespace std;
@@ -36,7 +37,8 @@ int main(int argc, char *argv[]) {
     auto config = resource->get_json("conf.json");
     auto style = sf::Style::Default;
     
-    Object ground = {};
+    //Object ground = {};
+    Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
@@ -95,15 +97,6 @@ int main(int argc, char *argv[]) {
     
     std::string gr_name = (*level)["ground"]["name"];
 
-
-    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + ".png");
-    ground_fill_texture->setRepeated(true);
-    auto ground_fill_sprite = make_shared<sf::Sprite>();
-    ground_fill_sprite->setTexture(*ground_fill_texture);
-    ground_fill_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE*(SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] ) - 1));
-    ground_fill_sprite->move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] - 1 )));
-
-	ground.add_drawable(ground_fill_sprite);
 	
     auto character = Character(resource, "level");
 
