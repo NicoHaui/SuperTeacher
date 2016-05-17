@@ -53,8 +53,6 @@ int main(int argc, char *argv[]) {
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
     
-    const json bg_map = (*level)["background"];
-
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
     }
@@ -67,7 +65,7 @@ int main(int argc, char *argv[]) {
             style
     );
 
-    //window.setFramerateLimit(50);
+    window.setFramerateLimit(50);
     HIManager user_input = {&window};
 
 
@@ -85,20 +83,6 @@ int main(int argc, char *argv[]) {
 	high_jump->move(900, 25);
 	front_print.add_drawable(text);
 	front_print.add_drawable(high_jump);
-
-    auto window_texture = resource->get_texture("graphics/backgrounds/window.png");
-    auto window_sprite = make_shared<sf::Sprite>();
-    window_sprite->setTexture(*window_texture);
-    window_sprite->setScale(0.6,0.6);
-    window_sprite->setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 9,BLOCK_PXSIZE * 14));
-    window_sprite->move(300, (ground_level - 12) * BLOCK_PXSIZE);
-//    auto window2_sprite = make_shared<sf::Sprite>();
-//    window2_sprite->setTexture(*window_texture);
-//    window2_sprite->setScale(0.6,0.6);
-//    window2_sprite->move(1300,(ground_level - 12) * BLOCK_PXSIZE);
-    
-	background.add_drawable(window_sprite);
-//    background.add_drawable(window2_sprite);
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -133,16 +117,14 @@ int main(int argc, char *argv[]) {
     
     animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
 
-    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource,&source,&animation,&counter1,&people,&window_sprite,&flag,&animation_texture](HIEvent event)->void{
+    user_input.HIEvent_sig.connect([&superteacher, &MINLEVEL,&levelJump,&superteacher_texture,&resource,&source,&animation,&counter1,&people,&flag,&animation_texture](HIEvent event)->void{
         switch(event) {
             case HIEvent::GO_LEFT:
 				animation->move(-5,0);
-                window_sprite->move(3, 0);
                 superteacher->move(-5, 0);
                 break;
             case HIEvent::GO_RIGHT:
                     animation->move(5,0);
-                    window_sprite->move(-3, 0);
                     animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
 					superteacher->move(5,0);
                     counter1++;
@@ -185,7 +167,7 @@ int main(int argc, char *argv[]) {
     people.add_drawable(animation);
     
     
-    //  song->play();
+    song->play();
     while(window.isOpen()){
 
        
