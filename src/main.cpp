@@ -133,11 +133,11 @@ int main(int argc, char *argv[]) {
     const int MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     superteacher->move(0,MINLEVEL );
    
-    auto munition_texture = resource->get_texture("graphics/characters/fill.png");
-    auto munition = make_shared<sf::Sprite>();
-    munition->setTexture(*munition_texture);
-    munition->move(10,MINLEVEL);
-    munition->setScale(0.4, 0.4);
+//    auto munition_texture = resource->get_texture("graphics/characters/fill.png");
+//    auto munition = make_shared<sf::Sprite>();
+//    munition->setTexture(*munition_texture);
+//    munition->move(10,MINLEVEL);
+//    munition->setScale(0.4, 0.4);
     
     auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
     auto animation = make_shared<sf::Sprite>();
