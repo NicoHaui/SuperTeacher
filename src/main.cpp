@@ -51,6 +51,10 @@ int main(int argc, char *argv[]) {
     
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
+
+    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
+    text->move(100,50);
+    front_print.add_drawable(timetext);
     
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
@@ -119,6 +123,10 @@ int main(int argc, char *argv[]) {
         window.clear(sf::Color::White);
 
 		high_jump->setString("Jump level " + to_string(levelJump));
+        
+        auto tmp_time = Timer::get_time_ms();
+        timetext->setString("Clock: " + to_string(tmp_time));
+        
       
         // Dessin
         
@@ -133,7 +141,6 @@ int main(int argc, char *argv[]) {
 		}
 		for (auto n : character.get_drawables())
 		{
-            //window.clear();
 			window.draw(*n);
 		}
 		for (auto n : front_print.get_drawables())
