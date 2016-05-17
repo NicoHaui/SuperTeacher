@@ -8,6 +8,7 @@
     },
     "ground" : {
         "level" : 16,
-        "name" : "carlage"
+        "name" : "carlage",
+        "size" : 1
     }
 }
