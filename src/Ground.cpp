@@ -24,8 +24,8 @@ Ground::Ground(std::shared_ptr<ResourceManager> resource, std::string level_name
     auto fill_sprite = std::make_shared<sf::Sprite>();
     fill_sprite->setTexture(*texture);
     
-    fill_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, (SCREEN_Y_BLOCKS - ground_config["level"]- ground_config["size"])*BLOCK_PXSIZE));
-    fill_sprite->move(0, ((float)ground_config["size"] + ground_config["level"]) * BLOCK_PXSIZE);
+    fill_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, (SCREEN_Y_BLOCKS - (int) ground_config["level"]- (int) ground_config["size"])*BLOCK_PXSIZE));
+    fill_sprite->move(0, ((float)ground_config["size"] + (int) ground_config["level"]) * BLOCK_PXSIZE);
 
     // Top seting
     texture = m_resource->get_texture("graphics/grounds/" + fill_name + "/top.png");
@@ -38,7 +38,7 @@ Ground::Ground(std::shared_ptr<ResourceManager> resource, std::string level_name
     top_sprite->scale((float)ground_config["size"] /factor,(float)ground_config["size"] /factor);
 
     top_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE*factor, factor*BLOCK_PXSIZE));
-    top_sprite->move(0, ground_config["level"] * BLOCK_PXSIZE);
+    top_sprite->move(0, (int) ground_config["level"] * BLOCK_PXSIZE);
 
     // Print
     add_drawable(fill_sprite); 

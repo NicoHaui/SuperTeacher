@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
     auto config = resource->get_json("conf.json");
     auto style = sf::Style::Default;
     
-    //Object ground = {};
-    Ground ground(resource, "level");
+    Object ground = {};
+    //Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
@@ -113,13 +113,20 @@ int main(int argc, char *argv[]) {
 
        
         user_input.process();
+
+        character.update();
+
         window.clear(sf::Color::White);
 
+        
 		high_jump->setString("Jump level " + to_string(levelJump));
         
         auto tmp_time = Timer::get_time_ms();
         timetext->setString("Time: " + to_string(tmp_time) + " ms");
         
+
+		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+
       
         // Dessin
         
