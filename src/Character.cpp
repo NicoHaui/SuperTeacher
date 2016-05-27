@@ -33,7 +33,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->setScale(0.4, 0.4);
     
     static sf::Vector2i source(0,0);
-    m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
+    m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
     
     add_drawable(m_animation);
     jumpLevel = 0;
@@ -44,11 +44,38 @@ void Character::process_event(HIEvent event){
     static sf::Vector2i source(0,0);
     static int counter1 = 0;
     static int flag = 0;
+    static int flag1 = 0;
+    static int flag2 = 0;
     
-    auto superteacher_texture = m_resource->get_texture("graphics/characters/superteachersaut.png");
     switch(event) {
         case HIEvent::GO_LEFT:
             m_animation->move(-5,0);
+            if(m_animation->getPosition().y == MINLEVEL)
+            {
+                flag = 0;
+            }
+            if(flag == 0)
+            {
+                
+                if (flag2 == 0)
+                {
+                    source.x = 0;
+                    flag2 = 1;
+                    flag1 = 0;
+                }
+                source.y = 1;
+                m_animation->setTextureRect(sf::IntRect(source.x * 670,source.y * 1150,700,1200));
+                counter1++;
+                if(counter1 >= 5)
+                {
+                    source.x++;
+                    counter1 = 0;
+                }
+                if(source.x >= 8)
+                {
+                    source.x = 0;
+                }
+            }
             break;
         case HIEvent::GO_RIGHT:
             m_animation->move(5,0);
@@ -58,7 +85,13 @@ void Character::process_event(HIEvent event){
             }
             if(flag == 0)
             {
-                m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1500));
+                if(flag1 == 0)
+                {
+                    source.x = 0;
+                    flag1 = 1;
+                    flag2 = 0;
+                }
+                m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
                 counter1++;
                 if(counter1 >= 5)
                 {
@@ -75,8 +108,7 @@ void Character::process_event(HIEvent event){
         case HIEvent::JUMP:
             jump_manager(m_animation, MINLEVEL, jumpLevel);
             flag = 1;
-            m_animation->move(5,0);
-            m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1500));
+            m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
         case HIEvent::GO_UP:
             jumpLevel--;
@@ -88,7 +120,7 @@ void Character::process_event(HIEvent event){
             if(m_animation->getPosition().y == MINLEVEL)
             {
                 flag = 0;
-                m_animation->setTextureRect(sf::IntRect(1 * 660,source.y,700,1500));
+                //m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
             }
             break;
             
