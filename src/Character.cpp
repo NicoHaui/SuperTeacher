@@ -32,9 +32,17 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->move(10,MINLEVEL);
     m_animation->setScale(0.4, 0.4);
     
+    auto animation_student_texture = resource->get_texture("graphics/characters/student.png");
+    m_student_animation = std::make_shared<sf::Sprite>();
+    m_student_animation->setTexture(*animation_student_texture);
+    animation_texture->setSmooth(true);
+    m_student_animation->move(800,MINLEVEL);
+    m_student_animation->setScale(0.25, 0.25);
+    
     static sf::Vector2i source(0,0);
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
-    
+   
+    add_drawable(m_student_animation);
     add_drawable(m_animation);
     jumpLevel = 0;
 }
