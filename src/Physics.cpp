@@ -7,6 +7,23 @@
 #include <cmath>
 #include <ctime>
 
+time_t clock_at_startup = std::clock();
+
+    
+time_ms Timer::get_time_ms(){
+    
+    auto clocktime = std::clock() - clock_at_startup;
+    return ((clocktime*1000)/CLOCKS_PER_SEC);
+}
+
+
+time_s Timer::get_time_s(){
+
+    return (clock() / CLOCKS_PER_SEC);
+}
+
+
+
 void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit)
 {
     static std::clock_t time_jump[3];
@@ -36,3 +53,5 @@ void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vit
 	posy_m_un = posy;
 
 }
+
+
