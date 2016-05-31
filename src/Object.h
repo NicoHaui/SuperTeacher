@@ -13,6 +13,7 @@ public:
     virtual std::vector<std::shared_ptr<sf::Drawable>> get_drawables(void);
     virtual void process_event(HIEvent event){};
     virtual void update(void) {};
+    virtual sf::IntRect get_rectangle(void);
 private:
 	std::vector<std::shared_ptr<sf::Drawable>> m_drawable;
 	
