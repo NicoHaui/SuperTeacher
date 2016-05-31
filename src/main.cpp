@@ -15,6 +15,7 @@
 #include "Logs.h"
 #include "Object.h"
 #include "Background.h"
+#include "Ground.h"
 #include "Physics.h"
 #include "Character.h"
 using namespace std;
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
     auto style = sf::Style::Default;
     
     Object ground = {};
+    //Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
@@ -51,9 +53,11 @@ int main(int argc, char *argv[]) {
     
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
-    
-    const json bg_map = (*level)["background"];
 
+    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
+    timetext->move(1500,25);
+    front_print.add_drawable(timetext);
+    
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
     }
@@ -84,20 +88,6 @@ int main(int argc, char *argv[]) {
 	high_jump->move(900, 25);
 	front_print.add_drawable(text);
 	front_print.add_drawable(high_jump);
-
-    auto window_texture = resource->get_texture("graphics/backgrounds/window.png");
-    auto window_sprite = make_shared<sf::Sprite>();
-    window_sprite->setTexture(*window_texture);
-    window_sprite->setScale(0.6,0.6);
-    window_sprite->setTextureRect(sf::IntRect(0,0,BLOCK_PXSIZE * 9,BLOCK_PXSIZE * 14));
-    window_sprite->move(300, (ground_level - 12) * BLOCK_PXSIZE);
-//    auto window2_sprite = make_shared<sf::Sprite>();
-//    window2_sprite->setTexture(*window_texture);
-//    window2_sprite->setScale(0.6,0.6);
-//    window2_sprite->move(1300,(ground_level - 12) * BLOCK_PXSIZE);
-    
-	background.add_drawable(window_sprite);
-//    background.add_drawable(window2_sprite);
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -107,18 +97,9 @@ int main(int argc, char *argv[]) {
     
     std::string gr_name = (*level)["ground"]["name"];
 
-
-    auto ground_fill_texture = resource->get_texture("graphics/grounds/" + gr_name + ".png");
-    ground_fill_texture->setRepeated(true);
-    auto ground_fill_sprite = make_shared<sf::Sprite>();
-    ground_fill_sprite->setTexture(*ground_fill_texture);
-    ground_fill_sprite->setTextureRect(sf::IntRect(0, 0, SCREEN_X_PXSIZE, BLOCK_PXSIZE*(SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] ) - 1));
-    ground_fill_sprite->move(0,SCREEN_Y_PXSIZE - (BLOCK_PXSIZE * (SCREEN_Y_BLOCKS - (int)(*level)["ground"]["level"] - 1 )));
-
-	ground.add_drawable(ground_fill_sprite);
 	
     auto character = Character(resource, "level");
-    
+
     user_input.HIEvent_sig.connect([&character](HIEvent event)->void {
         character.process_event(event);
     });
@@ -132,9 +113,20 @@ int main(int argc, char *argv[]) {
 
        
         user_input.process();
+
+        character.update();
+
         window.clear(sf::Color::White);
 
+        
 		high_jump->setString("Jump level " + to_string(levelJump));
+        
+        auto tmp_time = Timer::get_time_ms();
+        timetext->setString("Time: " + to_string(tmp_time) + " ms");
+        
+
+		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+
       
         // Dessin
         
@@ -149,7 +141,6 @@ int main(int argc, char *argv[]) {
 		}
 		for (auto n : character.get_drawables())
 		{
-            //window.clear();
 			window.draw(*n);
 		}
 		for (auto n : front_print.get_drawables())
