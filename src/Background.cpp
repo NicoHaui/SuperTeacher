@@ -40,5 +40,4 @@ Background::Background(std::shared_ptr<ResourceManager> resource, std::string le
         sprite->move( x * BLOCK_PXSIZE, y * BLOCK_PXSIZE);
         add_drawable(sprite);
     }
-    
 }
