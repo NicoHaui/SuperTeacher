@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
     auto config = resource->get_json("conf.json");
     auto style = sf::Style::Default;
     
-    Object ground = {};
-    //Ground ground(resource, "level");
+    //Object ground = {};
+    Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
