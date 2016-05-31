@@ -6,11 +6,11 @@
 class View
 {
 public:
-    View(void);
-    View(sf::FloatRect init);
-    void process(void);
+    View(sf::FloatRect PlaySpaceInit);
+    void process(sf::FloatRect CenterObj);
     sf::View GetView(void) { return view; };
 
 private:
     sf::View view;
+    sf::FloatRect PlaySpace;
 };
