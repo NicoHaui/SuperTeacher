@@ -4,6 +4,7 @@ ExternalProject_Add(
     URL https://github.com/google/googletest/archive/release-1.7.0.tar.gz
     LOG_DOWNLOAD ON
     INSTALL_COMMAND ""
+        SOURCE_DIR "${CMAKE_SOURCE_DIR}/Deps/GTest"
 )
 
 ExternalProject_Get_Property(googletest source_dir)

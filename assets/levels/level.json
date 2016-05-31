@@ -1,0 +1,15 @@
+{
+    "background" : {
+        "fill": "background",
+        "objects": [
+                    {"x": 1,  "y": 1, "image": "backgrounds/window"},
+                    {"x": 20, "y": 1, "image": "backgrounds/window"},
+                    {"x": 20, "y": 12, "image": "backgrounds/Paper_stack", "size": 0.5}
+                    ]
+    },
+    "ground" : {
+        "level" : 16,
+        "name" : "carlage",
+        "size" : 1
+    }
+}
