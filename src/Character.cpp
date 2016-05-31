@@ -131,10 +131,7 @@ void Character::process_event(HIEvent event){
                 //m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
             }
             break;
-            
-            
     }
-
 }
 
 

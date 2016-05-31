@@ -18,3 +18,7 @@ std::vector<std::shared_ptr<sf::Drawable>> Object::get_drawables(void)
 {
 	return m_drawable;
 }
+sf::IntRect Object::get_rectangle(void)
+{
+    return sf::IntRect{};
+}
