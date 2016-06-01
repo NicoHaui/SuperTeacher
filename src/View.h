@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Constants.h"
+#include "Object.h"
 
 class View
 {

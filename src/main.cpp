@@ -19,6 +19,7 @@
 #include "Physics.h"
 #include "Character.h"
 #include "View.h"
+#include "Text.h"
 using namespace std;
 
 
@@ -53,12 +54,11 @@ int main(int argc, char *argv[]) {
     int ground_level = (*level)["ground"]["level"];
     
 
-    std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
-    text->move(25,25);
+    Text text((string)"Hello SuperTeacher", sf::Vector2f(-25,-25)+view.GetView().getCenter(), font);
 
     std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
-    timetext->move(1500,25);
-    front_print.add_drawable(timetext);
+  
+    text.Add_Text(timetext, sf::Vector2f(-1500, -25) + view.GetView().getCenter());
     
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
@@ -87,9 +87,8 @@ int main(int argc, char *argv[]) {
     });
     
 	std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
-	high_jump->move(900, 25);
-	front_print.add_drawable(text);
-	front_print.add_drawable(high_jump);
+	
+    text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter());
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -118,18 +117,16 @@ int main(int argc, char *argv[]) {
 
         character.update();
 
-        window.clear(sf::Color::White);
+        window.clear(sf::Color::Blue);
         view.process(character.get_rectangle());
         window.setView(view.GetView());
-        
-		high_jump->setString("Jump level " + to_string(levelJump));
         
         auto tmp_time = Timer::get_time_ms();
         timetext->setString("Time: " + to_string(tmp_time) + " ms");
         
 
 		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
-
+        text.update(view.GetView().getCenter());
       
         // Dessin
         
@@ -150,6 +147,10 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
+        for (auto n : text.get_texts())
+        {
+            window.draw(*n);
+        }
         window.display();
         window.clear();
     }
