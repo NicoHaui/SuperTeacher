@@ -24,14 +24,14 @@ time_s Timer::get_time_s(){
 
 
 
-void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit)
+void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit,bool ColisionFlag)
 {
     static std::clock_t time_jump[3];
 	static int vitesse0 = 0;
 	static float posy_m_un = 0;
 	float posy = 0;
 
-	if (sprite->getPosition().y >= GroundLevel)
+	if (sprite->getPosition().y >= GroundLevel || ColisionFlag)
 	{
         time_jump[0] = std::clock();
 		vitesse0 = vitesseInit;
