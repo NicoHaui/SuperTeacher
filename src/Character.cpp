@@ -13,7 +13,7 @@
 
 Character::Character(std::shared_ptr<ResourceManager> resource, std::string level_name){
 
-    
+
     
     m_resource = resource;
     auto level = m_resource->get_json("levels/" + level_name + ".json");
@@ -38,6 +38,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     animation_texture->setSmooth(true);
     m_student_animation->move(800,MINLEVEL);
     m_student_animation->setScale(0.25, 0.25);
+    
     
     static sf::Vector2i source(0,0);
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
@@ -131,10 +132,7 @@ void Character::process_event(HIEvent event){
                 //m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
             }
             break;
-            
-            
     }
-
 }
 
 
@@ -147,4 +145,9 @@ void Character::update(void)
 int Character::getJumpLevel(void)
 {
     return -jumpLevel;
+}
+
+sf::FloatRect Character::get_rectangle(void)
+{
+    return m_animation->getGlobalBounds();
 }

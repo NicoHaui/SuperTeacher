@@ -18,6 +18,7 @@
 #include "Ground.h"
 #include "Physics.h"
 #include "Character.h"
+#include "View.h"
 using namespace std;
 
 
@@ -37,11 +38,11 @@ int main(int argc, char *argv[]) {
     auto config = resource->get_json("conf.json");
     auto style = sf::Style::Default;
     
-    //Object ground = {};
     Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
+    View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
     int levelJump = 0;
     char flag = 0;
     
@@ -51,6 +52,7 @@ int main(int argc, char *argv[]) {
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
     
+
     std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
     text->move(25,25);
 
@@ -111,13 +113,14 @@ int main(int argc, char *argv[]) {
     
     while(window.isOpen()){
 
-       
+
         user_input.process();
 
         character.update();
 
         window.clear(sf::Color::White);
-
+        view.process(character.get_rectangle());
+        window.setView(view.GetView());
         
 		high_jump->setString("Jump level " + to_string(levelJump));
         
