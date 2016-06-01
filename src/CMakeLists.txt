@@ -39,7 +39,8 @@ add_executable(superteacher
         Logs.cpp Logs.h
         JSON.h
         Ground.cpp Ground.h
-        Character.cpp Character.h)
+        Character.cpp Character.h
+		View.cpp View.h)
 
 
 add_dependencies(superteacher JSON)

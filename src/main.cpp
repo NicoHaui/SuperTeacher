@@ -42,8 +42,7 @@ int main(int argc, char *argv[]) {
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
-    //auto view = sf::View::View(sf::FloatRect(0,0, SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE));
-    View view = (sf::FloatRect(0, 0, SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE));
+    View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
     int levelJump = 0;
     char flag = 0;
     
@@ -120,8 +119,7 @@ int main(int argc, char *argv[]) {
         character.update();
 
         window.clear(sf::Color::White);
- //       view.setCenter(SCREEN_X_PXSIZE/2,SCREEN_Y_PXSIZE/2 -character.getJumpLevel()*10);
-        view.process();
+        view.process(character.get_rectangle());
         window.setView(view.GetView());
         
 		high_jump->setString("Jump level " + to_string(levelJump));
