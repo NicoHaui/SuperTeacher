@@ -5,7 +5,6 @@
 #include "Physics.h"
 
 #include <cmath>
-#include <ctime>
 #include <chrono>
 
 auto startup = std::chrono::high_resolution_clock::now();

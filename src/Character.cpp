@@ -18,7 +18,6 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_resource = resource;
     auto level = m_resource->get_json("levels/" + level_name + ".json");
     
-    
     auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
     m_superteacher = std::make_shared<sf::Sprite>();
     m_superteacher->setTexture(*superteacher_texture);
@@ -53,7 +52,7 @@ void Character::process_event(HIEvent event){
     static sf::Vector2i source(0,0);
     static int counter1 = 0;
     static int flag = 0;
-    static int flag1 = 0;
+    static int flag1 = 1;
     static int flag2 = 0;
     static int collisionflag1 = 0;
     static int collisionflag2 = 0;
@@ -129,7 +128,15 @@ void Character::process_event(HIEvent event){
         case HIEvent::JUMP:
             jump_manager(m_animation, MINLEVEL, jumpLevel,0);
             flag = 1;
-            m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
+            if(flag1 == 1)
+            {
+                m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
+            }
+            else
+            {
+                source.y = 1;
+                m_animation->setTextureRect(sf::IntRect(8 * 676,source.y * 1150,900,1200));
+            }
             break;
         case HIEvent::GO_UP:
             jumpLevel--;
@@ -141,7 +148,15 @@ void Character::process_event(HIEvent event){
             if(m_animation->getPosition().y == MINLEVEL)
             {
                 flag = 0;
-                //m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
+                if(flag1 == 1)
+                {
+                    m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
+                }
+                else
+                {
+                    source.y = 1;
+                    m_animation->setTextureRect(sf::IntRect(0 * 670,source.y * 1150,700,1200));
+                }
             }
             break;
     }
