@@ -56,6 +56,8 @@ void Character::process_event(HIEvent event){
     static int flag2 = 0;
     static int collisionflag1 = 0;
     static int collisionflag2 = 0;
+    static int jumpcnt = 0;
+    static int jumpcnt2 = 0;
     
     switch(event) {
         case HIEvent::GO_LEFT:
@@ -71,7 +73,6 @@ void Character::process_event(HIEvent event){
             }
             if(flag == 0)
             {
-                
                 if (flag2 == 0)
                 {
                     source.x = 0;
@@ -126,7 +127,8 @@ void Character::process_event(HIEvent event){
             break;
 
         case HIEvent::JUMP:
-            jump_manager(m_animation, MINLEVEL, jumpLevel,0);
+            
+            jump_manager(m_animation, MINLEVEL, jumpLevel, 0);
             flag = 1;
             if(flag1 == 1)
             {
@@ -137,6 +139,8 @@ void Character::process_event(HIEvent event){
                 source.y = 1;
                 m_animation->setTextureRect(sf::IntRect(8 * 676,source.y * 1150,900,1200));
             }
+        
+            
             break;
         case HIEvent::GO_UP:
             jumpLevel--;

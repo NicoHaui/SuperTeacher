@@ -21,9 +21,19 @@ uint64_t Timer::get_time_s(){
     return get_time_ms()/1000;
 }
 
+float jump_level_manager(float time)
+{
+    if (time<=800) {
+        return 10;
+    }
+    else
+    {
+        return 4;
+    }
+}
 
 
-void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit,bool ColisionFlag)
+void jump_manager(std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit,bool ColisionFlag)
 {
     static float startup = 0;
 	static int vitesse0;

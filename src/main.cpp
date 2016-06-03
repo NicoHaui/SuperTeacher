@@ -121,8 +121,8 @@ int main(int argc, char *argv[]) {
         view.process(character.get_rectangle());
         window.setView(view.GetView());
         
-        auto tmp_time = Timer::get_time_ms();
-        timetext->setString("Time: " + to_string(tmp_time) + " ms");
+        auto tmp_time = Timer::get_time_s();
+        timetext->setString("Time: " + to_string(tmp_time) + " s");
         
 
 		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
