@@ -20,11 +20,11 @@ public:
 private:
     
 };
-
+float jump_level_manager(float);
 void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit,bool ColisionFlags);
 class Physics {
 public:
-    // add_
+    //Add_
 private:
     std::array<std::bitset<SCREEN_X_BLOCKS>, SCREEN_Y_BLOCKS> blocks;
 };
