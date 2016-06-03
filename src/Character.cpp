@@ -57,16 +57,21 @@ void Character::process_event(HIEvent event){
     static int flag2 = 0;
     static int collisionflag1 = 0;
     static int collisionflag2 = 0;
+    int sol = MINLEVEL;
+    if (get_rectangle().intersects(m_student_animation->getGlobalBounds()))//&& (m_superteacher->getGlobalBounds().top+m_superteacher->getGlobalBounds().height)<=(MINLEVEL - m_student_animation->getGlobalBounds().height))
+    {
+        sol = MINLEVEL - m_student_animation->getGlobalBounds().height;
+    }
     
     switch(event) {
         case HIEvent::GO_LEFT:
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
+            if(((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))&&sol > (MINLEVEL - m_student_animation->getGlobalBounds().height))
             {
                 m_animation->move(-5,0);
                 collisionflag1 = 0;
                 collisionflag2 = 1;
             }
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == sol)
             {
                 flag = 0;
             }
@@ -94,13 +99,13 @@ void Character::process_event(HIEvent event){
             }
             break;
         case HIEvent::GO_RIGHT:
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
+            if(((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2)) && sol > (MINLEVEL - m_student_animation->getGlobalBounds().height))
             {
                 m_animation->move(5,0);
                 collisionflag1 = 1;
                 collisionflag2 = 0;
             }
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == sol)
             {
                 flag = 0;
             }
@@ -127,7 +132,8 @@ void Character::process_event(HIEvent event){
             break;
 
         case HIEvent::JUMP:
-            jump_manager(m_animation, MINLEVEL, jumpLevel,0);
+            
+            jump_manager(m_animation, sol, jumpLevel,0);
             flag = 1;
             m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
@@ -138,7 +144,7 @@ void Character::process_event(HIEvent event){
             jumpLevel++;
             break;
         default:
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == sol)
             {
                 flag = 0;
                 //m_animation->setTextureRect(sf::IntRect(0 * 660,source.y,700,1200));
@@ -151,11 +157,14 @@ void Character::process_event(HIEvent event){
 void Character::update(void)
 {
     int collisionflag3 = 0;
-    if(!get_rectangle().intersects(m_student_animation->getGlobalBounds()))
+    int sol = MINLEVEL;
+    if(get_rectangle().intersects(m_student_animation->getGlobalBounds())&& (m_superteacher->getGlobalBounds().top + m_superteacher->getGlobalBounds().height)<=(MINLEVEL - m_student_animation->getGlobalBounds().height))
     {
         collisionflag3 = 0;
+        sol = MINLEVEL-m_student_animation->getGlobalBounds().height;
     }
-    jump_manager(m_animation, MINLEVEL, 0,collisionflag3);
+    
+    jump_manager(m_animation, sol, 0,collisionflag3);
 }
 
 int Character::getJumpLevel(void)
