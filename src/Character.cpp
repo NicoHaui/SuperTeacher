@@ -70,7 +70,8 @@ void Character::process_event(HIEvent event){
     
     switch(event) {
         case HIEvent::GO_LEFT:
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
+            //if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
+            if(colisi.left_enable)
             {
                 m_animation->move(-5,0);
                 collisionflag1 = 0;
@@ -103,7 +104,8 @@ void Character::process_event(HIEvent event){
             }
             break;
         case HIEvent::GO_RIGHT:
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
+            //if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
+            if(colisi.right_enable)
             {
                 m_animation->move(5,0);
                 collisionflag1 = 1;
@@ -198,4 +200,10 @@ int Character::getJumpLevel(void)
 sf::FloatRect Character::get_rectangle(void)
 {
     return m_animation->getGlobalBounds();
+}
+
+
+void Character::write_collision(colision coll)
+{
+    colisi = coll;
 }

@@ -120,6 +120,7 @@ int main(int argc, char *argv[]) {
 
         user_input.process();
 
+        character.write_collision(interact.update(character.get_rectangle(),score));
         character.update();
 
         window.clear(sf::Color::Blue);
@@ -131,7 +132,6 @@ int main(int argc, char *argv[]) {
         
 
 		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
-        interact.update(character,score);
         text.update(view.GetView().getCenter());
       
         // Dessin
