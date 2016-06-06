@@ -32,6 +32,17 @@ float jump_level_manager(float time)
     }
 }
 
+void throw_manager(std::shared_ptr<sf::Sprite> sprite, float posx, float posy,int init)//function to throw things
+{
+    static int speed;
+    float posx_new = 0;
+    posx_new = posx_new + 10;
+    if(init == 1)
+    {
+        sprite->move(posx_new,0);
+    }
+}
+
 
 void jump_manager(std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit,bool ColisionFlag)
 {
