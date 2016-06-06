@@ -90,7 +90,10 @@ int main(int argc, char *argv[]) {
     
 	std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
 	
-    text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter());
+    text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter()); 
+    std::shared_ptr<sf::Text> score = make_shared<sf::Text>("Points: ", *font, 50);
+
+    text.Add_Text(score, sf::Vector2f(-900, -100) + view.GetView().getCenter());
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -128,10 +131,10 @@ int main(int argc, char *argv[]) {
         
 
 		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+        interact.update(character,score);
         text.update(view.GetView().getCenter());
       
         // Dessin
-        interact.update(character);
     
 		for (auto n : background.get_drawables())
 		{

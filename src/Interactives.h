@@ -6,6 +6,7 @@
 #include <memory>
 #include "ResourceManager.h"
 #include "Character.h"
+#include "Text.h"
 
 typedef enum
 {
@@ -25,10 +26,10 @@ typedef struct
 class Interactives : public Object {
 public:
     Interactives(std::shared_ptr<ResourceManager> ressource, std::string level_name);
-    void update(Character mainPerson);
+    void update(Character mainPerson, std::shared_ptr<sf::Text> score);
 private:
     std::shared_ptr<ResourceManager> m_resource;
     //std::vector<std::shared_ptr<sf::Sprite>> m_sprites;
     //std::vector<function> m_function;
-    std::vector<act_pack> m_sprites;
+    std::vector<std::shared_ptr<act_pack>> m_sprites;
 };

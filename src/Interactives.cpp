@@ -51,9 +51,9 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
     for (auto object : objects) {
         std::string name = object["image"];
         auto texture = m_resource->get_texture("graphics/" + name + ".png");
-        act_pack sprite;//
+        //act_pack sprite;//
         auto temp = std::make_shared<sf::Sprite>();
-        //auto sprite = act_pack();
+        auto sprite = std::make_shared<act_pack>();
         /*sprite.sprite.reset();
         sprite.sprite->setTexture(*texture);*/
         temp->setTexture(*texture);
@@ -62,59 +62,64 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
         //sprite.sprite->move(x * BLOCK_PXSIZE, y * BLOCK_PXSIZE);
         temp->move(x*BLOCK_PXSIZE, y*BLOCK_PXSIZE);
         temp->setScale(object["size"], object["size"]);
-        sprite.sprite = temp;
-        sprite.sprite->setOrigin((sprite.sprite->getGlobalBounds().width / 2), (sprite.sprite->getGlobalBounds().height / 2));
-        sprite.sprite->move((sprite.sprite->getGlobalBounds().width / 2), (sprite.sprite->getGlobalBounds().height / 2));
+        sprite->sprite = temp;
+        sprite->sprite->setOrigin((sprite->sprite->getGlobalBounds().width / 2), (sprite->sprite->getGlobalBounds().height / 2));
+        sprite->sprite->move((sprite->sprite->getGlobalBounds().width / 2), (sprite->sprite->getGlobalBounds().height / 2));
         //add_drawable(sprite);
-        sprite.function = string_conv(object["function"]);
+        sprite->function = string_conv(object["function"]);
+        sprite->use = false;
         m_sprites.push_back(sprite);
         //m_function.push_back((function)object["function"]);
-        add_drawable(sprite.sprite);
+        add_drawable(sprite->sprite);
     }
 }
 
-void Interactives::update(Character mainPerson)
+void Interactives::update(Character mainPerson, std::shared_ptr<sf::Text> score)
 {
     
     /*static float val = 0;
     val+=0.2;*/
+    static int points = 0;
     for (auto pack : m_sprites)
     {
-        if (pack.function == platform)
+        if (pack->function == platform)
         {
 
         }
-        if(pack.function == bonus)
+        if(pack->function == bonus)
         {
-            if (mainPerson.get_rectangle().intersects(pack.sprite->getGlobalBounds()))
+            if (mainPerson.get_rectangle().intersects(pack->sprite->getGlobalBounds()))
             {
-                if (!pack.use)
+                if (pack->use == false)
                 {
                     auto texture = m_resource->get_texture("graphics/interactives/invisible.png");
-                    pack.sprite->setTexture(*texture);
+                    pack->sprite->setTexture(*texture);
+                    points++;
                 }
-                pack.use = true;
+                pack->use = true;
             }
             else
             {
-                pack.use = false;
+                //pack.use = false;
             }
             
         }
-        if (pack.function == mob)
+        if (pack->function == mob)
         {
-            if (mainPerson.get_rectangle().intersects(pack.sprite->getGlobalBounds()))
+            if (mainPerson.get_rectangle().intersects(pack->sprite->getGlobalBounds()))
             {
-                if (!pack.use)
+                if (pack->use == false)
                 {
-
+                    points--;
+                    //pack.sprite->setRotation(90);
                 }
-                pack.use = true;
+                pack->use = true;
             }
             else
             {
-                pack.use = false;
+                pack->use = false;
             }
         }
     }
+    score->setString("Points: " + std::to_string(points));
 }
