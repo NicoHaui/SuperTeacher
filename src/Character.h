@@ -22,5 +22,5 @@ private:
     std::shared_ptr<sf::Sprite> m_superteacher;
     std::shared_ptr<sf::Sprite> m_transparent;
     int jumpLevel;
-    int MINLEVEL;
+    int MINLEVEL;    
 };

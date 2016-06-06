@@ -31,7 +31,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->move(10,MINLEVEL);
     m_animation->setScale(0.4, 0.4);
     
-    auto throw_texture = resource->get_texture("graphics/characters/student.png");
+    auto throw_texture = resource->get_texture("graphics/characters/pencil.png");
     m_throw = std::make_shared<sf::Sprite>();
     m_throw->setTexture(*throw_texture);
     throw_texture->setSmooth(true);
@@ -52,9 +52,9 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     static sf::Vector2i source(0,0);
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
    
+    add_drawable(m_throw);
     add_drawable(m_student_animation);
     add_drawable(m_animation);
-    add_drawable(m_throw);
     jumpLevel = 0;
 }
 
@@ -71,6 +71,7 @@ void Character::process_event(HIEvent event){
     
     switch(event) {
         case HIEvent::GO_LEFT:
+            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
             if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
             {
                 m_animation->move(-5,0);
@@ -104,6 +105,7 @@ void Character::process_event(HIEvent event){
             }
             break;
         case HIEvent::GO_RIGHT:
+            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
             if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
             {
                 m_animation->move(5,0);
@@ -139,6 +141,7 @@ void Character::process_event(HIEvent event){
         case HIEvent::JUMP:
             
             jump_manager(m_animation, MINLEVEL, jumpLevel, 0);
+            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
             flag = 1;
             if(flag1 == 1)
             {
@@ -159,6 +162,7 @@ void Character::process_event(HIEvent event){
         case HIEvent::THROW:
             enable = 1;
             throw_manager(m_throw,m_animation->getPosition().x,m_animation->getPosition().y,enable);
+            m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
         default:
             if(m_animation->getPosition().y == MINLEVEL)
@@ -174,7 +178,7 @@ void Character::process_event(HIEvent event){
                     m_animation->setTextureRect(sf::IntRect(0 * 670,source.y * 1150,700,1200));
                 }
             }
-            if(m_throw->getPosition().x == m_animation->getPosition().x)
+            if(m_throw->getPosition().x == (m_animation->getPosition().x + MISSILE_OFFSET_X))
             {
                 enable = 0;
                 throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,enable);
