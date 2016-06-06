@@ -21,16 +21,14 @@ typedef struct
     std::shared_ptr<sf::Sprite> sprite;
     function_enum function;
     bool use;
+    int value;
 }act_pack;
 
 class Interactives : public Object {
 public:
     Interactives(std::shared_ptr<ResourceManager> ressource, std::string level_name);
-    //void update(std::shared_ptr<Character> mainPerson, std::shared_ptr<sf::Text> score);
     colision update( sf::FloatRect rect, std::shared_ptr<sf::Text> score);
 private:
     std::shared_ptr<ResourceManager> m_resource;
-    //std::vector<std::shared_ptr<sf::Sprite>> m_sprites;
-    //std::vector<function> m_function;
     std::vector<std::shared_ptr<act_pack>> m_sprites;
 };
