@@ -20,6 +20,7 @@
 #include "Character.h"
 #include "View.h"
 #include "Text.h"
+#include "Interactives.h"
 using namespace std;
 
 
@@ -43,6 +44,7 @@ int main(int argc, char *argv[]) {
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
+    Interactives interact(resource, "level");
     View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
     int levelJump = 0;
     char flag = 0;
@@ -129,7 +131,7 @@ int main(int argc, char *argv[]) {
         text.update(view.GetView().getCenter());
       
         // Dessin
-        
+        interact.update(character);
     
 		for (auto n : background.get_drawables())
 		{
@@ -139,6 +141,10 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
+        for (auto n : interact.get_drawables())
+        {
+            window.draw(*n);
+        }
 		for (auto n : character.get_drawables())
 		{
 			window.draw(*n);
