@@ -32,14 +32,25 @@ float jump_level_manager(float time)
     }
 }
 
-void throw_manager(std::shared_ptr<sf::Sprite> sprite, float posx, float posy,int init)//function to throw things
+void throw_manager(std::shared_ptr<sf::Sprite> sprite, float posx, float posy,bool enable)//function to throw things
 {
-    static int speed;
-    float posx_new = 0;
-    posx_new = posx_new + 10;
-    if(init == 1)
+    static float time = Timer::get_time_ms();
+    if(enable)
     {
-        sprite->move(posx_new,0);
+        if((Timer::get_time_ms()-time)<=2000)
+        {
+            sprite->move(30,0);
+            sprite->rotate(2);
+        }
+        else
+        {
+            time = Timer::get_time_ms();
+            sprite->setPosition(posx, posy+200);
+        }
+    }
+    else
+    {
+        sprite->setPosition(posx, posy+200);
     }
 }
 

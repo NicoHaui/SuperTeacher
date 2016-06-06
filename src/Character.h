@@ -20,6 +20,7 @@ private:
     std::shared_ptr<sf::Sprite> m_throw;
     std::shared_ptr<sf::Sprite> m_student_animation;
     std::shared_ptr<sf::Sprite> m_superteacher;
+    std::shared_ptr<sf::Sprite> m_transparent;
     int jumpLevel;
     int MINLEVEL;
 };

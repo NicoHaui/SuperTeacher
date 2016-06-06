@@ -44,15 +44,12 @@ int main(int argc, char *argv[]) {
     Object front_print = {};
     Background background(resource, "level");
     View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
-    int levelJump = 0;
-    char flag = 0;
-    
+    int levelJump = 0;    
     
     auto level = resource->get_json("levels/level.json");
     auto font = resource->get_font(FONT_INDIE_FLOWER);
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
-    
 
     Text text((string)"Hello SuperTeacher", sf::Vector2f(-25,-25)+view.GetView().getCenter(), font);
 
