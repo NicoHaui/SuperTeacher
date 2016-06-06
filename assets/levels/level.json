@@ -14,6 +14,7 @@
    "interactive" : [
                     {"x": 50,"y": 13,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus"},
                     {"x": 16,"y": 6,"image":"characters/student","size":0.25, "function":"mob"},
-                    {"x": 16,"y": 6,"image":"characters/student","size":0.25,"function":"platform"}
+                    {"x": 30,"y": 6,"image":"interactives/point0","size":1, "function":"platform"},
+                    {"x": 16,"y": 6,"image":"backgrounds/Paper_stack","size":1,"function":"platform"}
                    ]
 }
