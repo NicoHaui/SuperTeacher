@@ -17,6 +17,7 @@ public:
 private:
     std::shared_ptr<ResourceManager> m_resource;
     std::shared_ptr<sf::Sprite> m_animation;
+    std::shared_ptr<sf::Sprite> m_throw;
     std::shared_ptr<sf::Sprite> m_student_animation;
     std::shared_ptr<sf::Sprite> m_superteacher;
     int jumpLevel;

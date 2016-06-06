@@ -31,6 +31,13 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->move(10,MINLEVEL);
     m_animation->setScale(0.4, 0.4);
     
+    auto throw_texture = resource->get_texture("graphics/characters/student.png");
+    m_throw = std::make_shared<sf::Sprite>();
+    m_throw->setTexture(*throw_texture);
+    throw_texture->setSmooth(true);
+    m_throw->move(10,MINLEVEL);
+    m_throw->setScale(0.1, 0.1);
+    
     auto animation_student_texture = resource->get_texture("graphics/characters/student.png");
     m_student_animation = std::make_shared<sf::Sprite>();
     m_student_animation->setTexture(*animation_student_texture);
@@ -51,6 +58,8 @@ void Character::process_event(HIEvent event){
 
     static sf::Vector2i source(0,0);
     static int counter1 = 0;
+    static int posx = 0;
+    static int init = 0;
     static int flag = 0;
     static int flag1 = 1;
     static int flag2 = 0;
@@ -139,14 +148,17 @@ void Character::process_event(HIEvent event){
                 source.y = 1;
                 m_animation->setTextureRect(sf::IntRect(8 * 676,source.y * 1150,900,1200));
             }
-        
-            
             break;
         case HIEvent::GO_UP:
             jumpLevel--;
             break;
         case HIEvent::GO_DOWN:
             jumpLevel++;
+            break;
+        case HIEvent::THROW:
+            init = 1;
+            throw_manager(m_throw,posx,m_animation->getPosition().y,init);
+            add_drawable(m_throw);
             break;
         default:
             if(m_animation->getPosition().y == MINLEVEL)
@@ -175,6 +187,7 @@ void Character::update(void)
         collisionflag3 = 0;
     }
     jump_manager(m_animation, MINLEVEL, 0,collisionflag3);
+    throw_manager(m_throw,0,m_animation->getPosition().y,1);
 }
 
 int Character::getJumpLevel(void)

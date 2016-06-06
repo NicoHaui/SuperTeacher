@@ -21,7 +21,8 @@ private:
     
 };
 float jump_level_manager(float);
-void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit,bool ColisionFlags);
+void throw_manager(std::shared_ptr<sf::Sprite> sprite,float posx, float posy, int init);
+void jump_manager(std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit,bool ColisionFlags);
 class Physics {
 public:
     //Add_
