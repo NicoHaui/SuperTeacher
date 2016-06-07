@@ -41,7 +41,8 @@ add_executable(superteacher
         Ground.cpp Ground.h
         Character.cpp Character.h
 		View.cpp View.h
-		Text.cpp Text.h)
+		Text.cpp Text.h
+		Interactives.cpp Interactives.h)
 
 
 add_dependencies(superteacher JSON)

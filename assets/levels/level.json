@@ -3,13 +3,17 @@
         "fill": "background",
         "objects": [
                     {"x": 10,  "y": 3, "image": "backgrounds/window", "size": 0.6},
-                    {"x": 30, "y": 3, "image": "backgrounds/window", "size": 0.6},
-                    {"x": 50, "y": 13, "image": "backgrounds/Paper_stack", "size": 0.8}
+                    {"x": 30, "y": 3, "image": "backgrounds/window", "size": 0.6}
                     ]
     },
     "ground" : {
         "level" : 16,
         "name" : "carlage",
         "size" : 1
-    }
+    },
+   "interactive" : [
+                    {"x": 50,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus","value":5},
+                    {"x": 16,"y": 16,"image":"characters/student","size":0.25, "function":"mob","value":1},
+                    {"x": 16,"y": 16,"image":"backgrounds/Paper_stack","size":1,"function":"platform"}
+                   ]
 }

@@ -21,28 +21,28 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
     m_superteacher = std::make_shared<sf::Sprite>();
     m_superteacher->setTexture(*superteacher_texture);
-    MINLEVEL = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
-    m_superteacher->move(0,MINLEVEL );
+    colisi.walk_level = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
+    m_superteacher->move(0,colisi.walk_level);
     
     auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
     m_animation = std::make_shared<sf::Sprite>();
     m_animation->setTexture(*animation_texture);
     animation_texture->setSmooth(true);
-    m_animation->move(10,MINLEVEL);
+    m_animation->move(10,colisi.walk_level);
     m_animation->setScale(0.4, 0.4);
     
     auto throw_texture = resource->get_texture("graphics/characters/pencil.png");
     m_throw = std::make_shared<sf::Sprite>();
     m_throw->setTexture(*throw_texture);
     throw_texture->setSmooth(true);
-    m_throw->move(10,MINLEVEL);
+    m_throw->move(10,colisi.walk_level);
     m_throw->setScale(0.1, 0.1);
     
     auto animation_student_texture = resource->get_texture("graphics/characters/student.png");
     m_student_animation = std::make_shared<sf::Sprite>();
     m_student_animation->setTexture(*animation_student_texture);
     animation_texture->setSmooth(true);
-    m_student_animation->move(800,MINLEVEL);
+    m_student_animation->move(800,colisi.walk_level);
     m_student_animation->setScale(0.25, 0.25);
     
     auto transparent_texture = resource->get_texture("graphics/characters/transparent.png");
@@ -72,13 +72,14 @@ void Character::process_event(HIEvent event){
     switch(event) {
         case HIEvent::GO_LEFT:
             throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
+         
+            if(colisi.left_enable)
             {
                 m_animation->move(-5,0);
                 collisionflag1 = 0;
                 collisionflag2 = 1;
             }
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == colisi.walk_level)
             {
                 flag = 0;
             }
@@ -106,13 +107,13 @@ void Character::process_event(HIEvent event){
             break;
         case HIEvent::GO_RIGHT:
             throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
-            if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
+            if(colisi.right_enable)
             {
                 m_animation->move(5,0);
                 collisionflag1 = 1;
                 collisionflag2 = 0;
             }
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == colisi.walk_level)
             {
                 flag = 0;
             }
@@ -140,8 +141,8 @@ void Character::process_event(HIEvent event){
 
         case HIEvent::JUMP:
             
-            jump_manager(m_animation, MINLEVEL, jumpLevel, 0);
             throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
+            jump_manager(m_animation, colisi.walk_level, jumpLevel, 0);
             flag = 1;
             if(flag1 == 1)
             {
@@ -165,7 +166,7 @@ void Character::process_event(HIEvent event){
             m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
         default:
-            if(m_animation->getPosition().y == MINLEVEL)
+            if(m_animation->getPosition().y == colisi.walk_level)
             {
                 flag = 0;
                 if(flag1 == 1)
@@ -200,7 +201,7 @@ void Character::update()
     {
         collisionflag3 = 0;
     }
-    jump_manager(m_animation, MINLEVEL, 0,collisionflag3);
+    jump_manager(m_animation, colisi.walk_level, 0,collisionflag3);
     
 }
 
@@ -212,4 +213,10 @@ int Character::getJumpLevel(void)
 sf::FloatRect Character::get_rectangle(void)
 {
     return m_animation->getGlobalBounds();
+}
+
+
+void Character::write_collision(colision coll)
+{
+    colisi = coll;
 }
