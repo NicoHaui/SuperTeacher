@@ -251,13 +251,3 @@ void Character::addPencil(int nb)
 {
     m_nb_pencils += nb;
 }
-
-std::vector<Pencil> Character::getPencil(void)
-{
-    return m_pencils;
-}
-
-void Character::setPencil(std::vector<Pencil> new_pencils)
-{
-    m_pencils = new_pencils;
-}

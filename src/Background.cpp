@@ -9,7 +9,7 @@
 #include "Background.h"
 #include "Constants.h"
 
-Background::Background(std::shared_ptr<ResourceManager> resource, std::string level_name, sf::IntRect PlaySpaceInit){
+Background::Background(std::shared_ptr<ResourceManager> resource, std::string level_name){
     
     m_resource = resource;
     
@@ -23,8 +23,8 @@ Background::Background(std::shared_ptr<ResourceManager> resource, std::string le
     fill_texture->setRepeated(true);
     auto fill_sprite = std::make_shared<sf::Sprite>();
     fill_sprite->setTexture(*fill_texture);
-    fill_sprite->setTextureRect(PlaySpaceInit);
-    fill_sprite->move(0, SCREEN_Y_PXSIZE-PlaySpaceInit.height);
+    fill_sprite->setTextureRect(sf::IntRect(0,0,10000,4000));
+    fill_sprite->move(0, -2000);
     
     add_drawable(fill_sprite);
     

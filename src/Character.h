@@ -26,9 +26,6 @@ public:
     void write_collision(colision coll);
     int getNbPencil(void);
     void addPencil(int nb);
-    std::vector<Pencil> getPencil(void);
-    void setPencil(std::vector<Pencil> new_pencils);
-
 private:
     std::shared_ptr<ResourceManager> m_resource;
     std::shared_ptr<sf::Sprite> m_animation;

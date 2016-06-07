@@ -28,8 +28,3 @@ void Pencil::update(void){
     m_pencil->move(m_direction * 20,0);
     m_pencil->rotate(1);
 };
-
-sf::FloatRect Pencil::get_rectangle(void)
-{
-    return m_pencil->getGlobalBounds();
-}

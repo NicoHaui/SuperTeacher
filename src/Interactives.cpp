@@ -49,7 +49,6 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
         int x = object["x"];
         int y = object["y"];
         temp->setScale(object["size"], object["size"]);
-        sprite->scale = object["size"];
         temp->move(x*BLOCK_PXSIZE, y*BLOCK_PXSIZE-temp->getGlobalBounds().height);
         sprite->sprite = temp;
         sprite->function = string_conv(object["function"]);
@@ -64,7 +63,7 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
     }
 }
 
-/*
+
 colision Interactives::update( sf::FloatRect rect, std::shared_ptr<sf::Text> score)
 {
     colision col;
@@ -150,7 +149,7 @@ colision Interactives::update( sf::FloatRect rect, std::shared_ptr<sf::Text> sco
     score->setString("Points: " + std::to_string(points));
     return col;
 }
-*/
+
 
 colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> score)
 {
@@ -160,10 +159,8 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
     val += 0.2;
     static int points = 0;
     bool no_col = true;
-    bool del_pack = false;
-    bool del_pen = false;
+    bool del = false;
     auto rect = mainPerson.get_rectangle();
-    auto pencil = mainPerson.getPencil();
     //void *supp = NULL;
     for (auto& pack : m_sprites)
     {
@@ -194,23 +191,21 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
         }
         if (pack->function == bonus)
         {
-            pack->sprite->setScale(pack->scale + (pack->scale*sin(val/FLASH_SPEED_FACTOR) / FLASH_SIZE_FACTOR), pack->scale + (pack->scale*sin(val/FLASH_SPEED_FACTOR) / FLASH_SPEED_FACTOR));
             if (rect.intersects(pack->sprite->getGlobalBounds()))
             {
                 points += pack->value;
                 pack->deleteFlag = true;
-                del_pack = true;
+                del = true;
             }
 
         }
         if (pack->function == charge)
         {
-            pack->sprite->setScale(pack->scale + (pack->scale*sin(val / FLASH_SPEED_FACTOR) / FLASH_SIZE_FACTOR), pack->scale + (pack->scale*sin(val / FLASH_SPEED_FACTOR) / FLASH_SPEED_FACTOR));
             if (rect.intersects(pack->sprite->getGlobalBounds()))
             {
                 mainPerson.addPencil(pack->value);
                 pack->deleteFlag = true;
-                del_pack = true;
+                del = true;
             }
 
         }
@@ -229,43 +224,15 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
             {
                 pack->use = false;
             }
-            for(auto& pen : pencil)
-            {
-                if (pen.get_rectangle().intersects(pack->sprite->getGlobalBounds()))
-                {
-                    pack->deleteFlag = true;
-                    del_pack = true;
-                    //break;
-                }
-            }
         }
-        for (auto& pen : pencil)
-        {
-            if (pen.get_rectangle().intersects(pack->sprite->getGlobalBounds()))
-            {
-                del_pen = true;
-                //break;
-            }
-        }
-        if (del_pen)
-        {
-            pencil.erase(std::remove_if(
-                pencil.begin(),
-                pencil.end(),
-                [pack](auto pen) {return pen.get_rectangle().intersects(pack->sprite->getGlobalBounds()); }));
-        }
-        del_pen = false;
-        
     }
-    mainPerson.setPencil(pencil);
-    if (del_pack)
+    if (del)
     {
         m_sprites.erase(std::remove_if(
             m_sprites.begin(),
             m_sprites.end(),
             [](auto x) {return x->deleteFlag; }));
     }
-    
 
     if (no_col == true)
     {

@@ -43,18 +43,12 @@ int main(int argc, char *argv[]) {
     Ground ground(resource, "level");
     Object people = {};
     Object front_print = {};
+    Background background(resource, "level");
     Interactives interact(resource, "level");
+    View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
     int levelJump = 0;    
     
     auto level = resource->get_json("levels/level.json");
-    View view = (sf::FloatRect(0,
-        SCREEN_Y_PXSIZE-(*level)["background"]["world"]["y"] * BLOCK_PXSIZE ,
-        (*level)["background"]["world"]["x"] * BLOCK_PXSIZE,
-        (*level)["background"]["world"]["y"] * BLOCK_PXSIZE));
-    Background background(resource, "level", sf::IntRect(0,
-         0,
-        (*level)["background"]["world"]["x"] * BLOCK_PXSIZE,
-        (*level)["background"]["world"]["y"] * BLOCK_PXSIZE));
     auto font = resource->get_font(MATHLETE);
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
