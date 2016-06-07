@@ -48,7 +48,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     add_drawable(m_student_animation);
     add_drawable(m_animation);
     jumpLevel = JUMP;
-    m_nb_pencils = 10;
+    m_nb_pencils = 0;
 }
 
 void Character::process_event(HIEvent event){

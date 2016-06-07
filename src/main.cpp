@@ -108,6 +108,8 @@ int main(int argc, char *argv[]) {
 	
     auto character = Character(resource, "level");
     
+    character.addPencil((*level)["init"]["pencil"]);
+
     std::shared_ptr<sf::Text> pencil = make_shared<sf::Text>("Pencils: " + to_string(character.getNbPencil()), *font, 50);
     text.Add_Text(pencil, sf::Vector2f(-900, -75) + view.GetView().getCenter()); 
 

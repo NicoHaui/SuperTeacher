@@ -1,4 +1,7 @@
 {
+    "init":{
+        "pencil" : 0
+           },
     "background" : {
         "world": {"x":70,"y":40},
         "fill": "background",
