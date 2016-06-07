@@ -18,5 +18,3 @@ static inline int bl(int block){
 
 const int METER = 2*BLOCK_PXSIZE;
 
-const int MISSILE_OFFSET_Y = 250;
-const int MISSILE_OFFSET_X = 180;

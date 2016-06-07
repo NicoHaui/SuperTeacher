@@ -14,7 +14,7 @@ public:
     virtual void process_event(HIEvent event){};
     virtual void update(void) {};
     virtual sf::FloatRect get_rectangle(void);
-private:
+protected:
 	std::vector<std::shared_ptr<sf::Drawable>> m_drawable;
 	
 };
