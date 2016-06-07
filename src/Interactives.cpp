@@ -154,8 +154,7 @@ colision Interactives::update( sf::FloatRect rect, std::shared_ptr<sf::Text> sco
 
 colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> score)
 {
-    static colision col;
-    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+    colision col;
     static float val = 0;
     val += 0.2;
     static int points = 0;
@@ -176,18 +175,15 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
                 {
                     col.walk_level = pack->sprite->getGlobalBounds().top - rect.height + 1;
                 }
-                else if(rect.top<=pack->sprite->getGlobalBounds().top+pack->sprite->getGlobalBounds().height)
+                else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2)
                 {
-                    if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2)
-                    {
-                        col.left_enable = false;
-                        //col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-                    }
-                    else
-                    {
-                        col.right_enable = false;
-                        //col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-                    }
+                    col.left_enable = false;
+                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+                }
+                else
+                {
+                    col.right_enable = false;
+                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
                 }
                 no_col = false;
             }
