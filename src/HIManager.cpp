@@ -28,6 +28,9 @@ void HIManager::process(void) {
 						case sf::Keyboard::Escape:
                             HIEvent_sig(HIEvent::CLOSE);
 							break;
+                        case sf::Keyboard::T:
+                            HIEvent_sig(HIEvent::THROW);
+                            break;
                         default:
                             break;
                     }
@@ -71,11 +74,7 @@ void HIManager::process(void) {
             HIEvent_sig(HIEvent::JUMP);
 			FlagUse = 0;
         };
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-        {
-            HIEvent_sig(HIEvent::THROW);
-            FlagUse = 0;
-        };
+        
 		if (FlagUse)
 		{
 			HIEvent_sig(HIEvent::DEFAULT);

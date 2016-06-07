@@ -48,6 +48,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     add_drawable(m_student_animation);
     add_drawable(m_animation);
     jumpLevel = JUMP;
+    m_nb_pencils = 0;
 }
 
 void Character::process_event(HIEvent event){
@@ -164,10 +165,14 @@ void Character::process_event(HIEvent event){
             //jumpLevel++;
             break;
         case HIEvent::THROW:
-            posy = get_rectangle().top + get_rectangle().height/2.0;
-            posx = get_rectangle().left + get_rectangle().width/2.0;
-            m_pencils.push_back(Pencil(m_resource,posx,posy, direction));
-            m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
+            if (m_nb_pencils > 0)
+            {
+                posy = get_rectangle().top + get_rectangle().height / 2.0;
+                posx = get_rectangle().left + get_rectangle().width / 2.0;
+                m_pencils.push_back(Pencil(m_resource, posx, posy, direction));
+                m_animation->setTextureRect(sf::IntRect(9 * 590, source.y, 900, 1200));
+                m_nb_pencils--;
+            }
             break;
         default:
             if(m_animation->getPosition().y == colisi.walk_level)
@@ -209,6 +214,11 @@ int Character::getJumpLevel(void)
     return jumpLevel;
 }
 
+int Character::getNbPencil(void)
+{
+    return m_nb_pencils;
+}
+
 sf::FloatRect Character::get_rectangle(void)
 {
     return m_animation->getGlobalBounds();
@@ -235,4 +245,19 @@ std::vector<std::shared_ptr<sf::Drawable>> Character::get_drawables(void)
     }
     
     return drawable;
+}
+
+void Character::addPencil(int nb)
+{
+    m_nb_pencils += nb;
+}
+
+std::vector<Pencil> Character::getPencil(void)
+{
+    return m_pencils;
+}
+
+void Character::setPencil(std::vector<Pencil> new_pencils)
+{
+    m_pencils = new_pencils;
 }

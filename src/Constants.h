@@ -12,6 +12,9 @@ const int GRAVITY = 10;
 const int SPEED = 5;
 const int JUMP = 9;
 
+const int FLASH_SIZE_FACTOR = 20;
+const int FLASH_SPEED_FACTOR = 5;
+
 static inline int bl(int block){
    return block * BLOCK_PXSIZE;
 }
