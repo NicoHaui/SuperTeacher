@@ -13,6 +13,7 @@ public:
     void update(void);
     Character(std::shared_ptr<ResourceManager> ressource, std::string level_name);
     int getJumpLevel(void);
+    sf::FloatRect get_rectangle(void);
 private:
     std::shared_ptr<ResourceManager> m_resource;
     std::shared_ptr<sf::Sprite> m_animation;
