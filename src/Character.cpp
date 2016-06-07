@@ -51,7 +51,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
    
     add_drawable(m_student_animation);
     add_drawable(m_animation);
-    jumpLevel = 0;
+    jumpLevel = JUMP;
 }
 
 void Character::process_event(HIEvent event){
@@ -67,13 +67,14 @@ void Character::process_event(HIEvent event){
     static int collisionflag2 = 0;
     static int jumpcnt = 0;
     static int jumpcnt2 = 0;
-    
+    static int speed = SPEED;
     switch(event) {
         case HIEvent::GO_LEFT:
+            
             //if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag1))
             if(colisi.left_enable)
             {
-                m_animation->move(-5,0);
+                m_animation->move(-speed,0);
                 collisionflag1 = 0;
                 collisionflag2 = 1;
             }
@@ -92,7 +93,7 @@ void Character::process_event(HIEvent event){
                 source.y = 1;
                 m_animation->setTextureRect(sf::IntRect(source.x * 670,source.y * 1150,700,1200));
                 counter1++;
-                if(counter1 >= 5)
+                if(counter1 >= 25/speed)
                 {
                     source.x++;
                     counter1 = 0;
@@ -103,11 +104,20 @@ void Character::process_event(HIEvent event){
                 }
             }
             break;
+        case HIEvent::FAST_DOWN:
+            speed = 2*SPEED;
+            jumpLevel = JUMP * 4 / 3;
+            break;
+        case HIEvent::FAST_UP:
+            speed = SPEED;
+            jumpLevel = JUMP;
+            break;
         case HIEvent::GO_RIGHT:
+
             //if((!get_rectangle().intersects(m_student_animation->getGlobalBounds()))||(collisionflag2))
             if(colisi.right_enable)
             {
-                m_animation->move(5,0);
+                m_animation->move(speed,0);
                 collisionflag1 = 1;
                 collisionflag2 = 0;
             }
@@ -125,7 +135,7 @@ void Character::process_event(HIEvent event){
                 }
                 m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
                 counter1++;
-                if(counter1 >= 5)
+                if(counter1 >= 25/speed)
                 {
                     source.x++;
                     counter1 = 0;
@@ -139,7 +149,7 @@ void Character::process_event(HIEvent event){
 
         case HIEvent::JUMP:
             
-            jump_manager(m_animation, colisi.walk_level, jumpLevel, 0);
+            jump_manager(m_animation, colisi.walk_level, -jumpLevel, 0);
             flag = 1;
             if(flag1 == 1)
             {
@@ -152,10 +162,10 @@ void Character::process_event(HIEvent event){
             }
             break;
         case HIEvent::GO_UP:
-            jumpLevel--;
+            //jumpLevel--;
             break;
         case HIEvent::GO_DOWN:
-            jumpLevel++;
+            //jumpLevel++;
             break;
         case HIEvent::THROW:
             init = 1;
@@ -194,7 +204,7 @@ void Character::update(void)
 
 int Character::getJumpLevel(void)
 {
-    return -jumpLevel;
+    return jumpLevel;
 }
 
 sf::FloatRect Character::get_rectangle(void)
