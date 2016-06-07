@@ -46,19 +46,16 @@ int main(int argc, char *argv[]) {
     Background background(resource, "level");
     Interactives interact(resource, "level");
     View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
-    int levelJump = 0;
-    char flag = 0;
-    
+    int levelJump = 0;    
     
     auto level = resource->get_json("levels/level.json");
-    auto font = resource->get_font(FONT_INDIE_FLOWER);
+    auto font = resource->get_font(MATHLETE);
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
-    
 
-    Text text((string)"Hello SuperTeacher", sf::Vector2f(-25,-25)+view.GetView().getCenter(), font);
+    Text text((string)"SuperTeacher", sf::Vector2f(-60,-25)+view.GetView().getCenter(), font);
 
-    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
+    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 100);
   
     text.Add_Text(timetext, sf::Vector2f(-1500, -25) + view.GetView().getCenter());
     
@@ -128,7 +125,7 @@ int main(int argc, char *argv[]) {
         window.setView(view.GetView());
         
         auto tmp_time = Timer::get_time_s();
-        timetext->setString("Time: " + to_string(tmp_time) + " s");
+        timetext->setString("Time: " + to_string(tmp_time) + " sec");
         
 
 		//high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
