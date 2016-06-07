@@ -64,10 +64,11 @@ void Character::process_event(HIEvent event){
     static int jumpcnt = 0;
     static int jumpcnt2 = 0;
     static int speed = SPEED;
+    static int direction = 1;
     
     switch(event) {
         case HIEvent::GO_LEFT:
-         
+            direction = -1;
             if(colisi.left_enable)
             {
                 m_animation->move(-speed,0);
@@ -109,6 +110,7 @@ void Character::process_event(HIEvent event){
             jumpLevel = JUMP;
             break;
         case HIEvent::GO_RIGHT:
+            direction = 1;
             if(colisi.right_enable)
             {
                 m_animation->move(speed,0);
@@ -164,7 +166,7 @@ void Character::process_event(HIEvent event){
         case HIEvent::THROW:
             posy = get_rectangle().top + get_rectangle().height/2.0;
             posx = get_rectangle().left + get_rectangle().width/2.0;
-            m_pencils.push_back(Pencil(m_resource,posx,posy));
+            m_pencils.push_back(Pencil(m_resource,posx,posy, direction));
             m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
         default:
@@ -181,6 +183,7 @@ void Character::process_event(HIEvent event){
                     m_animation->setTextureRect(sf::IntRect(0 * 670,source.y * 1150,700,1200));
                 }
             }
+            break;
     }
 }
 

@@ -9,9 +9,9 @@
 #include "Pencil.h"
 #include "Constants.h"
 
-Pencil::Pencil(std::shared_ptr<ResourceManager> resource, float posx, float posy) {
+Pencil::Pencil(std::shared_ptr<ResourceManager> resource, float posx, float posy, int direction) {
     
-    
+    m_direction = direction;
     m_resource = resource;
     m_pencil = std::make_shared<sf::Sprite>();
     m_pencil->setScale(0.1, 0.1);
@@ -25,6 +25,6 @@ Pencil::Pencil(std::shared_ptr<ResourceManager> resource, float posx, float posy
 
 void Pencil::update(void){
 
-    m_pencil->move(20,0);
+    m_pencil->move(m_direction * 20,0);
     m_pencil->rotate(1);
 };
