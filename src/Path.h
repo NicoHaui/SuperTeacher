@@ -32,6 +32,6 @@ const std::array<std::string, 3> SEARCH_PATHS_SUFFIX = {
 
 std::string get_file(std::string file);
 
-const std::string FONT_INDIE_FLOWER = "fonts/ThirdParty/IndieFlower/IndieFlower.ttf";
+const std::string MATHLETE = "fonts/ThirdParty/Mathlete/Mathlete-Skinny.otf";
 const std::string SONG_1 = "audio/ThirdParty/hold-the-line-orchestral-remix/hold the line_0.flac";
 
