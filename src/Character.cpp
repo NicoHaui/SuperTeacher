@@ -31,13 +31,6 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     m_animation->move(10,colisi.walk_level);
     m_animation->setScale(0.4, 0.4);
     
-    auto throw_texture = resource->get_texture("graphics/characters/pencil.png");
-    m_throw = std::make_shared<sf::Sprite>();
-    m_throw->setTexture(*throw_texture);
-    throw_texture->setSmooth(true);
-    m_throw->move(10,colisi.walk_level);
-    m_throw->setScale(0.1, 0.1);
-    
     auto animation_student_texture = resource->get_texture("graphics/characters/student.png");
     m_student_animation = std::make_shared<sf::Sprite>();
     m_student_animation->setTexture(*animation_student_texture);
@@ -52,7 +45,6 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     static sf::Vector2i source(0,0);
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
    
-    add_drawable(m_throw);
     add_drawable(m_student_animation);
     add_drawable(m_animation);
     jumpLevel = JUMP;
@@ -62,20 +54,21 @@ void Character::process_event(HIEvent event){
 
     static sf::Vector2i source(0,0);
     static int counter1 = 0;
-    static bool enable = 0;
     static int flag = 0;
     static int flag1 = 1;
     static int flag2 = 0;
     static int collisionflag1 = 0;
     static int collisionflag2 = 0;
+    float posx;
+    float posy;
     static int jumpcnt = 0;
     static int jumpcnt2 = 0;
     static int speed = SPEED;
+    static int direction = 1;
     
     switch(event) {
         case HIEvent::GO_LEFT:
-            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
-         
+            direction = -1;
             if(colisi.left_enable)
             {
                 m_animation->move(-speed,0);
@@ -117,7 +110,7 @@ void Character::process_event(HIEvent event){
             jumpLevel = JUMP;
             break;
         case HIEvent::GO_RIGHT:
-            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
+            direction = 1;
             if(colisi.right_enable)
             {
                 m_animation->move(speed,0);
@@ -153,7 +146,6 @@ void Character::process_event(HIEvent event){
         case HIEvent::JUMP:
             
             jump_manager(m_animation, colisi.walk_level, -jumpLevel, 0);
-            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
             flag = 1;
             if(flag1 == 1)
             {
@@ -172,8 +164,9 @@ void Character::process_event(HIEvent event){
             //jumpLevel++;
             break;
         case HIEvent::THROW:
-            enable = 1;
-            throw_manager(m_throw,m_animation->getPosition().x,m_animation->getPosition().y,enable);
+            posy = get_rectangle().top + get_rectangle().height/2.0;
+            posx = get_rectangle().left + get_rectangle().width/2.0;
+            m_pencils.push_back(Pencil(m_resource,posx,posy, direction));
             m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             break;
         default:
@@ -190,15 +183,6 @@ void Character::process_event(HIEvent event){
                     m_animation->setTextureRect(sf::IntRect(0 * 670,source.y * 1150,700,1200));
                 }
             }
-            if(m_throw->getPosition().x == (m_animation->getPosition().x + MISSILE_OFFSET_X))
-            {
-                enable = 0;
-                throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,enable);
-            }
-            else
-            {
-                throw_manager(m_throw,m_animation->getPosition().x,m_animation->getPosition().y,enable);
-            }
             break;
     }
 }
@@ -213,6 +197,10 @@ void Character::update()
         collisionflag3 = 0;
     }
     jump_manager(m_animation, colisi.walk_level, 0,collisionflag3);
+    
+    for (auto p : m_pencils){
+        p.update();
+    }
     
 }
 
@@ -230,4 +218,21 @@ sf::FloatRect Character::get_rectangle(void)
 void Character::write_collision(colision coll)
 {
     colisi = coll;
+}
+
+std::vector<std::shared_ptr<sf::Drawable>> Character::get_drawables(void)
+{
+    std::vector<std::shared_ptr<sf::Drawable>> drawable;
+    
+    for(auto n: m_drawable){
+        drawable.push_back(n);
+    }
+    for(auto n: m_pencils)
+    {
+        for(auto m: n.get_drawables()){
+            drawable.push_back(m);
+        }
+    }
+    
+    return drawable;
 }

@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
         }
     });
     
+
 	//std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
 	
     //text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter()); 
