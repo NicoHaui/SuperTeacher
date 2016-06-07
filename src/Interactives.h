@@ -24,6 +24,7 @@ typedef struct
     bool use;
     bool deleteFlag;
     int value;
+    float scale;
 }act_pack;
 
 class Interactives : public Object {
