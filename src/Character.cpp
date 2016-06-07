@@ -59,14 +59,11 @@ void Character::process_event(HIEvent event){
     static int flag2 = 0;
     static int collisionflag1 = 0;
     static int collisionflag2 = 0;
-<<<<<<< HEAD
     float posx;
     float posy;
-=======
     static int jumpcnt = 0;
     static int jumpcnt2 = 0;
     static int speed = SPEED;
->>>>>>> BFH-E1D-2015-2016/master
     
     switch(event) {
         case HIEvent::GO_LEFT:
@@ -146,12 +143,7 @@ void Character::process_event(HIEvent event){
 
         case HIEvent::JUMP:
             
-<<<<<<< HEAD
-            jump_manager(m_animation, colisi.walk_level, jumpLevel, 0);
-=======
             jump_manager(m_animation, colisi.walk_level, -jumpLevel, 0);
-            throw_manager(m_transparent,m_animation->getPosition().x,m_animation->getPosition().y,0);
->>>>>>> BFH-E1D-2015-2016/master
             flag = 1;
             if(flag1 == 1)
             {
