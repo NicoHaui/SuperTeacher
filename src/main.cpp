@@ -86,9 +86,7 @@ int main(int argc, char *argv[]) {
     });
     
 
-	//std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
 	
-    //text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter()); 
     std::shared_ptr<sf::Text> score = make_shared<sf::Text>("Points: ", *font, 50);
 
     text.Add_Text(score, sf::Vector2f(-900, -25) + view.GetView().getCenter());
@@ -103,6 +101,9 @@ int main(int argc, char *argv[]) {
 
 	
     auto character = Character(resource, "level");
+    
+    std::shared_ptr<sf::Text> pencil = make_shared<sf::Text>("Pencils: " + to_string(character.getNbPencil()), *font, 50);
+    text.Add_Text(pencil, sf::Vector2f(-900, -75) + view.GetView().getCenter()); 
 
     user_input.HIEvent_sig.connect([&character](HIEvent event)->void {
         character.process_event(event);
@@ -118,7 +119,7 @@ int main(int argc, char *argv[]) {
 
         user_input.process();
 
-        character.write_collision(interact.update(character.get_rectangle(),score));
+        character.write_collision(interact.update(character,score));
         character.update();
 
         window.clear(sf::Color::Blue);
@@ -127,7 +128,7 @@ int main(int argc, char *argv[]) {
         
         auto tmp_time = Timer::get_time_s();
         timetext->setString("Time: " + to_string(tmp_time) + " sec");
-        
+        pencil->setString("Pencils: " + to_string(character.getNbPencil()));
 
 		//high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
         text.update(view.GetView().getCenter());

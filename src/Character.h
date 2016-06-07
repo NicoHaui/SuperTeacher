@@ -24,6 +24,8 @@ public:
     int getJumpLevel(void);
     sf::FloatRect get_rectangle(void);
     void write_collision(colision coll);
+    int getNbPencil(void);
+    void addPencil(int nb);
 private:
     std::shared_ptr<ResourceManager> m_resource;
     std::shared_ptr<sf::Sprite> m_animation;
@@ -32,6 +34,7 @@ private:
     std::shared_ptr<sf::Sprite> m_transparent;
     std::vector<Pencil> m_pencils;
     colision colisi;
+    int m_nb_pencils;
 
     int jumpLevel;
     int MINLEVEL;    
