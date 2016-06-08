@@ -2,14 +2,21 @@
     "background" : {
         "fill": "background",
         "objects": [
-                    {"x": 1,  "y": 1, "image": "backgrounds/window"},
-                    {"x": 20, "y": 1, "image": "backgrounds/window"},
-                    {"x": 20, "y": 12, "image": "backgrounds/Paper_stack", "size": 0.5}
+                    {"x": 10,  "y": 3, "image": "backgrounds/window", "size": 0.6},
+                    {"x": 30, "y": 3, "image": "backgrounds/window", "size": 0.6}
                     ]
     },
     "ground" : {
         "level" : 16,
         "name" : "carlage",
         "size" : 1
-    }
+    },
+   "interactive" : [
+                    {"x": 50,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus","value":5},
+                    {"x": 18,"y": 16,"image":"characters/student","size":0.25, "function":"mob","value":1},
+                    {"x": 22,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus","value":5},
+                    {"x": 12,"y": 16,"image":"backgrounds/Paper_stack","size":1,"function":"platform"},
+                    {"x": 12,"y": 14,"image":"backgrounds/Paper_stack","size":1,"function":"platform"},
+                    {"x": 28,"y": 16,"image":"backgrounds/Paper_stack","size":1,"function":"platform"}
+                   ]
 }

@@ -23,7 +23,8 @@ Background::Background(std::shared_ptr<ResourceManager> resource, std::string le
     fill_texture->setRepeated(true);
     auto fill_sprite = std::make_shared<sf::Sprite>();
     fill_sprite->setTexture(*fill_texture);
-    fill_sprite->setTextureRect(sf::IntRect(0,0,1920,1080));
+    fill_sprite->setTextureRect(sf::IntRect(0,0,10000,4000));
+    fill_sprite->move(0, -2000);
     
     add_drawable(fill_sprite);
     
@@ -37,6 +38,8 @@ Background::Background(std::shared_ptr<ResourceManager> resource, std::string le
         sprite->setTexture(*texture);
         int x = object["x"];
         int y = object["y"];
+        float size = object["size"];
+        sprite->setScale(size, size);
         sprite->move( x * BLOCK_PXSIZE, y * BLOCK_PXSIZE);
         add_drawable(sprite);
     }

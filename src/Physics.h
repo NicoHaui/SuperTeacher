@@ -8,24 +8,23 @@
 #include "HIManager.h"
 #include "Logs.h"
 #include <ctime>
+#include <cstdint>
 
-typedef clock_t time_ms;
-typedef clock_t time_s;
 
 class Timer{
 public:
 
-    static time_ms get_time_ms();
-    static time_s get_time_s();
+    static uint64_t get_time_ms();
+    static uint64_t get_time_s();
     
 private:
     
 };
-
-void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit);
+float jump_level_manager(float);
+void jump_manager(std::shared_ptr<sf::Sprite> sprite, float GroundLevel, int vitesseInit,bool ColisionFlags);
 class Physics {
 public:
-    // add_
+    //Add_
 private:
     std::array<std::bitset<SCREEN_X_BLOCKS>, SCREEN_Y_BLOCKS> blocks;
 };

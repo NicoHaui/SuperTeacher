@@ -5,45 +5,46 @@
 #include "Physics.h"
 
 #include <cmath>
-#include <ctime>
+#include <chrono>
 
-time_t clock_at_startup = std::clock();
+auto startup = std::chrono::high_resolution_clock::now();
 
     
-time_ms Timer::get_time_ms(){
-    
-    auto clocktime = std::clock() - clock_at_startup;
-    return ((clocktime*1000)/CLOCKS_PER_SEC);
+uint64_t Timer::get_time_ms(){
+    auto now = std::chrono::high_resolution_clock::now();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(now-startup).count() ;
 }
 
 
-time_s Timer::get_time_s(){
+uint64_t Timer::get_time_s(){
 
-    return (clock() / CLOCKS_PER_SEC);
+    return get_time_ms()/1000;
 }
 
-
-
-void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit)
+void jump_manager(std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vitesseInit,bool ColisionFlag)
 {
-    static std::clock_t time_jump[3];
-	static int vitesse0 = 0;
-	static float posy_m_un = 0;
-	float posy = 0;
+    static float startup = 0;
+	static int vitesse0;
+	static float posy_m_un;
+    float time_now = 0;
+	float posy;
 
-	if (sprite->getPosition().y >= GroundLevel)
+	if (sprite->getPosition().y >= GroundLevel || ColisionFlag)
 	{
-        time_jump[0] = std::clock();
+        startup = Timer::get_time_ms() / 1000.0;
 		vitesse0 = vitesseInit;
 		posy_m_un = 0;
 	}
 
-    time_jump[1] = std::clock();
+    time_now = Timer::get_time_ms() / 1000.0;
+
+    float delta_t = time_now - startup;
+
     posy = (
-            (float)(time_jump[1] - time_jump[0]+1)/CLOCKS_PER_SEC
+            (float)delta_t + 0.001
            ) * vitesse0 * METER
         + (
-           std::pow((float)(time_jump[1] - time_jump[0])/CLOCKS_PER_SEC, 2)*GRAVITY
+           std::pow((float)delta_t, 2)*GRAVITY
         ) * METER / 2.0;
     
     
@@ -51,7 +52,4 @@ void jump_manager( std::shared_ptr<sf::Sprite> sprite, float GroundLevel,int vit
 		posy = GroundLevel-(sprite->getPosition().y-posy_m_un);
 	sprite->move(0, (posy - posy_m_un));
 	posy_m_un = posy;
-
 }
-
-

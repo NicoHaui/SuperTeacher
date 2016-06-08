@@ -21,10 +21,10 @@ void HIManager::process(void) {
                         /*case sf::Keyboard::Right:
                             HIEvent_sig(HIEvent::GO_RIGHT);
                             break;*/
-						/*case sf::Keyboard::J:
-							HIEvent_sig(HIEvent::JUMP);
+                        case sf::Keyboard::Up:
+							HIEvent_sig(HIEvent::FAST_DOWN);
 							FlagUse = 0;
-							break;*/
+							break;
 						case sf::Keyboard::Escape:
                             HIEvent_sig(HIEvent::CLOSE);
 							break;
@@ -32,23 +32,29 @@ void HIManager::process(void) {
                             break;
                     }
                     break;
-				
+                case sf::Event::KeyReleased:
+                    if (event.key.code == sf::Keyboard::Up)
+                    {
+                        HIEvent_sig(HIEvent::FAST_UP);
+                        FlagUse = 0;
+                    }
+                    break;
                 default:
                     break;
             }
         }
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
+            
 			HIEvent_sig(HIEvent::GO_LEFT);
 			FlagUse = 0;
 		};
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			HIEvent_sig(HIEvent::GO_RIGHT);
+            HIEvent_sig(HIEvent::GO_RIGHT);
 			FlagUse = 0;
 		};
-
+        /*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			HIEvent_sig(HIEvent::GO_UP);
@@ -59,8 +65,8 @@ void HIManager::process(void) {
 		{
 			HIEvent_sig(HIEvent::GO_DOWN);
 			FlagUse = 0;
-		};
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+		};*/
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             HIEvent_sig(HIEvent::JUMP);
 			FlagUse = 0;

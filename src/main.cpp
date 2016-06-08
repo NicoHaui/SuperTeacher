@@ -19,6 +19,8 @@
 #include "Physics.h"
 #include "Character.h"
 #include "View.h"
+#include "Text.h"
+#include "Interactives.h"
 using namespace std;
 
 
@@ -42,24 +44,20 @@ int main(int argc, char *argv[]) {
     Object people = {};
     Object front_print = {};
     Background background(resource, "level");
-    //auto view = sf::View::View(sf::FloatRect(0,0, SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE));
-    View view = (sf::FloatRect(0, 0, SCREEN_X_PXSIZE, SCREEN_Y_PXSIZE));
-    int levelJump = 0;
-    char flag = 0;
-    
+    Interactives interact(resource, "level");
+    View view = (sf::FloatRect(0, -SCREEN_Y_PXSIZE, SCREEN_X_PXSIZE*2, SCREEN_Y_PXSIZE*2));
+    int levelJump = 0;    
     
     auto level = resource->get_json("levels/level.json");
-    auto font = resource->get_font(FONT_INDIE_FLOWER);
+    auto font = resource->get_font(MATHLETE);
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
-    
 
-    std::shared_ptr<sf::Text> text = make_shared<sf::Text>("Hello SuperTeacher", *font, 50);
-    text->move(25,25);
+    Text text((string)"SuperTeacher", sf::Vector2f(-60,-25)+view.GetView().getCenter(), font);
 
-    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 50);
-    timetext->move(1500,25);
-    front_print.add_drawable(timetext);
+    std::shared_ptr<sf::Text> timetext = make_shared<sf::Text>("Clock: " + to_string(Timer::get_time_ms()), *font, 100);
+  
+    text.Add_Text(timetext, sf::Vector2f(-1500, -25) + view.GetView().getCenter());
     
     if((bool)(*config)["video"]["fullscreen"]){
         style = sf::Style::Fullscreen;
@@ -87,10 +85,13 @@ int main(int argc, char *argv[]) {
         }
     });
     
-	std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
-	high_jump->move(900, 25);
-	front_print.add_drawable(text);
-	front_print.add_drawable(high_jump);
+
+	//std::shared_ptr<sf::Text> high_jump = make_shared<sf::Text>("Jump level " + to_string(levelJump), *font, 50);
+	
+    //text.Add_Text(high_jump, sf::Vector2f(-900, -25) + view.GetView().getCenter()); 
+    std::shared_ptr<sf::Text> score = make_shared<sf::Text>("Points: ", *font, 50);
+
+    text.Add_Text(score, sf::Vector2f(-900, -25) + view.GetView().getCenter());
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -117,24 +118,21 @@ int main(int argc, char *argv[]) {
 
         user_input.process();
 
+        character.write_collision(interact.update(character.get_rectangle(),score));
         character.update();
 
-        window.clear(sf::Color::White);
- //       view.setCenter(SCREEN_X_PXSIZE/2,SCREEN_Y_PXSIZE/2 -character.getJumpLevel()*10);
-        view.process();
+        window.clear(sf::Color::Blue);
+        view.process(character.get_rectangle());
         window.setView(view.GetView());
         
-		high_jump->setString("Jump level " + to_string(levelJump));
-        
-        auto tmp_time = Timer::get_time_ms();
-        timetext->setString("Time: " + to_string(tmp_time) + " ms");
+        auto tmp_time = Timer::get_time_s();
+        timetext->setString("Time: " + to_string(tmp_time) + " sec");
         
 
-		high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
-
+		//high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+        text.update(view.GetView().getCenter());
       
         // Dessin
-        
     
 		for (auto n : background.get_drawables())
 		{
@@ -144,6 +142,10 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
+        for (auto n : interact.get_drawables())
+        {
+            window.draw(*n);
+        }
 		for (auto n : character.get_drawables())
 		{
 			window.draw(*n);
@@ -152,6 +154,10 @@ int main(int argc, char *argv[]) {
 		{
 			window.draw(*n);
 		}
+        for (auto n : text.get_texts())
+        {
+            window.draw(*n);
+        }
         window.display();
         window.clear();
     }
