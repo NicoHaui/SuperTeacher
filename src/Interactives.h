@@ -30,8 +30,8 @@ typedef struct
 class Interactives : public Object {
 public:
     Interactives(std::shared_ptr<ResourceManager> ressource, std::string level_name);
-    colision update(Character& mainPerson, std::shared_ptr<sf::Text> score);
-    colision update( sf::FloatRect rect, std::shared_ptr<sf::Text> score);
+    colision update(Character& mainPerson, std::shared_ptr<sf::Text> score, int GroundLevel);
+    //colision update( sf::FloatRect rect, std::shared_ptr<sf::Text> score);
     std::vector<std::shared_ptr<sf::Drawable>> get_drawables(void);
 private:
     std::shared_ptr<ResourceManager> m_resource;

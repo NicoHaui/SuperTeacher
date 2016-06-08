@@ -11,7 +11,7 @@
 #include <SFML/Graphics.hpp>
 #include "Physics.h"
 
-Character::Character(std::shared_ptr<ResourceManager> resource, std::string level_name){
+Character::Character(std::shared_ptr<ResourceManager> resource, std::string level_name, int GroundLevel){
 
 
     
@@ -21,7 +21,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     auto superteacher_texture = resource->get_texture("graphics/characters/superteacher.png");
     m_superteacher = std::make_shared<sf::Sprite>();
     m_superteacher->setTexture(*superteacher_texture);
-    colisi.walk_level = 658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
+    colisi.walk_level = GroundLevel;//658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     m_superteacher->move(0,colisi.walk_level);
     
     auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
@@ -30,6 +30,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     animation_texture->setSmooth(true);
     m_animation->move(10,colisi.walk_level);
     m_animation->setScale(0.4, 0.4);
+    m_animation->setOrigin(0, m_animation->getGlobalBounds().height+BLOCK_PXSIZE); // TROUVER D'OU VIENT LE BLOCK DE DECALAGE, ET ENLEVER CELUI-CI
     
     auto animation_student_texture = resource->get_texture("graphics/characters/student.png");
     m_student_animation = std::make_shared<sf::Sprite>();
@@ -45,7 +46,6 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     static sf::Vector2i source(0,0);
     m_animation->setTextureRect(sf::IntRect(source.x * 660,source.y,700,1200));
    
-    add_drawable(m_student_animation);
     add_drawable(m_animation);
     jumpLevel = JUMP;
     m_nb_pencils = 0;
@@ -62,8 +62,6 @@ void Character::process_event(HIEvent event){
     static int collisionflag2 = 0;
     float posx;
     float posy;
-    static int jumpcnt = 0;
-    static int jumpcnt2 = 0;
     static int speed = SPEED;
     static int direction = 1;
     
@@ -100,6 +98,11 @@ void Character::process_event(HIEvent event){
                 {
                     source.x = 0;
                 }
+            }
+            else
+            {
+                source.y = 1;
+                m_animation->setTextureRect(sf::IntRect(8 * 676,source.y * 1150,900,1200));
             }
             break;
         case HIEvent::FAST_DOWN:
@@ -141,6 +144,10 @@ void Character::process_event(HIEvent event){
                 {
                     source.x = 0;
                 }
+            }
+            else
+            {
+                m_animation->setTextureRect(sf::IntRect(9 * 590,source.y,900,1200));
             }
             break;
 
@@ -201,6 +208,7 @@ void Character::update()
     {
         collisionflag3 = 0;
     }
+    
     jump_manager(m_animation, colisi.walk_level, 0,collisionflag3);
     
     for (auto p : m_pencils){

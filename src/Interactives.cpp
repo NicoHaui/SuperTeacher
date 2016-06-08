@@ -46,8 +46,8 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
         auto temp = std::make_shared<sf::Sprite>();
         auto sprite = std::make_shared<act_pack>();
         temp->setTexture(*texture);
-        int x = object["x"];
-        int y = object["y"];
+        float x = object["x"];
+        float y = object["y"];
         temp->setScale(object["size"], object["size"]);
         sprite->scale = object["size"];
         temp->move(x*BLOCK_PXSIZE, y*BLOCK_PXSIZE-temp->getGlobalBounds().height);
@@ -64,95 +64,8 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
     }
 }
 
-/*
-colision Interactives::update( sf::FloatRect rect, std::shared_ptr<sf::Text> score)
-{
-    colision col;
-    static float val = 0;
-    val += 0.2;
-    static int points = 0;
-    bool no_col = true;
-    bool del = false;
-    //void *supp = NULL;
-    for (auto& pack : m_sprites)
-    {
-        if (pack->function == platform)
-        {
-            if (rect.intersects(pack->sprite->getGlobalBounds()))
-            {
 
-                if ((rect.top +rect.height) <= pack->sprite->getGlobalBounds().top+20)
-                {
-                    col.walk_level = pack->sprite->getGlobalBounds().top-rect.height+1;
-                }
-                else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2)
-                {
-                    col.left_enable = false;
-                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-                }
-                else
-                {
-                    col.right_enable = false;
-                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-                }
-                no_col = false;
-            }
-        }
-        if (pack->function == bonus)
-        {
-            if (rect.intersects(pack->sprite->getGlobalBounds()))
-            {
-                points+=pack->value;
-                pack->deleteFlag = true;
-                del = true;
-            }
-
-        }
-        if (pack->function == charge)
-        {
-            if (rect.intersects(pack->sprite->getGlobalBounds()))
-            {
-                
-            }
-
-        }
-        if (pack->function == mob)
-        {
-            pack->sprite->move(cos(val / 5) * 10, 0);
-            if (rect.intersects(pack->sprite->getGlobalBounds()))
-            {
-                if (pack->use == false)
-                {
-                    points-=pack->value;
-                }
-                pack->use = true;
-            }
-            else
-            {
-                pack->use = false;
-            }
-        }
-    }
-    if (del)
-    {
-        m_sprites.erase(std::remove_if(
-            m_sprites.begin(),
-            m_sprites.end(),
-            [](auto x) {return x->deleteFlag; }));
-    }
-
-    if (no_col==true)
-    {
-        col.left_enable = true;
-        col.right_enable = true;
-        col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-    }
-    score->setString("Points: " + std::to_string(points));
-    return col;
-}
-*/
-
-colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> score)
+colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> score, int GroundLevel)
 {
     colision col;
     static float val = 0;
@@ -164,6 +77,9 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
     auto rect = mainPerson.get_rectangle();
     auto pencil = mainPerson.getPencil();
     //void *supp = NULL;
+    col.walk_level = GroundLevel;//658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+    col.right_enable = true;
+    col.left_enable = true;
     for (auto& pack : m_sprites)
     {
         if (pack->function == platform)
@@ -171,19 +87,25 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
             if (rect.intersects(pack->sprite->getGlobalBounds()))
             {
 
-                if ((rect.top + rect.height) <= pack->sprite->getGlobalBounds().top + 20)
+                if (((rect.top) <= pack->sprite->getGlobalBounds().top + SECUR_SPACE &&
+                    rect.left < pack->sprite->getGlobalBounds().left+pack->sprite->getGlobalBounds().width - SECUR_SPACE &&
+                    rect.left + rect.width > pack->sprite->getGlobalBounds().left + SECUR_SPACE) ||
+                    ((rect.top + rect.height) <= pack->sprite->getGlobalBounds().top + 1 &&
+                    rect.left < pack->sprite->getGlobalBounds().left+pack->sprite->getGlobalBounds().width - 1 &&
+                    rect.left + rect.width > pack->sprite->getGlobalBounds().left + 1))
                 {
-                    col.walk_level = pack->sprite->getGlobalBounds().top - rect.height + 1;
+                    col.walk_level = pack->sprite->getGlobalBounds().top+1;// - rect.height + 1;
                 }
-                else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2)
+                else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2&&
+                         (rect.top + rect.height) > pack->sprite->getGlobalBounds().top + SECUR_SPACE)
                 {
                     col.left_enable = false;
-                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+                    //col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
                 }
-                else
+                else if((rect.top + rect.height) > pack->sprite->getGlobalBounds().top + SECUR_SPACE)
                 {
                     col.right_enable = false;
-                    col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+                    //col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
                 }
                 no_col = false;
             }
@@ -262,13 +184,13 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
             [](auto x) {return x->deleteFlag; }));
     }
     
-
+/*
     if (no_col == true)
     {
         col.left_enable = true;
         col.right_enable = true;
         col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-    }
+    }*/
     score->setString("Points: " + std::to_string(points));
     return col;
 }

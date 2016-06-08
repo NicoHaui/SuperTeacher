@@ -19,7 +19,7 @@ class Character: public Object {
 public:
     void process_event(HIEvent event);
     void update(void);
-    Character(std::shared_ptr<ResourceManager> ressource, std::string level_name);
+    Character(std::shared_ptr<ResourceManager> ressource, std::string level_name,int GroundLevel);
     std::vector<std::shared_ptr<sf::Drawable>> get_drawables(void);
     int getJumpLevel(void);
     sf::FloatRect get_rectangle(void);
