@@ -6,9 +6,9 @@
 //
 //
 
+#include <algorithm>
 #include "Interactives.h"
 #include "Constants.h"
-#include <algorithm>
 
 function_enum string_conv(std::string text)
 {

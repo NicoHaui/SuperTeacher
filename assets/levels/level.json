@@ -1,6 +1,6 @@
 {
     "init":{
-        "pencil" : 0
+        "pencil" : 100
            },
     "background" : {
         "world": {"x":100,"y":60},
