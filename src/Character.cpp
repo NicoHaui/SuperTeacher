@@ -297,3 +297,8 @@ void Character::addLive(int val)
 {
     m_live += val;
 }
+
+int Character::getLive(void)
+{
+    return m_live;
+}

@@ -80,6 +80,7 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
         if (sprite->function == live)
         {
             sprite->sprite->setOrigin(sprite->sprite->getLocalBounds().width/2, 0);
+            //sprite->sprite->move(-sprite->sprite->getLocalBounds().width / 2, sprite->sprite->getLocalBounds().height / 2);
         }
         sprite->use = false;
         sprite->deleteFlag = false;

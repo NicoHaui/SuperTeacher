@@ -30,6 +30,7 @@ public:
     std::vector<Pencil> getPencil(void);
     void setPencil(std::vector<Pencil> new_pencils);
     void addLive(int val);
+    int getLive(void);
 
 private:
     std::shared_ptr<ResourceManager> m_resource;
