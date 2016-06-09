@@ -29,6 +29,7 @@ public:
     void addPencil(int nb);
     std::vector<Pencil> getPencil(void);
     void setPencil(std::vector<Pencil> new_pencils);
+    void addLive(int val);
 
 private:
     std::shared_ptr<ResourceManager> m_resource;
@@ -39,7 +40,7 @@ private:
     std::vector<Pencil> m_pencils;
     colision colisi;
     int m_nb_pencils;
-
+    int m_live;
     int jumpLevel;
     int MINLEVEL;    
 };

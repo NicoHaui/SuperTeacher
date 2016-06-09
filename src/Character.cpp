@@ -24,6 +24,7 @@ Character::Character(std::shared_ptr<ResourceManager> resource, std::string leve
     colisi.walk_level = GroundLevel*BLOCK_PXSIZE;//658 - ( BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS) - (int)(*level)["ground"]["level"] ));
     //m_superteacher->move(0,colisi.walk_level);
     
+    m_live = ((int)(*level)["init"]["lives"]);
     auto animation_texture = resource->get_texture("graphics/characters/spritefile.png");
     m_animation = std::make_shared<sf::Sprite>();
     m_animation->setTexture(*animation_texture);
@@ -190,7 +191,15 @@ void Character::process_event(HIEvent event){
                 posy = get_rectangle().top + get_rectangle().height / 2.0;
                 posx = get_rectangle().left + get_rectangle().width / 2.0;
                 m_pencils.push_back(Pencil(m_resource, posx, posy, direction));
-                m_animation->setTextureRect(sf::IntRect(9 * 590, source.y + 100, 900, 1100));
+                if (flag1 == 1)
+                {
+                    m_animation->setTextureRect(sf::IntRect(0 * 660, source.y + 100, 700, 1100));
+                }
+                else
+                {
+                    source.y = 1;
+                    m_animation->setTextureRect(sf::IntRect(0 * 670, source.y * 1150 + 100, 700, 1100));
+                }
                 m_nb_pencils--;
             }
             break;
@@ -282,4 +291,9 @@ std::vector<Pencil> Character::getPencil(void)
 void Character::setPencil(std::vector<Pencil> new_pencils)
 {
     m_pencils = new_pencils;
+}
+
+void Character::addLive(int val)
+{
+    m_live += val;
 }

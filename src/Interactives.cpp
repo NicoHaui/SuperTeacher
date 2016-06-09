@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "Interactives.h"
 #include "Constants.h"
+#include <SFML/Window.hpp>
 
 function_enum string_conv(std::string text)
 {
@@ -29,6 +30,14 @@ function_enum string_conv(std::string text)
     {
         convert_val = charge;
     }
+    if (text == "live")
+    {
+        convert_val = live;
+    }
+    if (text == "mouse")
+    {
+        convert_val = mouse;
+    }
     return convert_val;
 }
 
@@ -41,21 +50,36 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
     auto objects = (*level)["interactive"];
     
     for (auto object : objects) {
-        std::string name = object["image"];
-        auto texture = m_resource->get_texture("graphics/" + name + ".png");
-        auto temp = std::make_shared<sf::Sprite>();
         auto sprite = std::make_shared<act_pack>();
-        temp->setTexture(*texture);
-        float x = object["x"];
-        float y = object["y"];
-        temp->setScale(object["size"], object["size"]);
-        sprite->scale = object["size"];
-        temp->move(x*BLOCK_PXSIZE, y*BLOCK_PXSIZE-temp->getGlobalBounds().height);
-        sprite->sprite = temp;
         sprite->function = string_conv(object["function"]);
-        if (sprite->function == mob || sprite->function == bonus || sprite->function == charge)
+        auto temp = std::make_shared<sf::Sprite>();
+        if (sprite->function != mouse)
+        {
+            std::string name = object["image"];
+            auto texture = m_resource->get_texture("graphics/" + name + ".png");
+            temp->setTexture(*texture);
+            float x = object["x"];
+            float y = object["y"];
+            temp->setScale(object["size"], object["size"]);
+            sprite->scale = object["size"];
+            temp->move(x*BLOCK_PXSIZE, y*BLOCK_PXSIZE - temp->getGlobalBounds().height);
+        }
+        else
+        {
+            std::string name = object["image"];
+            auto texture = m_resource->get_texture("graphics/" + name + ".png");
+            temp->setTexture(*texture);
+            temp->setTextureRect(sf::IntRect(0, 0, 10, 10));
+            temp->setColor(sf::Color::Green);
+        }
+        sprite->sprite = temp;
+        if (sprite->function == mob || sprite->function == bonus || sprite->function == charge || sprite->function == live)
         {
             sprite->value = object["value"];
+        }
+        if (sprite->function == live)
+        {
+            sprite->sprite->setOrigin(sprite->sprite->getLocalBounds().width/2, 0);
         }
         sprite->use = false;
         sprite->deleteFlag = false;
@@ -75,6 +99,7 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
     bool del_pack = false;
     bool del_pen = false;
     bool fly = false;
+    bool tuch = false;
     auto rect = mainPerson.get_rectangle();
     auto pencil = mainPerson.getPencil();
     //void *supp = NULL;
@@ -93,6 +118,11 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
     col.walk_level = GroundLevel;
     for (auto& pack : m_sprites)
     {
+        if (pack->sprite->getGlobalBounds().intersects(sf::Rect<float>(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y, 1, 1)) &&
+            pack->function != mouse)
+        {
+            tuch = true;
+        }
         if (pack->function == platform)
         {
             if (rect.intersects(pack->sprite->getGlobalBounds()))
@@ -110,11 +140,11 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
                     { 
                         if (!fly)
                         {
-                            col.x_move = pack->sprite->getGlobalBounds().left - (rect.left + rect.width);//SECUR_SPACE;
+                            col.x_move = pack->sprite->getGlobalBounds().left - (rect.left + rect.width+SECUR_SPACE);//SECUR_SPACE;
                         }
                         else
                         {
-                            col.x_move = SECUR_SPACE;
+                            col.x_move = SECUR_SPACE*2;
                         }
                     }
                     else if (rect.left > pack->sprite->getGlobalBounds().left +pack->sprite->getGlobalBounds().width -SECUR_SPACE)
@@ -188,6 +218,7 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
                 if (pack->use == false)
                 {
                     points -= pack->value;
+                    mainPerson.addLive(-pack->value);
                 }
                 pack->use = true;
             }
@@ -203,6 +234,45 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
                     del_pack = true;
                     //break;
                 }
+            }
+        }
+        if (pack->function == mouse)
+        {
+            if (rect.intersects(sf::Rect<float>(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y, 1, 1)))
+            {
+                tuch = true;
+            }
+            int x = sf::Mouse::getPosition().x;
+            int y = sf::Mouse::getPosition().y;
+            pack->sprite->setPosition(x, y);
+            if (tuch)
+            {
+                pack->sprite->setColor(sf::Color::Red);
+            }
+            else
+            {
+                pack->sprite->setColor(sf::Color::Green);
+            }
+            //pack->sprite->move(1, 1);
+            /*for (auto i : m_sprites)
+            {
+                if (pack != i)
+                {
+                    if (i->sprite->getGlobalBounds().intersects(pack->sprite->getGlobalBounds()))
+                    {
+
+                    }
+                }
+            }*/
+        }
+        if (pack->function == live)
+        {
+            pack->sprite->setScale((pack->scale*sin((val+90) / FLASH_SPEED_FACTOR)), pack->scale);
+            if (rect.intersects(pack->sprite->getGlobalBounds()))
+            {
+                mainPerson.addLive(pack->value);
+                pack->deleteFlag = true;
+                del_pack = true;
             }
         }
         for (auto& pen : pencil)
