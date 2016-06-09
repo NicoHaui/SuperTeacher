@@ -1,9 +1,13 @@
 {
+    "init":{
+        "pencil" : 0
+           },
     "background" : {
+        "world": {"x":70,"y":40},
         "fill": "background",
         "objects": [
-                    {"x": 10,  "y": 3, "image": "backgrounds/window", "size": 0.6},
-                    {"x": 30, "y": 3, "image": "backgrounds/window", "size": 0.6}
+                    {"x": 1,  "y": 1, "image": "backgrounds/window", "size": 0.2},
+                    {"x": 30, "y": 1, "image": "backgrounds/window", "size": 0.5}
                     ]
     },
     "ground" : {
@@ -12,7 +16,7 @@
         "size" : 1
     },
    "interactive" : [
-                    {"x": 50,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus","value":5},
+                    {"x": 50,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"charge","value":10},
                     {"x": 18,"y": 16,"image":"characters/student","size":0.25, "function":"mob","value":1},
                     {"x": 22,"y": 16,"image":"backgrounds/Paper_stack","size": 0.5,"function":"bonus","value":5},
                     {"x": 12,"y": 16,"image":"backgrounds/Paper_stack","size":1,"function":"platform"},
