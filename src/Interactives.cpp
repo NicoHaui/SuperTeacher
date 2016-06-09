@@ -67,19 +67,30 @@ Interactives::Interactives(std::shared_ptr<ResourceManager> resource, std::strin
 
 colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> score, int GroundLevel)
 {
-    colision col;
+    static colision col = {true,true,GroundLevel,0};
     static float val = 0;
     val += 0.2;
     static int points = 0;
     bool no_col = true;
     bool del_pack = false;
     bool del_pen = false;
+    bool fly = false;
     auto rect = mainPerson.get_rectangle();
     auto pencil = mainPerson.getPencil();
     //void *supp = NULL;
-    col.walk_level = GroundLevel;//658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
+    //col.walk_level = GroundLevel;//658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
     col.right_enable = true;
     col.left_enable = true;
+    col.x_move = 0;
+    if (col.walk_level == mainPerson.getCharacterLevel())
+    {
+        fly = false;
+    }
+    else
+    {
+        fly = true;
+    }
+    col.walk_level = GroundLevel;
     for (auto& pack : m_sprites)
     {
         if (pack->function == platform)
@@ -87,16 +98,53 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
             if (rect.intersects(pack->sprite->getGlobalBounds()))
             {
 
-                if (((rect.top) <= pack->sprite->getGlobalBounds().top + SECUR_SPACE &&
-                    rect.left < pack->sprite->getGlobalBounds().left+pack->sprite->getGlobalBounds().width - SECUR_SPACE &&
-                    rect.left + rect.width > pack->sprite->getGlobalBounds().left + SECUR_SPACE) ||
-                    ((rect.top + rect.height) <= pack->sprite->getGlobalBounds().top + 1 &&
+                if (((rect.top+rect.height) <= pack->sprite->getGlobalBounds().top + SECUR_SPACE &&
                     rect.left < pack->sprite->getGlobalBounds().left+pack->sprite->getGlobalBounds().width - 1 &&
-                    rect.left + rect.width > pack->sprite->getGlobalBounds().left + 1))
+                    rect.left + rect.width > pack->sprite->getGlobalBounds().left + 1) )//||
+                    //((rect.top + rect.height) <= pack->sprite->getGlobalBounds().top + 1 &&
+                    //rect.left < pack->sprite->getGlobalBounds().left+pack->sprite->getGlobalBounds().width - 10 &&
+                    //rect.left + rect.width > pack->sprite->getGlobalBounds().left + 10))
                 {
                     col.walk_level = pack->sprite->getGlobalBounds().top+1;// - rect.height + 1;
+                    if (rect.left + rect.width < pack->sprite->getGlobalBounds().left + SECUR_SPACE)
+                    { 
+                        if (!fly)
+                        {
+                            col.x_move = pack->sprite->getGlobalBounds().left - (rect.left + rect.width);//SECUR_SPACE;
+                        }
+                        else
+                        {
+                            col.x_move = SECUR_SPACE;
+                        }
+                    }
+                    else if (rect.left > pack->sprite->getGlobalBounds().left +pack->sprite->getGlobalBounds().width -SECUR_SPACE)
+                    {
+                        if (!fly)
+                        {
+                            col.x_move = pack->sprite->getGlobalBounds().left - rect.left + pack->sprite->getGlobalBounds().width;
+                        }
+                        else
+                        {
+                            col.x_move = -SECUR_SPACE;
+                        }
+                    }
                 }
-                else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2&&
+                
+                else if (rect.left + rect.width < pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2 &&
+                    (rect.top + rect.height) > pack->sprite->getGlobalBounds().top + SECUR_SPACE)// &&
+                    //(rect.top + rect.height) < pack->sprite->getGlobalBounds().top + SECUR_SPACE)
+                {
+                    col.x_move =  pack->sprite->getGlobalBounds().left-(rect.left + rect.width);
+                    col.left_enable = false;
+                }
+                else if (rect.left > pack->sprite->getGlobalBounds().left - pack->sprite->getGlobalBounds().width / 2 + pack->sprite->getGlobalBounds().width &&
+                    (rect.top + rect.height) > pack->sprite->getGlobalBounds().top + SECUR_SPACE) //&&
+                    //(rect.top + rect.height) < pack->sprite->getGlobalBounds().top + SECUR_SPACE)
+                {
+                    col.x_move = pack->sprite->getGlobalBounds().left - rect.left +  pack->sprite->getGlobalBounds().width;
+                    col.right_enable = false;
+                }
+                /*else if (rect.left + rect.width / 2 >= pack->sprite->getGlobalBounds().left + pack->sprite->getGlobalBounds().width / 2&&
                          (rect.top + rect.height) > pack->sprite->getGlobalBounds().top + SECUR_SPACE)
                 {
                     col.left_enable = false;
@@ -106,7 +154,7 @@ colision Interactives::update(Character& mainPerson, std::shared_ptr<sf::Text> s
                 {
                     col.right_enable = false;
                     //col.walk_level = 658 - (BLOCK_PXSIZE * ((SCREEN_Y_BLOCKS)-16));
-                }
+                }*/
                 no_col = false;
             }
         }

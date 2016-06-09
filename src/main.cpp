@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
         timetext->setString("Time: " + to_string(tmp_time) + " sec");
         pencil->setString("Pencils: " + to_string(character.getNbPencil()));
 
-		//high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+		//high_jump->setString("Jump level " + to_string(character.getCharacterLevel()));
         text.update(view.GetView().getCenter());
       
         // Dessin

@@ -13,6 +13,7 @@
     bool right_enable;
     bool left_enable;
     int walk_level;
+    int x_move;
     }colision;
 
 class Character: public Object {
@@ -21,7 +22,7 @@ public:
     void update(void);
     Character(std::shared_ptr<ResourceManager> ressource, std::string level_name,int GroundLevel);
     std::vector<std::shared_ptr<sf::Drawable>> get_drawables(void);
-    int getJumpLevel(void);
+    int getCharacterLevel(void);
     sf::FloatRect get_rectangle(void);
     void write_collision(colision coll);
     int getNbPencil(void);
