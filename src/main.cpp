@@ -48,13 +48,13 @@ int main(int argc, char *argv[]) {
     
     auto level = resource->get_json("levels/level.json");
     View view = (sf::FloatRect(0,
-        SCREEN_Y_PXSIZE-(*level)["background"]["world"]["y"] * BLOCK_PXSIZE ,
-        (*level)["background"]["world"]["x"] * BLOCK_PXSIZE,
-        (*level)["background"]["world"]["y"] * BLOCK_PXSIZE));
+        SCREEN_Y_PXSIZE-((int)(*level)["background"]["world"]["y"]) * BLOCK_PXSIZE ,
+        ((int)(*level)["background"]["world"]["x"]) * BLOCK_PXSIZE,
+        ((int)(*level)["background"]["world"]["y"]) * BLOCK_PXSIZE));
     Background background(resource, "level", sf::IntRect(0,
          0,
-        (*level)["background"]["world"]["x"] * BLOCK_PXSIZE,
-        (*level)["background"]["world"]["y"] * BLOCK_PXSIZE));
+        ((int)(*level)["background"]["world"]["x"]) * BLOCK_PXSIZE,
+        ((int)(*level)["background"]["world"]["y"]) * BLOCK_PXSIZE));
     auto font = resource->get_font(MATHLETE);
     auto song = resource->get_music(SONG_1);
     int ground_level = (*level)["ground"]["level"];
@@ -96,6 +96,10 @@ int main(int argc, char *argv[]) {
     std::shared_ptr<sf::Text> score = make_shared<sf::Text>("Points: ", *font, 50);
 
     text.Add_Text(score, sf::Vector2f(-900, -25) + view.GetView().getCenter());
+
+    std::shared_ptr<sf::Text> live = make_shared<sf::Text>("Lives: ", *font, 50);
+
+    text.Add_Text(live, sf::Vector2f(-60, -75) + view.GetView().getCenter());
     
     for (int y = 17;  y >= ground_level; y--) {
         for (int x = 0; x < 32; x++) {
@@ -106,7 +110,7 @@ int main(int argc, char *argv[]) {
     std::string gr_name = (*level)["ground"]["name"];
 
 	
-    auto character = Character(resource, "level");
+    auto character = Character(resource, "level",ground_level);
     
     character.addPencil((*level)["init"]["pencil"]);
 
@@ -127,7 +131,7 @@ int main(int argc, char *argv[]) {
 
         user_input.process();
 
-        character.write_collision(interact.update(character,score));
+        character.write_collision(interact.update(character,score,ground_level*BLOCK_PXSIZE));
         character.update();
 
         window.clear(sf::Color::Blue);
@@ -137,8 +141,12 @@ int main(int argc, char *argv[]) {
         auto tmp_time = Timer::get_time_s();
         timetext->setString("Time: " + to_string(tmp_time) + " sec");
         pencil->setString("Pencils: " + to_string(character.getNbPencil()));
-
-		//high_jump->setString("Jump level " + to_string(character.getJumpLevel()));
+        live->setString("Lives: " + to_string(character.getLive()));
+        if (character.getLive() <= 0)
+        {
+            window.close();
+        }
+		//high_jump->setString("Jump level " + to_string(character.getCharacterLevel()));
         text.update(view.GetView().getCenter());
       
         // Dessin
